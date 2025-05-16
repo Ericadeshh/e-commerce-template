@@ -1,23 +1,39 @@
 const express = require("express");
 const cors = require("cors");
-const { initializeDatabase } = require("./config/ecommerce_db");
-require("dotenv").config();
-
+const { initializeDatabase } = require("./config/ecommerce_db.js");
+const productsRouter = require("./routes/products.js");
 const app = express();
-app.use(cors());
+const port = process.env.PORT || 5000;
+
+app.use(
+  cors({
+    origin: process.env.CORS_ORIGIN || "http://localhost:5173",
+    methods: ["GET", "POST", "DELETE"],
+    allowedHeaders: ["Content-Type"],
+  })
+);
 app.use(express.json());
 
-// Routes
-const productRoutes = require("./routes/products");
-app.use("/products", productRoutes);
+app.use("/products", productsRouter);
 
-// Start server after database initialization
-const startServer = async () => {
-  await initializeDatabase();
-  const port = process.env.PORT || 5000;
-  app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
+// Health check endpoint
+app.get("/health", (req, res) => {
+  res.status(200).json({ status: "OK" });
+});
+
+// Initialize database and start server
+initializeDatabase()
+  .then(() => {
+    app.listen(port, () => {
+      console.log(`Server running at http://localhost:${port}`);
+    });
+  })
+  .catch((err) => {
+    console.error("Failed to initialize database:", err);
+    process.exit(1);
   });
-};
 
-startServer();
+// Error handling for uncaught exceptions
+process.on("uncaughtException", (err) => {
+  console.error("Uncaught Exception:", err);
+});

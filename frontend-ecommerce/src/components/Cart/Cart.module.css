@@ -1,13 +1,35 @@
+.offcanvas {
+  max-width: 400px;
+}
+
+.title {
+  font-size: 1.5rem;
+}
+
 .cartItem {
   display: flex;
+  align-items: center;
   gap: 1rem;
-  padding: 1rem;
-  border-bottom: 1px solid #eee;
+}
+
+.cartImage {
+  object-fit: cover;
+}
+
+.itemDetails {
+  flex-grow: 1;
+}
+
+.removeButton {
+  align-self: center;
 }
 
 .total {
-  font-size: 1.25rem;
   font-weight: bold;
   text-align: right;
-  padding: 1rem 0;
+  margin-top: 1rem;
+}
+
+.checkoutButton {
+  width: 100%;
 }

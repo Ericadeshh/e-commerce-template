@@ -1,24 +1,33 @@
 import { useState } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./components/Header/Header";
-import Cart from "./components/Cart/Cart"; // Import from separate file
 import LandingPage from "./pages/LandingPage";
-import "./App.css";
+import Cart from "./components/Cart/Cart";
+import Footer from "./components/Footer/Footer";
+import ErrorBoundary from "./components/ErrorBoundary";
+import styles from "./App.module.css";
 
 function App() {
-  const [cartVisible, setCartVisible] = useState(false);
+  const [showCart, setShowCart] = useState(false);
 
   return (
     <Router>
-      <Header onCartClick={() => setCartVisible(true)} />
-      <Cart show={cartVisible} onHide={() => setCartVisible(false)} />
-
-      <main className="container-fluid mt-4">
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          {/* Add more routes here */}
-        </Routes>
-      </main>
+      <div className={styles.app}>
+        <ErrorBoundary>
+          <Header onCartClick={() => setShowCart(true)} />
+          <main className={styles.main}>
+            <Routes>
+              <Route path="/" element={<LandingPage />} />
+              <Route
+                path="/cart"
+                element={<Cart show={false} onHide={() => {}} />}
+              />
+            </Routes>
+          </main>
+          <Cart show={showCart} onHide={() => setShowCart(false)} />
+          <Footer />
+        </ErrorBoundary>
+      </div>
     </Router>
   );
 }

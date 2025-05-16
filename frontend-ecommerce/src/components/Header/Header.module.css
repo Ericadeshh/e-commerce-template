@@ -2,14 +2,22 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.navLink {
-  display: flex !important;
-  align-items: center;
-  gap: 0.5rem;
+.brand {
+  font-weight: bold;
 }
 
-@media (max-width: 768px) {
-  .navbar {
-    padding: 0.5rem 1rem;
-  }
+.navLink {
+  display: flex;
+  align-items: center;
+}
+
+.badge {
+  margin-left: 0.5rem;
+}
+
+.error {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 0.5rem;
+  text-align: center;
 }

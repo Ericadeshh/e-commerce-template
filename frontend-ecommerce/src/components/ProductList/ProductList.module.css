@@ -1,0 +1,30 @@
+.productCard {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.productImage {
+  object-fit: cover;
+  height: 200px;
+}
+
+.productTitle {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.productDescription {
+  flex: 1;
+  color: #6c757d;
+}
+
+.productPrice {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #28a745;
+}
+
+.addButton {
+  width: 100%;
+}

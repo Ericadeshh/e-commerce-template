@@ -16,24 +16,26 @@ const initializeDatabase = async () => {
     );
     await connection.query(`USE ${process.env.DB_NAME}`);
 
-    // Create products table
+    // Create products table with featured and description columns
     await connection.query(`
       CREATE TABLE IF NOT EXISTS products (
         id INT AUTO_INCREMENT PRIMARY KEY,
         name VARCHAR(255) NOT NULL,
         price DECIMAL(10, 2) NOT NULL,
         image VARCHAR(255),
-        stock INT NOT NULL
+        stock INT NOT NULL,
+        description TEXT,
+        featured BOOLEAN DEFAULT FALSE
       )
     `);
 
-    // Create cart table
+    // Create cart table with composite key
     await connection.query(`
       CREATE TABLE IF NOT EXISTS cart (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        user_id INT,
-        product_id INT,
+        user_id INT NOT NULL,
+        product_id INT NOT NULL,
         quantity INT NOT NULL,
+        PRIMARY KEY (user_id, product_id),
         FOREIGN KEY (product_id) REFERENCES products(id)
       )
     `);
@@ -54,16 +56,31 @@ const initializeDatabase = async () => {
     );
     if (rows[0].count === 0) {
       await connection.query(`
-        INSERT INTO products (name, price, image, stock)
+        INSERT INTO products (name, price, image, stock, description, featured)
         VALUES 
-          ('Sample Product 1', 29.99, 'https://via.placeholder.com/150', 10),
-          ('Sample Product 2', 49.99, 'https://via.placeholder.com/150', 5)
+          ('Sample Product 1', 29.99, 'https://via.placeholder.com/150', 10, 'A great product', TRUE),
+          ('Sample Product 2', 49.99, 'https://via.placeholder.com/150', 5, 'Another great product', TRUE),
+          ('Sample Product 3', 39.99, 'https://via.placeholder.com/150', 8, 'Yet another product', FALSE)
+      `);
+    }
+
+    // Insert sample cart items if table is empty
+    const [cartRows] = await connection.query(
+      "SELECT COUNT(*) AS count FROM cart"
+    );
+    if (cartRows[0].count === 0) {
+      await connection.query(`
+        INSERT INTO cart (user_id, product_id, quantity)
+        VALUES 
+          (1, 1, 2),
+          (1, 2, 1)
       `);
     }
 
     console.log("E-commerce database and tables initialized");
   } catch (err) {
     console.error("Error initializing database:", err);
+    throw err;
   } finally {
     await connection.end();
   }
