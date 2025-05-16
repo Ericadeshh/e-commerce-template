@@ -14,7 +14,7 @@ router.get("/", async (req, res) => {
 
 // Add to cart
 router.post("/cart", async (req, res) => {
-  const { productId, userId = 1, quantity = 1 } = req.body; // Default userId for testing
+  const { productId, userId = 1, quantity = 1 } = req.body;
   try {
     const [product] = await pool.query(
       "SELECT stock FROM products WHERE id = ?",
@@ -33,6 +33,19 @@ router.post("/cart", async (req, res) => {
       [userId, productId, quantity]
     );
     res.json({ message: "Added to cart" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Get cart
+router.get("/cart", async (req, res) => {
+  const { user_id = 1 } = req.query;
+  try {
+    const [rows] = await pool.query("SELECT * FROM cart WHERE user_id = ?", [
+      user_id,
+    ]);
+    res.json(rows);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

@@ -1,0 +1,13 @@
+.cartItem {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.total {
+  font-size: 1.25rem;
+  font-weight: bold;
+  text-align: right;
+  padding: 1rem 0;
+}
