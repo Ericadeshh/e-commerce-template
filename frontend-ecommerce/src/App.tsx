@@ -10,11 +10,15 @@ import styles from "./App.module.css";
 function App() {
   const [showCart, setShowCart] = useState(false);
 
+  const handleCartClick = () => {
+    setShowCart(true);
+  };
+
   return (
     <Router>
       <div className={styles.app}>
         <ErrorBoundary>
-          <Header onCartClick={() => setShowCart(true)} />
+          <Header onCartClick={handleCartClick} />
           <main className={styles.main}>
             <Routes>
               <Route path="/" element={<LandingPage />} />
