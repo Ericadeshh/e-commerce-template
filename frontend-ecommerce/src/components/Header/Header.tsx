@@ -7,8 +7,10 @@ import {
   FaShoppingCart,
   FaAngleRight,
 } from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "./Header.module.css";
 import logo from "../../assets/e-commerceLogo.jpeg";
+
 interface HeaderProps {
   onCartClick: () => void;
 }
@@ -21,13 +23,51 @@ export default function Header({ onCartClick }: HeaderProps) {
   const [hoverDropdown, setHoverDropdown] = useState<"account" | "help" | null>(
     null
   );
+  const [activeMobileSection, setActiveMobileSection] = useState<
+    "account" | "help" | null
+  >(null);
   const accountRef = useRef<HTMLDivElement>(null);
   const helpRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
+  const isLoggedIn = !!localStorage.getItem("token");
+  const role = localStorage.getItem("role");
 
   const toggleMobileMenu = () => {
     setShowMobileMenu(!showMobileMenu);
     setActiveDropdown(null);
     setHoverDropdown(null);
+    setActiveMobileSection(null);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    navigate("/");
+    setShowMobileMenu(false);
+    setActiveDropdown(null);
+    setActiveMobileSection(null);
+  };
+
+  const handleMobileLinkClick = (destination: string) => {
+    console.log(`Navigating to ${destination}, closing mobile menu`);
+    setShowMobileMenu(false);
+    setActiveDropdown(null);
+    setHoverDropdown(null);
+    setActiveMobileSection(null);
+    navigate(destination);
+  };
+
+  const handleMobileCartClick = () => {
+    console.log("Cart clicked, opening panel, closing mobile menu");
+    onCartClick();
+    setShowMobileMenu(false);
+    setActiveDropdown(null);
+    setHoverDropdown(null);
+    setActiveMobileSection(null);
+  };
+
+  const toggleMobileSection = (section: "account" | "help") => {
+    setActiveMobileSection(activeMobileSection === section ? null : section);
   };
 
   const handleClickOutside = (event: MouseEvent) => {
@@ -55,13 +95,16 @@ export default function Header({ onCartClick }: HeaderProps) {
       <header className={styles.header}>
         <div className={styles.container}>
           {/* Logo and Brand */}
-          <a href="/" className={styles.brand}>
+          <Link to="/" className={styles.brand}>
             <img src={logo} alt="E-commerce Logo" className={styles.logo} />
             E-commerce
-          </a>
+          </Link>
 
           {/* Search Bar */}
-          <form className={styles.searchForm}>
+          <form
+            className={styles.searchForm}
+            onSubmit={(e) => e.preventDefault()}
+          >
             <input
               type="search"
               placeholder="Search products, brands, categories..."
@@ -95,18 +138,47 @@ export default function Header({ onCartClick }: HeaderProps) {
               <FaUser /> Account
               {isDropdownVisible("account") && (
                 <div className={styles.dropdown}>
-                  <a href="/login" className={styles.dropdownItem}>
-                    Login/Signup
-                  </a>
-                  <a href="/account" className={styles.dropdownItem}>
-                    My Account
-                  </a>
-                  <a href="/orders" className={styles.dropdownItem}>
-                    Orders
-                  </a>
-                  <a href="/wishlist" className={styles.dropdownItem}>
-                    Wishlist
-                  </a>
+                  {isLoggedIn ? (
+                    <>
+                      <Link
+                        to={
+                          role === "admin"
+                            ? "/admin/dashboard"
+                            : "/user/dashboard"
+                        }
+                        className={styles.dropdownItem}
+                      >
+                        Dashboard
+                      </Link>
+                      <Link to="/orders" className={styles.dropdownItem}>
+                        Orders
+                      </Link>
+                      <Link to="/wishlist" className={styles.dropdownItem}>
+                        Wishlist
+                      </Link>
+                      <button
+                        onClick={handleLogout}
+                        className={styles.dropdownItem}
+                      >
+                        Logout
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <Link to="/login" className={styles.dropdownItem}>
+                        Login/Signup
+                      </Link>
+                      <Link to="/account" className={styles.dropdownItem}>
+                        My Account
+                      </Link>
+                      <Link to="/orders" className={styles.dropdownItem}>
+                        Orders
+                      </Link>
+                      <Link to="/wishlist" className={styles.dropdownItem}>
+                        Wishlist
+                      </Link>
+                    </>
+                  )}
                 </div>
               )}
             </div>
@@ -124,24 +196,24 @@ export default function Header({ onCartClick }: HeaderProps) {
               <FaQuestionCircle /> Help
               {isDropdownVisible("help") && (
                 <div className={styles.dropdown}>
-                  <a href="/help-center" className={styles.dropdownItem}>
+                  <Link to="/help-center" className={styles.dropdownItem}>
                     Help Center
-                  </a>
-                  <a href="/place-order" className={styles.dropdownItem}>
+                  </Link>
+                  <Link to="/place-order" className={styles.dropdownItem}>
                     Place Your Order
-                  </a>
-                  <a href="/payment-options" className={styles.dropdownItem}>
+                  </Link>
+                  <Link to="/payment-options" className={styles.dropdownItem}>
                     Payment Options
-                  </a>
-                  <a href="/delivery" className={styles.dropdownItem}>
+                  </Link>
+                  <Link to="/delivery" className={styles.dropdownItem}>
                     Delivery Timelines & Track Your Order
-                  </a>
-                  <a href="/returns" className={styles.dropdownItem}>
+                  </Link>
+                  <Link to="/returns" className={styles.dropdownItem}>
                     Returns & Refunds
-                  </a>
-                  <a href="/warranty" className={styles.dropdownItem}>
+                  </Link>
+                  <Link to="/warranty" className={styles.dropdownItem}>
                     Warranty
-                  </a>
+                  </Link>
                 </div>
               )}
             </div>
@@ -163,72 +235,169 @@ export default function Header({ onCartClick }: HeaderProps) {
           </button>
         </div>
         <nav className={styles.mobileNav}>
-          <button
-            className={styles.mobileNavLink}
-            onClick={() =>
-              setActiveDropdown(activeDropdown === "account" ? null : "account")
-            }
-          >
-            <span>
-              <FaUser /> Account
-            </span>
-            <FaAngleRight className={styles.openIcon} />
-          </button>
-          {activeDropdown === "account" && (
-            <div className={styles.mobileDropdown}>
-              <a href="/login" className={styles.dropdownItem}>
-                Login/Signup
-              </a>
-              <a href="/account" className={styles.dropdownItem}>
-                My Account
-              </a>
-              <a href="/orders" className={styles.dropdownItem}>
-                Orders
-              </a>
-              <a href="/wishlist" className={styles.dropdownItem}>
-                Wishlist
-              </a>
-            </div>
-          )}
-          <button
-            className={styles.mobileNavLink}
-            onClick={() =>
-              setActiveDropdown(activeDropdown === "help" ? null : "help")
-            }
-          >
-            <span>
-              <FaQuestionCircle /> Help
-            </span>
-            <FaAngleRight className={styles.openIcon} />
-          </button>
-          {activeDropdown === "help" && (
-            <div className={styles.mobileDropdown}>
-              <a href="/help-center" className={styles.dropdownItem}>
-                Help Center
-              </a>
-              <a href="/place-order" className={styles.dropdownItem}>
-                Place Your Order
-              </a>
-              <a href="/payment-options" className={styles.dropdownItem}>
-                Payment Options
-              </a>
-              <a href="/delivery" className={styles.dropdownItem}>
-                Delivery Timelines & Track Your Order
-              </a>
-              <a href="/returns" className={styles.dropdownItem}>
-                Returns & Refunds
-              </a>
-              <a href="/warranty" className={styles.dropdownItem}>
-                Warranty
-              </a>
-            </div>
-          )}
-          <button className={styles.mobileNavLink} onClick={onCartClick}>
-            <span>
-              <FaShoppingCart /> Cart
-            </span>
-            <FaAngleRight className={styles.openIcon} />
-          </button>
+          <div className={styles.mobileNavSection}>
+            <button
+              className={styles.mobileNavTitle}
+              onClick={() => toggleMobileSection("account")}
+            >
+              <span>
+                <FaUser /> Account
+              </span>
+              <FaAngleRight
+                className={`${styles.openIcon} ${
+                  activeMobileSection === "account" ? styles.open : ""
+                }`}
+              />
+            </button>
+            {activeMobileSection === "account" && (
+              <div className={styles.mobileDropdown}>
+                {isLoggedIn ? (
+                  <>
+                    <Link
+                      to={
+                        role === "admin"
+                          ? "/admin/dashboard"
+                          : "/user/dashboard"
+                      }
+                      className={styles.mobileNavLink}
+                      onClick={() =>
+                        handleMobileLinkClick(
+                          role === "admin"
+                            ? "/admin/dashboard"
+                            : "/user/dashboard"
+                        )
+                      }
+                    >
+                      Dashboard
+                    </Link>
+                    <Link
+                      to="/orders"
+                      className={styles.mobileNavLink}
+                      onClick={() => handleMobileLinkClick("/orders")}
+                    >
+                      Orders
+                    </Link>
+                    <Link
+                      to="/wishlist"
+                      className={styles.mobileNavLink}
+                      onClick={() => handleMobileLinkClick("/wishlist")}
+                    >
+                      Wishlist
+                    </Link>
+                    <button
+                      onClick={handleLogout}
+                      className={styles.mobileNavLink}
+                    >
+                      Logout
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <Link
+                      to="/login"
+                      className={styles.mobileNavLink}
+                      onClick={() => handleMobileLinkClick("/login")}
+                    >
+                      Login/Signup
+                    </Link>
+                    <Link
+                      to="/account"
+                      className={styles.mobileNavLink}
+                      onClick={() => handleMobileLinkClick("/account")}
+                    >
+                      My Account
+                    </Link>
+                    <Link
+                      to="/orders"
+                      className={styles.mobileNavLink}
+                      onClick={() => handleMobileLinkClick("/orders")}
+                    >
+                      Orders
+                    </Link>
+                    <Link
+                      to="/wishlist"
+                      className={styles.mobileNavLink}
+                      onClick={() => handleMobileLinkClick("/wishlist")}
+                    >
+                      Wishlist
+                    </Link>
+                  </>
+                )}
+              </div>
+            )}
+          </div>
+          <div className={styles.mobileNavSection}>
+            <button
+              className={styles.mobileNavTitle}
+              onClick={() => toggleMobileSection("help")}
+            >
+              <span>
+                <FaQuestionCircle /> Help
+              </span>
+              <FaAngleRight
+                className={`${styles.openIcon} ${
+                  activeMobileSection === "help" ? styles.open : ""
+                }`}
+              />
+            </button>
+            {activeMobileSection === "help" && (
+              <div className={styles.mobileDropdown}>
+                <Link
+                  to="/help-center"
+                  className={styles.mobileNavLink}
+                  onClick={() => handleMobileLinkClick("/help-center")}
+                >
+                  Help Center
+                </Link>
+                <Link
+                  to="/place-order"
+                  className={styles.mobileNavLink}
+                  onClick={() => handleMobileLinkClick("/place-order")}
+                >
+                  Place Your Order
+                </Link>
+                <Link
+                  to="/payment-options"
+                  className={styles.mobileNavLink}
+                  onClick={() => handleMobileLinkClick("/payment-options")}
+                >
+                  Payment Options
+                </Link>
+                <Link
+                  to="/delivery"
+                  className={styles.mobileNavLink}
+                  onClick={() => handleMobileLinkClick("/delivery")}
+                >
+                  Delivery Timelines & Track Your Order
+                </Link>
+                <Link
+                  to="/returns"
+                  className={styles.mobileNavLink}
+                  onClick={() => handleMobileLinkClick("/returns")}
+                >
+                  Returns & Refunds
+                </Link>
+                <Link
+                  to="/warranty"
+                  className={styles.mobileNavLink}
+                  onClick={() => handleMobileLinkClick("/warranty")}
+                >
+                  Warranty
+                </Link>
+              </div>
+            )}
+          </div>
+          <div className={styles.mobileNavSection}>
+            <button
+              className={styles.mobileNavTitle}
+              onClick={handleMobileCartClick}
+            >
+              <span>
+                <FaShoppingCart /> Cart
+              </span>
+              <FaAngleRight className={styles.openIcon} />
+            </button>
+          </div>
         </nav>
       </div>
       {showMobileMenu && (
