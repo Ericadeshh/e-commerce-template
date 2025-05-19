@@ -1,311 +1,334 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap");
-
 .hero {
-  font-family: "Poppins", sans-serif;
-  background: linear-gradient(180deg, #e6e6fa, #ffffff);
-  padding: clamp(2rem, 5vw, 3rem) 0;
-}
-
-.error {
-  color: #dc3545;
-  text-align: center;
-  font-size: clamp(0.9rem, 2.5vw, 1rem);
-  margin-bottom: 1rem;
-}
-
-/* Banner Carousel */
-.bannerCarousel {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  border-radius: 12px;
+  padding: 0.75rem;
+  background-color: #e6e6fa; /* Lavender */
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+@media (min-width: 993px) {
+  .hero {
+    height: 480px;
+    max-height: 480px;
+  }
+}
+
+.desktopLayout {
+  display: flex;
+  align-items: stretch; /* Ensures equal height for all columns */
+  flex: 1; /* Fill available space */
+  height: 100%; /* Match hero height */
+}
+
+.quickLinks {
+  padding: 0.75rem;
+  background-color: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Full height of parent */
+  overflow-y: auto; /* Scroll if content overflows */
+}
+
+.quickLinksTitle {
+  font-size: clamp(0.9rem, 1.5vw, 1rem);
+  color: #9400d3; /* Purple */
+  margin-bottom: 0.5rem;
+}
+
+.linkSection {
+  margin-bottom: 0.5rem;
+}
+
+.linkSectionTitle {
+  font-size: clamp(0.75rem, 1.2vw, 0.85rem);
+  color: #dda0dd; /* Plum */
+  margin-bottom: 0.3rem;
+}
+
+.linkList {
+  list-style: none;
+  padding: 0;
+  flex-grow: 1;
+}
+
+.linkItem {
+  display: block;
+  padding: 0.2rem 0;
+  color: #333;
+  text-decoration: none;
+  font-size: clamp(0.65rem, 1vw, 0.75rem);
+  transition: color 0.3s ease;
+}
+
+.linkItem:hover {
+  color: #ff1493; /* Fuchsia Pink */
+}
+
+.bannerCarousel {
+  padding: 0 0.5rem;
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Full height of parent */
 }
 
 .bannerSlide {
   position: relative;
-  height: clamp(300px, 50vw, 600px);
+  height: 100%;
 }
 
 .bannerImage {
   width: 100%;
   height: 100%;
+  max-height: 100%; /* Fit within carousel */
   object-fit: cover;
-  animation: zoom 10s infinite ease-in-out;
+  border-radius: 0.5rem;
 }
 
 .bannerContent {
   position: absolute;
   top: 50%;
-  left: 10%;
+  left: 1rem;
   transform: translateY(-50%);
-  background: linear-gradient(
-    90deg,
-    rgba(255, 20, 147, 0.7),
-    rgba(161, 220, 23, 0.7)
-  );
-  padding: clamp(1rem, 3vw, 1.5rem);
-  border-radius: 8px;
-  max-width: 90%;
-  animation: fadeIn 0.8s ease-out;
+  color: #fff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .bannerTitle {
-  font-size: clamp(1.8rem, 4vw, 2.5rem);
-  font-weight: 700;
-  color: #9400d3;
-  margin-bottom: 0.5rem;
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  color: #dda0dd; /* Plum */
+  margin-bottom: 0.3rem;
 }
 
 .bannerDescription {
-  font-size: clamp(1rem, 2.5vw, 1.2rem);
-  color: #333333;
-  margin-bottom: 1rem;
+  font-size: clamp(0.65rem, 1vw, 0.75rem);
+  margin-bottom: 0.5rem;
 }
 
 .bannerCta {
-  background: #a1dc17;
-  color: #333333;
-  font-size: clamp(0.95rem, 2.5vw, 1.1rem);
-  font-weight: 600;
-  padding: clamp(0.5rem, 2vw, 0.75rem) clamp(1rem, 3vw, 1.5rem);
-  border: none;
-  border-radius: 8px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  animation: pulse 1.5s infinite ease-in-out;
+  font-size: clamp(0.65rem, 1vw, 0.75rem);
+  padding: 0.3rem 0.6rem;
+  background-color: #9400d3; /* Purple */
+  border-color: #9400d3;
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .bannerCta:hover {
+  background-color: #ff1493; /* Fuchsia Pink */
   transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(161, 220, 23, 0.4);
 }
 
-/* Promo Cards */
-.promoContainer {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1.5rem;
-  max-width: 1200px;
-  margin: clamp(1.5rem, 5vw, 2rem) auto;
-  padding: 0 clamp(1rem, 3vw, 2rem);
+.promoPanel {
+  padding: 0.75rem;
+  background-color: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Full height of parent */
+  overflow-y: auto; /* Scroll if content overflows */
+}
+
+.promoPanelTitle {
+  font-size: clamp(0.9rem, 1.5vw, 1rem);
+  color: #9400d3; /* Purple */
+  margin-bottom: 0.5rem;
 }
 
 .promoCard {
-  background: #e6e6fa;
-  border: 2px solid #dda0dd;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  animation: slideIn 0.8s ease-out;
-  animation-delay: calc(0.2s * var(--index));
+  background-color: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  margin-bottom: 0.5rem;
+}
+
+.promoCard:hover {
+  transform: translateY(-5px);
 }
 
 .promoImage {
   width: 100%;
-  height: clamp(200px, 30vw, 300px);
+  height: 80px;
   object-fit: cover;
-}
-
-.promoContent {
-  padding: clamp(1rem, 3vw, 1.5rem);
-  text-align: center;
+  border-radius: 0.5rem 0.5rem 0 0;
 }
 
 .promoTitle {
-  font-size: clamp(1.5rem, 3.5vw, 1.8rem);
-  font-weight: 600;
-  color: #9400d3;
-  margin-bottom: 0.5rem;
+  font-size: clamp(0.75rem, 1.2vw, 0.85rem);
+  color: #9400d3; /* Purple */
+  margin-bottom: 0.3rem;
+}
+
+.promoDiscount {
+  font-size: clamp(0.65rem, 1vw, 0.75rem);
+  color: #ff1493; /* Fuchsia Pink */
+  font-weight: bold;
+  margin-bottom: 0.3rem;
 }
 
 .promoDescription {
-  font-size: clamp(0.9rem, 2.5vw, 1rem);
-  color: #333333;
-  margin-bottom: 1rem;
+  font-size: clamp(0.6rem, 1vw, 0.7rem);
+  color: #333;
+  margin-bottom: 0.5rem;
 }
 
 .promoCta {
-  background: #a1dc17;
-  color: #333333;
-  font-size: clamp(0.9rem, 2.5vw, 1rem);
-  font-weight: 600;
-  padding: clamp(0.5rem, 2vw, 0.75rem) clamp(1rem, 3vw, 1.5rem);
-  border: none;
-  border-radius: 8px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  font-size: clamp(0.6rem, 0.9vw, 0.65rem);
+  padding: 0.25rem 0.5rem;
+  background-color: #ff1493; /* Fuchsia Pink */
+  border-color: #ff1493;
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .promoCta:hover {
+  background-color: #dda0dd; /* Plum */
   transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(161, 220, 23, 0.4);
 }
 
-/* Accessories Panel */
-.accessoriesContainer {
-  max-width: 1200px;
-  margin: clamp(1.5rem, 5vw, 2rem) auto;
-  padding: 0 clamp(1rem, 3vw, 2rem);
-}
-
-.accessoriesTitle {
-  font-size: clamp(1.8rem, 4vw, 2rem);
-  font-weight: 700;
-  color: #9400d3;
-  text-align: center;
-  margin-bottom: 1.5rem;
-  animation: fadeIn 0.8s ease-out;
-}
-
-.accessoriesList {
-  display: flex;
-  overflow-x: auto;
-  gap: 1rem;
-  padding-bottom: 1rem;
-  scrollbar-width: thin;
-  scrollbar-color: #dda0dd #e6e6fa;
-}
-
-.accessoriesList::-webkit-scrollbar {
-  height: 8px;
-}
-
-.accessoriesList::-webkit-scrollbar-track {
-  background: #e6e6fa;
-}
-
-.accessoriesList::-webkit-scrollbar-thumb {
-  background: #dda0dd;
-  border-radius: 4px;
-}
-
-.accessoryItem {
-  flex: 0 0 clamp(150px, 20vw, 180px);
-  position: relative;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  animation: fadeIn 0.8s ease-out;
-  animation-delay: calc(0.1s * var(--index));
-}
-
-.accessoryImage {
-  width: 100%;
-  height: clamp(150px, 20vw, 180px);
-  object-fit: cover;
-}
-
-.accessoryOverlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(255, 20, 147, 0.8);
-  opacity: 0;
+.mobileLayout {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  transition: opacity 0.3s ease;
-  padding: 0.5rem;
+  gap: 1rem;
+  height: 100%; /* Fit within hero */
 }
 
-.accessoryItem:hover .accessoryOverlay {
-  opacity: 1;
+.scrollableLinks {
+  display: flex;
+  overflow-x: auto;
+  gap: 0.75rem;
+  padding-bottom: 0.5rem;
+  scrollbar-width: thin;
 }
 
-.accessoryName {
-  font-size: clamp(0.85rem, 2vw, 0.95rem);
-  font-weight: 600;
-  color: #9400d3;
-  margin: 0;
+.scrollableLinks::-webkit-scrollbar {
+  height: 6px;
+}
+
+.scrollableLinks::-webkit-scrollbar-thumb {
+  background-color: #dda0dd; /* Plum */
+  border-radius: 3px;
+}
+
+.scrollableLinkItem {
+  flex: 0 0 auto;
+  padding: 0.4rem 0.8rem;
+  background-color: #fff;
+  border-radius: 0.3rem;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.error {
   text-align: center;
+  color: #ff1493; /* Fuchsia Pink */
+  margin-bottom: 0.75rem;
 }
 
-.accessoryPrice {
-  font-size: clamp(0.8rem, 2vw, 0.9rem);
-  color: #333333;
-  margin: 0;
-}
+/* Tablet and Mobile */
+@media (max-width: 992px) {
+  .hero {
+    min-height: calc(100vh - 80px); /* Adjust for taller header on mobile */
+    max-height: calc(100vh - 80px);
+    margin-top: 80px;
+  }
 
-@media (max-width: 991px) {
-  .promoContainer {
-    grid-template-columns: 1fr;
+  .bannerImage {
+    max-height: 250px;
   }
-}
 
-@media (max-width: 576px) {
-  .bannerSlide {
-    height: clamp(200px, 60vw, 300px);
-  }
-  .bannerContent {
-    left: 5%;
-    padding: 0.75rem;
-  }
   .bannerTitle {
-    font-size: clamp(1.2rem, 4vw, 1.8rem);
+    font-size: 1.5rem;
   }
+
   .bannerDescription {
-    font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+    font-size: 0.85rem;
   }
+
   .bannerCta {
-    padding: clamp(0.4rem, 2vw, 0.6rem) clamp(0.8rem, 3vw, 1rem);
-    font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+    font-size: 0.75rem;
+    padding: 0.3rem 0.6rem;
   }
-  .promoCard {
-    margin: 0 clamp(0.5rem, 2vw, 1rem);
+}
+
+@media (max-width: 768px) {
+  .hero {
+    padding: 0.5rem;
   }
+
+  .bannerImage {
+    max-height: 200px;
+  }
+
+  .bannerTitle {
+    font-size: 1.25rem;
+  }
+
+  .bannerDescription {
+    font-size: 0.75rem;
+  }
+
+  .bannerCta {
+    font-size: 0.7rem;
+    padding: 0.25rem 0.5rem;
+  }
+
+  .quickLinksTitle,
+  .promoPanelTitle {
+    font-size: 1.1rem;
+  }
+
+  .linkSectionTitle {
+    font-size: 0.9rem;
+  }
+
+  .linkItem {
+    font-size: 0.8rem;
+  }
+
   .promoImage {
-    height: clamp(150px, 40vw, 200px);
+    height: 100px;
+  }
+
+  .promoTitle {
+    font-size: 0.9rem;
+  }
+
+  .promoDiscount {
+    font-size: 0.8rem;
+  }
+
+  .promoDescription {
+    font-size: 0.8rem;
+  }
+
+  .promoCta {
+    font-size: 0.7rem;
+    padding: 0.25rem 0.5rem;
   }
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
+/* Small Mobile */
+@media (max-width: 576px) {
+  .hero {
+    min-height: calc(100vh - 100px); /* Adjust for header height */
+    max-height: calc(100vh - 100px);
+    margin-top: 100px;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
 
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateX(calc(-50px * var(--index)));
+  .bannerImage {
+    max-height: 180px;
   }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
 
-@keyframes zoom {
-  0% {
-    transform: scale(1);
+  .bannerTitle {
+    font-size: 1rem;
   }
-  50% {
-    transform: scale(1.05);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
 
-@keyframes pulse {
-  0% {
-    transform: scale(1);
-    box-shadow: 0 0 0 rgba(161, 220, 23, 0.3);
+  .bannerDescription {
+    font-size: 0.7rem;
   }
-  50% {
-    transform: scale(1.02);
-    box-shadow: 0 0 12px rgba(161, 220, 23, 0.5);
-  }
-  100% {
-    transform: scale(1);
-    box-shadow: 0 0 0 rgba(161, 220, 23, 0.3);
+
+  .bannerContent {
+    left: 1rem;
   }
 }

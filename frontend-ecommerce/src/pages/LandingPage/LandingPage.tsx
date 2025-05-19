@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Container, Carousel, Alert } from "react-bootstrap";
-import ProductList from "../components/ProductList/ProductList";
-import { Product } from "../types/types";
+import ProductList from "../../components/ProductList/ProductList";
+import { Product } from "../../types/types";
 import styles from "./LandingPage.module.css";
 
 export default function LandingPage() {

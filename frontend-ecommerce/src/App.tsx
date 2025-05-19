@@ -33,7 +33,7 @@ function App() {
               path="/cart"
               element={
                 <ErrorBoundary>
-                  <Cart show={showCart} onHide={() => setShowCart(false)} />
+                  <Cart show={false} onHide={() => {}} />
                 </ErrorBoundary>
               }
             />

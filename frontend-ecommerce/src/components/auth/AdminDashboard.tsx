@@ -113,14 +113,17 @@ export default function AdminDashboard() {
     e.preventDefault();
     const token = localStorage.getItem("token");
     try {
-      const response = await fetch("http://localhost:5000/api/admin/banners", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(newBanner),
-      });
+      const response = await fetch(
+        "http://localhost:5000/api/admin/admin/banners",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(newBanner),
+        }
+      );
       if (!response.ok) throw new Error("Failed to create banner");
       setNewBanner({
         title: "",
@@ -151,7 +154,7 @@ export default function AdminDashboard() {
     const token = localStorage.getItem("token");
     try {
       const response = await fetch(
-        `http://localhost:5000/api/admin/banners/${id}`,
+        `http://localhost:5000/api/admin/admin/banners/${id}`,
         {
           method: "PUT",
           headers: {
@@ -180,7 +183,7 @@ export default function AdminDashboard() {
     const token = localStorage.getItem("token");
     try {
       const response = await fetch(
-        `http://localhost:5000/api/admin/banners/${id}`,
+        `http://localhost:5000/api/admin/admin/banners/${id}`,
         {
           method: "DELETE",
           headers: { Authorization: `Bearer ${token}` },
@@ -199,7 +202,7 @@ export default function AdminDashboard() {
     const token = localStorage.getItem("token");
     try {
       const response = await fetch(
-        "http://localhost:5000/api/admin/promotions",
+        "http://localhost:5000/api/admin/admin/promotions",
         {
           method: "POST",
           headers: {
@@ -239,7 +242,7 @@ export default function AdminDashboard() {
     const token = localStorage.getItem("token");
     try {
       const response = await fetch(
-        `http://localhost:5000/api/admin/promotions/${id}`,
+        `http://localhost:5000/api/admin/admin/promotions/${id}`,
         {
           method: "PUT",
           headers: {
@@ -268,7 +271,7 @@ export default function AdminDashboard() {
     const token = localStorage.getItem("token");
     try {
       const response = await fetch(
-        `http://localhost:5000/api/admin/promotions/${id}`,
+        `http://localhost:5000/api/admin/admin/promotions/${id}`,
         {
           method: "DELETE",
           headers: { Authorization: `Bearer ${token}` },
