@@ -1,19 +1,48 @@
-const mysql = require("mysql2/promise");
-const bcrypt = require("bcrypt");
 require("dotenv").config();
+const mysql = require("mysql2/promise");
 
-const initializeDatabase = async () => {
-  const connection = await mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-  });
-
+async function initializeDatabase() {
+  let connection;
   try {
-    await connection.query(
-      `CREATE DATABASE IF NOT EXISTS ${process.env.DB_NAME}`
-    );
-    await connection.query(`USE ${process.env.DB_NAME}`);
+    console.log("Attempting to connect to MySQL with:", {
+      host: process.env.DB_HOST || "localhost",
+      user: process.env.DB_USER || "root",
+    });
+
+    // Connect without specifying a database
+    connection = await mysql.createConnection({
+      host: process.env.DB_HOST || "localhost",
+      user: process.env.DB_USER || "root",
+      password: process.env.DB_PASSWORD || "",
+    });
+    console.log("Connected to MySQL server");
+
+    const dbName = process.env.DB_NAME || "ecommerce_db";
+
+    // Check if database exists
+    const [databases] = await connection.query("SHOW DATABASES LIKE ?", [
+      dbName,
+    ]);
+    if (databases.length === 0) {
+      console.log(`Database ${dbName} does not exist, creating...`);
+      await connection.query(`CREATE DATABASE ${dbName}`);
+      console.log(`Database ${dbName} created`);
+    }
+
+    // Switch to the database
+    await connection.query(`USE ${dbName}`);
+    console.log(`Using database ${dbName}`);
+
+    // Create connection pool for subsequent queries
+    const pool = mysql.createPool({
+      host: process.env.DB_HOST || "localhost",
+      user: process.env.DB_USER || "root",
+      password: process.env.DB_PASSWORD || "",
+      database: dbName,
+      waitForConnections: true,
+      connectionLimit: 10,
+      queueLimit: 0,
+    });
 
     // Create products table
     await connection.query(`
@@ -23,7 +52,6 @@ const initializeDatabase = async () => {
         price DECIMAL(10, 2) NOT NULL,
         image VARCHAR(255),
         stock INT NOT NULL,
-        description TEXT,
         featured BOOLEAN DEFAULT FALSE
       )
     `);
@@ -39,24 +67,13 @@ const initializeDatabase = async () => {
       )
     `);
 
-    // Create orders table
-    await connection.query(`
-      CREATE TABLE IF NOT EXISTS orders (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        user_id INT,
-        total DECIMAL(10, 2) NOT NULL,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      )
-    `);
-
-    // Create users table for authentication
+    // Create users table
     await connection.query(`
       CREATE TABLE IF NOT EXISTS users (
         id INT AUTO_INCREMENT PRIMARY KEY,
         email VARCHAR(255) NOT NULL UNIQUE,
         password VARCHAR(255) NOT NULL,
-        role ENUM('user', 'admin') NOT NULL DEFAULT 'user',
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        role ENUM('user', 'admin') DEFAULT 'user'
       )
     `);
 
@@ -69,109 +86,73 @@ const initializeDatabase = async () => {
         image_url VARCHAR(255) NOT NULL,
         cta_text VARCHAR(50),
         cta_url VARCHAR(255),
-        is_active BOOLEAN DEFAULT TRUE,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        is_active BOOLEAN DEFAULT TRUE
       )
     `);
 
-    // Seed sample products
-    const [productRows] = await connection.query(
-      "SELECT COUNT(*) AS count FROM products"
+    // Insert sample products if table is empty
+    const [products] = await connection.query(
+      "SELECT COUNT(*) as count FROM products"
     );
-    if (productRows[0].count === 0) {
+    if (products[0].count === 0) {
       await connection.query(`
-        INSERT INTO products (name, price, image, stock, description, featured)
-        VALUES 
-          ('Sample Product 1', 29.99, 'https://via.placeholder.com/150', 10, 'A great product', TRUE),
-          ('Sample Product 2', 49.99, 'https://via.placeholder.com/150', 5, 'Another great product', TRUE),
-          ('Sample Product 3', 39.99, 'https://via.placeholder.com/150', 8, 'Yet another product', FALSE)
+        INSERT INTO products (id, name, price, image, stock, featured) VALUES
+        (1, 'Sample Product 1', 29.99, 'https://via.placeholder.com/150', 10, TRUE),
+        (2, 'Sample Product 2', 19.99, 'https://via.placeholder.com/150', 15, TRUE),
+        (3, 'Sample Product 3', 39.99, 'https://via.placeholder.com/150', 8, FALSE)
       `);
+      console.log("Inserted sample products");
     }
 
-    // Seed sample cart items
-    const [cartRows] = await connection.query(
-      "SELECT COUNT(*) AS count FROM cart"
-    );
-    if (cartRows[0].count === 0) {
+    // Insert sample cart data if table is empty
+    const [cart] = await connection.query("SELECT COUNT(*) as count FROM cart");
+    if (cart[0].count === 0) {
       await connection.query(`
-        INSERT INTO cart (user_id, product_id, quantity)
-        VALUES 
-          (1, 1, 2),
-          (1, 2, 1)
+        INSERT INTO cart (user_id, product_id, quantity) VALUES
+        (1, 1, 1),
+        (1, 3, 1)
       `);
+      console.log("Inserted sample cart data");
     }
 
-    // Seed or update admin user
-    const [userRows] = await connection.query(
-      "SELECT COUNT(*) AS count FROM users"
+    // Insert sample user if table is empty
+    const [users] = await connection.query(
+      "SELECT COUNT(*) as count FROM users"
     );
-    if (userRows[0].count === 0) {
-      const hashedPassword = await bcrypt.hash(process.env.ADMIN_PASSWORD, 10);
+    if (users[0].count === 0) {
       await connection.query(
         `
-        INSERT INTO users (email, password, role)
-        VALUES (?, ?, 'admin')
+        INSERT INTO users (email, password, role) VALUES
+        (?, ?, 'admin')
       `,
-        [process.env.ADMIN_EMAIL, hashedPassword]
+        [
+          process.env.ADMIN_EMAIL || "admin@commerce.com",
+          process.env.ADMIN_PASSWORD || "admin@2025",
+        ]
       );
-    } else {
-      // Update admin user if email or password has changed
-      const [existingAdmin] = await connection.query(
-        "SELECT email, password FROM users WHERE role = 'admin' LIMIT 1"
-      );
-      if (existingAdmin.length > 0) {
-        const admin = existingAdmin[0];
-        const isPasswordValid = await bcrypt.compare(
-          process.env.ADMIN_PASSWORD,
-          admin.password
-        );
-        if (admin.email !== process.env.ADMIN_EMAIL || !isPasswordValid) {
-          const hashedPassword = await bcrypt.hash(
-            process.env.ADMIN_PASSWORD,
-            10
-          );
-          await connection.query(
-            `
-            UPDATE users
-            SET email = ?, password = ?
-            WHERE role = 'admin'
-          `,
-            [process.env.ADMIN_EMAIL, hashedPassword]
-          );
-        }
-      }
+      console.log("Inserted sample admin user");
     }
 
-    // Seed sample banners
-    const [bannerRows] = await connection.query(
-      "SELECT COUNT(*) AS count FROM banners"
+    // Insert sample banner if table is empty
+    const [banners] = await connection.query(
+      "SELECT COUNT(*) as count FROM banners"
     );
-    if (bannerRows[0].count === 0) {
+    if (banners[0].count === 0) {
       await connection.query(`
-        INSERT INTO banners (title, description, image_url, cta_text, cta_url, is_active)
-        VALUES 
-          ('Welcome to Our Store', 'Discover the best deals on electronics!', '/promo-electronics.jpg', 'Shop Now', '/products', TRUE),
-          ('Summer Sale', 'Up to 50% off on fashion items!', '/promo-fashion.jpg', 'Explore Deals', '/products', TRUE)
+        INSERT INTO banners (title, description, image_url, cta_text, cta_url, is_active) VALUES
+        ('Welcome to Our Store', 'Shop the latest trends!', 'https://via.placeholder.com/1200x400', 'Shop Now', '/products', TRUE)
       `);
+      console.log("Inserted sample banner");
     }
 
     console.log("E-commerce database and tables initialized");
+    connection.end();
+    return { pool };
   } catch (err) {
-    console.error("Error initializing database:", err);
+    console.error("Database initialization error:", err);
+    if (connection) connection.end();
     throw err;
-  } finally {
-    await connection.end();
   }
-};
+}
 
-const pool = mysql.createPool({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0,
-});
-
-module.exports = { initializeDatabase, pool };
+module.exports = { initializeDatabase };

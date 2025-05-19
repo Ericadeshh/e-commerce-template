@@ -12,9 +12,13 @@ export default function ProductList() {
 
   useEffect(() => {
     setLoading(true);
-    fetch("/products")
-      .then((res) => {
-        if (!res.ok) throw new Error(`Failed to load products: ${res.status}`);
+    fetch("http://localhost:5000/api/products")
+      .then(async (res) => {
+        if (!res.ok) {
+          const errorData = await res.json();
+          console.log("ProductList fetch error response:", errorData);
+          throw new Error(`Failed to load products: ${res.status}`);
+        }
         return res.json();
       })
       .then((data: Product[]) => {
@@ -29,7 +33,7 @@ export default function ProductList() {
   }, []);
 
   const addToCart = (productId: number) => {
-    fetch("/products/cart", {
+    fetch("http://localhost:5000/api/cart", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ productId, userId: 1 }),

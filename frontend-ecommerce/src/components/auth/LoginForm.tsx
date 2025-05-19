@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Form, Button, Alert } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import styles from "./LoginForm.module.css";
 
@@ -11,52 +12,60 @@ export default function LoginForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:5000/auth/login", {
+      const res = await fetch("http://localhost:5000/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
-      if (!response.ok) {
-        throw new Error("Invalid credentials");
+      if (!res.ok) {
+        const errorData = await res.json();
+        console.log("Login error response:", errorData);
+        throw new Error(errorData.error || "Invalid credentials");
       }
-      const data = await response.json();
+      const data = await res.json();
       localStorage.setItem("token", data.token);
       localStorage.setItem("role", data.role);
-      if (data.role === "admin") {
-        navigate("/admin/dashboard");
-      } else {
-        navigate("/user/dashboard");
+      console.log(`Login successful, role: ${data.role}`);
+      navigate(data.role === "admin" ? "/admin/dashboard" : "/user/dashboard");
+    } catch (err: unknown) {
+      let message = "An unknown error occurred";
+      if (err instanceof Error) {
+        message = err.message;
       }
-    } catch (err) {
+      setError(`Login error: ${message}`);
       console.error("Login error:", err);
-      setError("Invalid email or password");
     }
   };
 
   return (
     <div className={styles.loginContainer}>
       <h2>Login</h2>
-      {error && <p className={styles.error}>{error}</p>}
-      <form onSubmit={handleSubmit} className={styles.loginForm}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <button type="submit">Login</button>
-      </form>
-      <p>
-        Don't have an account? <a href="/signup">Sign up</a>
-      </p>
+      {error && <Alert variant="danger">{error}</Alert>}
+      <Form onSubmit={handleSubmit}>
+        <Form.Group className="mb-3" controlId="formEmail">
+          <Form.Label>Email address</Form.Label>
+          <Form.Control
+            type="email"
+            placeholder="Enter email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="formPassword">
+          <Form.Label>Password</Form.Label>
+          <Form.Control
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </Form.Group>
+        <Button variant="primary" type="submit">
+          Login
+        </Button>
+      </Form>
     </div>
   );
 }

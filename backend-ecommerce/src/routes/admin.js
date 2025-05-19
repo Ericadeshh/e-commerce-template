@@ -1,18 +1,32 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
-const { pool } = require("../config/ecommerce_db");
 const router = express.Router();
+
+// Middleware to get pool from app.locals
+router.use((req, res, next) => {
+  req.pool = req.app.locals.pool;
+  next();
+});
+
+// Placeholder admin route
+router.get("/", (req, res) => {
+  res.status(200).json({ message: "Admin route" });
+});
 
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
   if (!token) return res.status(401).json({ error: "Access token required" });
 
-  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-    if (err) return res.status(403).json({ error: "Invalid token" });
-    req.user = user;
-    next();
-  });
+  jwt.verify(
+    token,
+    process.env.JWT_SECRET || "your_jwt_secret",
+    (err, user) => {
+      if (err) return res.status(403).json({ error: "Invalid token" });
+      req.user = user;
+      next();
+    }
+  );
 };
 
 const requireAdmin = (req, res, next) => {
@@ -25,7 +39,7 @@ const requireAdmin = (req, res, next) => {
 // Get all active banners (public)
 router.get("/banners", async (req, res) => {
   try {
-    const [rows] = await pool.query(
+    const [rows] = await req.pool.query(
       "SELECT id, title, description, image_url, cta_text, cta_url FROM banners WHERE is_active = TRUE"
     );
     res.json(rows);
@@ -42,7 +56,7 @@ router.get(
   requireAdmin,
   async (req, res) => {
     try {
-      const [rows] = await pool.query(
+      const [rows] = await req.pool.query(
         "SELECT id, title, description, image_url, cta_text, cta_url, is_active FROM banners"
       );
       res.json(rows);
@@ -68,7 +82,7 @@ router.post(
     }
 
     try {
-      await pool.query(
+      await req.pool.query(
         `
       INSERT INTO banners (title, description, image_url, cta_text, cta_url, is_active)
       VALUES (?, ?, ?, ?, ?, ?)
@@ -94,7 +108,7 @@ router.put(
       req.body;
 
     try {
-      const [result] = await pool.query(
+      const [result] = await req.pool.query(
         `
       UPDATE banners
       SET title = ?, description = ?, image_url = ?, cta_text = ?, cta_url = ?, is_active = ?
@@ -122,9 +136,10 @@ router.delete(
     const { id } = req.params;
 
     try {
-      const [result] = await pool.query("DELETE FROM banners WHERE id = ?", [
-        id,
-      ]);
+      const [result] = await req.pool.query(
+        "DELETE FROM banners WHERE id = ?",
+        [id]
+      );
       if (result.affectedRows === 0) {
         return res.status(404).json({ error: "Banner not found" });
       }

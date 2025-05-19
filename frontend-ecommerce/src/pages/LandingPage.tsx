@@ -1,82 +1,56 @@
 import { useEffect, useState } from "react";
-import { Carousel, Container, Alert, Spinner } from "react-bootstrap";
-import type { Product } from "../types/types";
+import { Container, Carousel, Alert } from "react-bootstrap";
 import ProductList from "../components/ProductList/ProductList";
+import { Product } from "../types/types";
 import styles from "./LandingPage.module.css";
 
 export default function LandingPage() {
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    setLoading(true);
-    fetch("/products?featured=true")
-      .then((res) => {
-        if (!res.ok)
+    fetch("http://localhost:5000/api/products?featured=true")
+      .then(async (res) => {
+        if (!res.ok) {
+          const errorData = await res.json();
+          console.log("LandingPage fetch error response:", errorData);
           throw new Error(`Failed to load featured products: ${res.status}`);
+        }
         return res.json();
       })
-      .then((data: Product[]) => {
-        setFeaturedProducts(data);
-        setLoading(false);
-      })
-      .catch((err: Error) => {
-        setError(`Error loading featured products: ${err.message}`);
-        setLoading(false);
+      .then((data) => setFeaturedProducts(data))
+      .catch((err) => {
+        setError(err.message);
         console.error("Fetch error:", err);
       });
   }, []);
 
   return (
-    <Container fluid className={styles.container}>
-      {loading ? (
-        <Spinner animation="border" className="d-block mx-auto mt-4" />
-      ) : error ? (
-        <Alert variant="danger" className="mt-4">
-          {error}
-        </Alert>
-      ) : (
-        <Carousel className={styles.carousel} interval={5000}>
-          {featuredProducts.length === 0 ? (
-            <Carousel.Item className={styles.carouselItem}>
-              <img
-                className="d-block w-100"
-                src="/placeholder-product.jpg"
-                alt="No featured products"
-              />
-              <Carousel.Caption className={styles.carouselCaption}>
-                <h3>No Featured Products</h3>
-                <p>Check back later for new items!</p>
-              </Carousel.Caption>
-            </Carousel.Item>
-          ) : (
-            featuredProducts.map((product) => (
-              <Carousel.Item key={product.id} className={styles.carouselItem}>
+    <div className={styles.landingPage}>
+      <Container>
+        <h1 className={styles.title}>Welcome to Our Store</h1>
+        {error && <Alert variant="danger">{error}</Alert>}
+        {featuredProducts.length > 0 ? (
+          <Carousel className={styles.carousel}>
+            {featuredProducts.map((product) => (
+              <Carousel.Item key={product.id}>
                 <img
-                  className="d-block w-100"
-                  src={product.image || "/placeholder-product.jpg"}
+                  className={styles.carouselImage}
+                  src={product.image}
                   alt={product.name}
                 />
-                <Carousel.Caption className={styles.carouselCaption}>
+                <Carousel.Caption>
                   <h3>{product.name}</h3>
-                  <p>
-                    $
-                    {typeof product.price === "string"
-                      ? parseFloat(product.price).toFixed(2)
-                      : product.price.toFixed(2)}
-                  </p>
+                  <p>Price: ${product.price}</p>
                 </Carousel.Caption>
               </Carousel.Item>
-            ))
-          )}
-        </Carousel>
-      )}
-
-      <section className={styles.featuredSection}>
-        <h2 className={styles.heading}>Our Products</h2>
+            ))}
+          </Carousel>
+        ) : (
+          <p>No featured products available.</p>
+        )}
         <ProductList />
-      </section>
-    </Container>
+      </Container>
+    </div>
   );
 }

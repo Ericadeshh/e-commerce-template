@@ -23,7 +23,7 @@ export default function Cart({ show, onHide }: CartProps) {
 
   useEffect(() => {
     setLoading(true);
-    fetch("/products/cart?user_id=1")
+    fetch("http://localhost:5000/api/cart?user_id=1")
       .then((res) => {
         if (!res.ok) throw new Error(`Failed to load cart: ${res.status}`);
         return res.json();
@@ -40,7 +40,7 @@ export default function Cart({ show, onHide }: CartProps) {
   }, []);
 
   const removeFromCart = (productId: number) => {
-    fetch("/products/cart", {
+    fetch("http://localhost:5000/api/cart", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ productId, userId: 1 }),

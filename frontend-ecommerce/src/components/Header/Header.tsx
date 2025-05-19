@@ -166,7 +166,10 @@ export default function Header({ onCartClick }: HeaderProps) {
                   ) : (
                     <>
                       <Link to="/login" className={styles.dropdownItem}>
-                        Login/Signup
+                        Login
+                      </Link>
+                      <Link to="/signup" className={styles.dropdownItem}>
+                        Signup
                       </Link>
                       <Link to="/account" className={styles.dropdownItem}>
                         My Account
@@ -298,7 +301,14 @@ export default function Header({ onCartClick }: HeaderProps) {
                       className={styles.mobileNavLink}
                       onClick={() => handleMobileLinkClick("/login")}
                     >
-                      Login/Signup
+                      Login
+                    </Link>
+                    <Link
+                      to="/signup"
+                      className={styles.mobileNavLink}
+                      onClick={() => handleMobileLinkClick("/signup")}
+                    >
+                      Signup
                     </Link>
                     <Link
                       to="/account"
