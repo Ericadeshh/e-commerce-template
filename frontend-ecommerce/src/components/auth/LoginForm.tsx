@@ -31,13 +31,14 @@ export default function LoginForm() {
       localStorage.setItem("role", data.role);
       console.log(`Login successful, role: ${data.role}`);
       setSuccess("Login successful, redirecting...");
-      setTimeout(
-        () =>
-          navigate(
-            data.role === "admin" ? "/admin/dashboard" : "/user/dashboard"
-          ),
-        1500
-      );
+
+      // Ensure navigation based on role
+      const destination =
+        data.role === "admin" ? "/admin/dashboard" : "/user/dashboard";
+      console.log(`Navigating to: ${destination}`);
+      setTimeout(() => {
+        navigate(destination, { replace: true });
+      }, 1500);
     } catch (err: unknown) {
       let message = "An unknown error occurred";
       if (err instanceof Error) {

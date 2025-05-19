@@ -96,8 +96,12 @@ export default function Header({ onCartClick }: HeaderProps) {
         <div className={styles.container}>
           {/* Logo and Brand */}
           <Link to="/" className={styles.brand}>
-            <img src={logo} alt="E-commerce Logo" className={styles.logo} />
-            E-commerce
+            <img
+              src={logo}
+              alt="Milliwin Boutique Logo"
+              className={styles.logo}
+            />
+            Milliwin Boutique
           </Link>
 
           {/* Search Bar */}
@@ -110,7 +114,11 @@ export default function Header({ onCartClick }: HeaderProps) {
               placeholder="Search products, brands, categories..."
               className={styles.searchInput}
             />
-            <button type="submit" className={styles.searchButton}>
+            <button
+              type="submit"
+              className={styles.searchButton}
+              style={{ backgroundColor: "#9400D3", borderColor: "#9400D3" }}
+            >
               Search
             </button>
           </form>
@@ -158,7 +166,7 @@ export default function Header({ onCartClick }: HeaderProps) {
                       </Link>
                       <button
                         onClick={handleLogout}
-                        className={styles.dropdownItem}
+                        className={`${styles.dropdownItem} ${styles.logoutButton}`}
                       >
                         Logout
                       </button>
@@ -220,9 +228,21 @@ export default function Header({ onCartClick }: HeaderProps) {
                 </div>
               )}
             </div>
-            <button className={styles.navLink} onClick={onCartClick}>
-              <FaShoppingCart /> Cart
-            </button>
+            <div className={styles.navLink}>
+              <button
+                onClick={onCartClick}
+                style={{ background: "none", border: "none", color: "#A1DC17" }}
+              >
+                <FaShoppingCart /> Cart
+              </button>
+              <Link
+                to="/cart"
+                className={styles.dropdownItem}
+                style={{ display: "block", color: "#FF1493" }}
+              >
+                View Cart
+              </Link>
+            </div>
           </nav>
         </div>
       </header>
@@ -232,7 +252,7 @@ export default function Header({ onCartClick }: HeaderProps) {
         className={`${styles.mobileMenu} ${showMobileMenu ? styles.show : ""}`}
       >
         <div className={styles.mobileMenuHeader}>
-          <span>E-commerce</span>
+          <span>Milliwin Boutique</span>
           <button className={styles.closeButton} onClick={toggleMobileMenu}>
             <FaTimes />
           </button>
@@ -289,7 +309,7 @@ export default function Header({ onCartClick }: HeaderProps) {
                     </Link>
                     <button
                       onClick={handleLogout}
-                      className={styles.mobileNavLink}
+                      className={`${styles.mobileNavLink} ${styles.logoutButton}`}
                     >
                       Logout
                     </button>

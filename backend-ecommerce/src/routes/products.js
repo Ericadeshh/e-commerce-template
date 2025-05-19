@@ -16,15 +16,35 @@ router.use((req, res, next) => {
   next();
 });
 
-// Get all products or featured products
-router.get("/products", async (req, res) => {
+// Get all products with optional filters (featured, category, new, accessory)
+router.get("/", async (req, res) => {
   console.log(`GET /api/products called with query:`, req.query);
   try {
-    const featured = req.query.featured === "true";
-    const query = featured
-      ? "SELECT * FROM products WHERE featured = true"
-      : "SELECT * FROM products";
-    const [rows] = await req.pool.query(query);
+    const { featured, category, new: isNew, accessory } = req.query;
+    let query =
+      "SELECT id, name, price, image, stock, featured, is_accessory, is_new, category FROM products";
+    const params = [];
+
+    const conditions = [];
+    if (featured === "true") {
+      conditions.push("featured = true");
+    }
+    if (category) {
+      conditions.push("category = ?");
+      params.push(category);
+    }
+    if (isNew === "true") {
+      conditions.push("is_new = true");
+    }
+    if (accessory === "true") {
+      conditions.push("is_accessory = true");
+    }
+
+    if (conditions.length > 0) {
+      query += " WHERE " + conditions.join(" AND ");
+    }
+
+    const [rows] = await req.pool.query(query, params);
     console.log("Products query result:", rows);
     if (rows.length === 0) {
       return res.status(404).json({ error: "No products found" });
@@ -38,7 +58,7 @@ router.get("/products", async (req, res) => {
 
 // Get cart items for a user
 router.get("/cart", async (req, res) => {
-  console.log("GET /api/cart called with query:", req.query);
+  console.log("GET /api/products/cart called with query:", req.query);
   const userId = req.query.user_id;
   if (!userId) {
     return res.status(400).json({ error: "user_id is required" });
@@ -53,7 +73,7 @@ router.get("/cart", async (req, res) => {
     `,
       [userId]
     );
-    console.log("Cart fetched for user", userId, ":", rows);
+    console.log(`Cart fetched for user ${userId}:`, rows);
     res.json(rows);
   } catch (err) {
     console.error("Error fetching cart:", err);
@@ -63,7 +83,7 @@ router.get("/cart", async (req, res) => {
 
 // Add to cart
 router.post("/cart", async (req, res) => {
-  console.log("POST /api/cart called with body:", req.body);
+  console.log("POST /api/products/cart called with body:", req.body);
   const { productId, userId } = req.body;
   if (!productId || !userId) {
     return res.status(400).json({ error: "productId and userId are required" });
@@ -73,7 +93,10 @@ router.post("/cart", async (req, res) => {
       "SELECT stock FROM products WHERE id = ?",
       [productId]
     );
-    if (product.length === 0 || product[0].stock <= 0) {
+    if (product.length === 0) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+    if (product[0].stock <= 0) {
       return res.status(400).json({ error: "Product out of stock" });
     }
     await req.pool.query(
@@ -93,7 +116,7 @@ router.post("/cart", async (req, res) => {
 
 // Remove from cart
 router.delete("/cart", async (req, res) => {
-  console.log("DELETE /api/cart called with body:", req.body);
+  console.log("DELETE /api/products/cart called with body:", req.body);
   const { productId, userId } = req.body;
   if (!productId || !userId) {
     return res.status(400).json({ error: "productId and userId are required" });

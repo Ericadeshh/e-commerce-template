@@ -1,0 +1,8 @@
+.errorContainer {
+  text-align: center;
+  padding: 2rem;
+  background-color: #e6e6fa; /* Lavender */
+  border-radius: 0.5rem;
+  margin: 2rem auto;
+  max-width: 600px;
+}

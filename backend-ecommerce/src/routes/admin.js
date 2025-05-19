@@ -2,13 +2,13 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const router = express.Router();
 
-// Middleware to get pool from app.locals
+// Middleware to get pool
 router.use((req, res, next) => {
   req.pool = req.app.locals.pool;
   next();
 });
 
-// Placeholder admin route
+// Admin dashboard placeholder
 router.get("/", (req, res) => {
   res.status(200).json({ message: "Admin route" });
 });
@@ -67,7 +67,7 @@ router.get(
   }
 );
 
-// Create a new banner (admin)
+// Create a banner (admin)
 router.post(
   "/admin/banners",
   authenticateToken,
@@ -147,6 +147,159 @@ router.delete(
     } catch (err) {
       console.error("Error deleting banner:", err);
       res.status(500).json({ error: "Failed to delete banner" });
+    }
+  }
+);
+
+// Get all active promotions (public)
+router.get("/promotions", async (req, res) => {
+  try {
+    const [rows] = await req.pool.query(
+      "SELECT id, title, description, image_url, cta_text, cta_url FROM promotions WHERE is_active = TRUE"
+    );
+    res.json(rows);
+  } catch (err) {
+    console.error("Error fetching promotions:", err);
+    res.status(500).json({ error: "Failed to fetch promotions" });
+  }
+});
+
+// Get all promotions (admin)
+router.get(
+  "/admin/promotions",
+  authenticateToken,
+  requireAdmin,
+  async (req, res) => {
+    try {
+      const [rows] = await req.pool.query(
+        "SELECT id, title, description, image_url, cta_text, cta_url, is_active FROM promotions"
+      );
+      res.json(rows);
+    } catch (err) {
+      console.error("Error fetching admin promotions:", err);
+      res.status(500).json({ error: "Failed to fetch promotions" });
+    }
+  }
+);
+
+// Create a promotion (admin)
+router.post(
+  "/admin/promotions",
+  authenticateToken,
+  requireAdmin,
+  async (req, res) => {
+    const { title, description, image_url, cta_text, cta_url, is_active } =
+      req.body;
+    if (!title || !image_url) {
+      return res
+        .status(400)
+        .json({ error: "Title and image URL are required" });
+    }
+
+    try {
+      await req.pool.query(
+        `
+      INSERT INTO promotions (title, description, image_url, cta_text, cta_url, is_active)
+      VALUES (?, ?, ?, ?, ?, ?)
+    `,
+        [title, description, image_url, cta_text, cta_url, is_active ?? true]
+      );
+      res.status(201).json({ message: "Promotion created" });
+    } catch (err) {
+      console.error("Error creating promotion:", err);
+      res.status(500).json({ error: "Failed to create promotion" });
+    }
+  }
+);
+
+// Update a promotion (admin)
+router.put(
+  "/admin/promotions/:id",
+  authenticateToken,
+  requireAdmin,
+  async (req, res) => {
+    const { id } = req.params;
+    const { title, description, image_url, cta_text, cta_url, is_active } =
+      req.body;
+
+    try {
+      const [result] = await req.pool.query(
+        `
+      UPDATE promotions
+      SET title = ?, description = ?, image_url = ?, cta_text = ?, cta_url = ?, is_active = ?
+      WHERE id = ?
+    `,
+        [title, description, image_url, cta_text, cta_url, is_active, id]
+      );
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ error: "Promotion not found" });
+      }
+      res.json({ message: "Promotion updated" });
+    } catch (err) {
+      console.error("Error updating promotion:", err);
+      res.status(500).json({ error: "Failed to update promotion" });
+    }
+  }
+);
+
+// Delete a promotion (admin)
+router.delete(
+  "/admin/promotions/:id",
+  authenticateToken,
+  requireAdmin,
+  async (req, res) => {
+    const { id } = req.params;
+
+    try {
+      const [result] = await req.pool.query(
+        "DELETE FROM promotions WHERE id = ?",
+        [id]
+      );
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ error: "Promotion not found" });
+      }
+      res.json({ message: "Promotion deleted" });
+    } catch (err) {
+      console.error("Error deleting promotion:", err);
+      res.status(500).json({ error: "Failed to delete promotion" });
+    }
+  }
+);
+
+// Get accessories (public)
+router.get("/accessories", async (req, res) => {
+  try {
+    const [rows] = await req.pool.query(
+      "SELECT id, name, price, image FROM products WHERE is_accessory = TRUE LIMIT 8"
+    );
+    res.json(rows);
+  } catch (err) {
+    console.error("Error fetching accessories:", err);
+    res.status(500).json({ error: "Failed to fetch accessories" });
+  }
+});
+
+// Update product accessory status (admin)
+router.put(
+  "/admin/products/:id/accessory",
+  authenticateToken,
+  requireAdmin,
+  async (req, res) => {
+    const { id } = req.params;
+    const { is_accessory } = req.body;
+
+    try {
+      const [result] = await req.pool.query(
+        "UPDATE products SET is_accessory = ? WHERE id = ?",
+        [is_accessory, id]
+      );
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ error: "Product not found" });
+      }
+      res.json({ message: "Product accessory status updated" });
+    } catch (err) {
+      console.error("Error updating product accessory status:", err);
+      res.status(500).json({ error: "Failed to update accessory status" });
     }
   }
 );

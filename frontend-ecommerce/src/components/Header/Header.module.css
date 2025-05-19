@@ -163,6 +163,31 @@
   color: #007bff;
 }
 
+.logoutButton {
+  display: block;
+  width: 50%;
+  padding: clamp(0.5rem, 2vw, 0.75rem) clamp(0.8rem, 2vw, 1rem);
+
+  color: #fff;
+  font-size: clamp(0.85rem, 2vw, 0.95rem);
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  margin: clamp(0.4rem, 1.5vw, 0.5rem) clamp(0.8rem, 2vw, 1rem);
+  cursor: pointer;
+  text-align: left;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    pulse 1.5s infinite ease-in-out;
+}
+
+.logoutButton:hover {
+  border: 1px solid linear-gradient(90deg, #c82333, #8b1a22);
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(220, 53, 69, 0.4);
+  padding-left: clamp(0.8rem, 2vw, 1rem); /* Match dropdownItem hover */
+}
+
 .mobileMenu {
   position: fixed;
   top: 0;
@@ -362,6 +387,11 @@
     font-size: clamp(0.75rem, 2vw, 0.85rem);
     padding: clamp(0.3rem, 1vw, 0.4rem) clamp(0.6rem, 1.5vw, 0.8rem);
   }
+  .logoutButton {
+    padding: clamp(0.4rem, 1.5vw, 0.6rem) clamp(0.6rem, 2vw, 0.8rem);
+    font-size: clamp(0.8rem, 2vw, 0.9rem);
+    margin: clamp(0.3rem, 1vw, 0.4rem) clamp(0.6rem, 2vw, 0.8rem);
+  }
 }
 
 @keyframes fadeIn {
@@ -394,5 +424,20 @@
   to {
     opacity: 0.7;
     transform: scaleX(1);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 rgba(220, 53, 69, 0.3);
+  }
+  50% {
+    transform: scale(1.02);
+    box-shadow: 0 0 12px rgba(220, 53, 69, 0.5);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 rgba(220, 53, 69, 0.3);
   }
 }
