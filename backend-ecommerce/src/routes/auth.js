@@ -12,9 +12,11 @@ router.use((req, res, next) => {
 // Signup route
 router.post("/signup", async (req, res) => {
   console.log("POST /api/auth/signup called with body:", req.body);
-  const { email, password } = req.body;
-  if (!email || !password) {
-    return res.status(400).json({ error: "Email and password are required" });
+  const { firstName, lastName, email, phoneNumber, password } = req.body;
+  if (!firstName || !email || !phoneNumber || !password) {
+    return res.status(400).json({
+      error: "First name, email, phone number, and password are required",
+    });
   }
   try {
     // Check if user exists
@@ -25,13 +27,18 @@ router.post("/signup", async (req, res) => {
     if (existingUsers.length > 0) {
       return res.status(409).json({ error: "Email already registered" });
     }
+    // Validate phone number (basic server-side check)
+    const phoneRegex = /^\+?[\d\s-]{10,15}$/;
+    if (!phoneRegex.test(phoneNumber)) {
+      return res.status(400).json({ error: "Invalid phone number format" });
+    }
     // Hash password
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
     // Insert user
     const [result] = await req.pool.query(
-      'INSERT INTO users (email, password, role) VALUES (?, ?, "user")',
-      [email, hashedPassword]
+      "INSERT INTO users (first_name, last_name, email, phone_number, password, role) VALUES (?, ?, ?, ?, ?, ?)",
+      [firstName, lastName || null, email, phoneNumber, hashedPassword, "user"]
     );
     // Generate JWT
     const token = jwt.sign(

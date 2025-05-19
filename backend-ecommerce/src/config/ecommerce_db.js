@@ -71,9 +71,13 @@ async function initializeDatabase() {
     await connection.query(`
       CREATE TABLE IF NOT EXISTS users (
         id INT AUTO_INCREMENT PRIMARY KEY,
+        first_name VARCHAR(50) NOT NULL,
+        last_name VARCHAR(50),
         email VARCHAR(255) NOT NULL UNIQUE,
+        phone_number VARCHAR(20) NOT NULL,
         password VARCHAR(255) NOT NULL,
-        role ENUM('user', 'admin') DEFAULT 'user'
+        role ENUM('user', 'admin') DEFAULT 'user',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
     `);
 
@@ -120,14 +124,22 @@ async function initializeDatabase() {
       "SELECT COUNT(*) as count FROM users"
     );
     if (users[0].count === 0) {
+      const bcrypt = require("bcrypt");
+      const saltRounds = 10;
+      const adminPassword = process.env.ADMIN_PASSWORD || "admin@2025";
+      const hashedPassword = await bcrypt.hash(adminPassword, saltRounds);
       await connection.query(
         `
-        INSERT INTO users (email, password, role) VALUES
-        (?, ?, 'admin')
+        INSERT INTO users (first_name, last_name, email, phone_number, password, role) VALUES
+        (?, ?, ?, ?, ?, ?)
       `,
         [
+          process.env.ADMIN_FIRST_NAME || "Admin",
+          process.env.ADMIN_LAST_NAME || "User",
           process.env.ADMIN_EMAIL || "admin@commerce.com",
-          process.env.ADMIN_PASSWORD || "admin@2025",
+          process.env.ADMIN_PHONE_NUMBER || "+1234567890",
+          hashedPassword,
+          "admin",
         ]
       );
       console.log("Inserted sample admin user");
