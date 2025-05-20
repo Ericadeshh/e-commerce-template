@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Button, Card } from "react-bootstrap";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -10,7 +10,7 @@ import kidPantsPic from "../../assets/kids pants.jpg";
 import kidMatchPic from "../../assets/kids matching cloth.jpg";
 import MenOmbrePic from "../../assets/Men Ombre Japanese.jpg";
 import BeddingPic from "../../assets/nice blankets.jpg";
-import styles from "./FeaturedProducts..module.css";
+import styles from "./FeaturedProducts.module.css";
 
 interface Product {
   id: number;
@@ -25,101 +25,116 @@ interface Product {
 }
 
 export default function FeaturedProducts() {
-  const defaultProducts: Product[] = [
-    {
-      id: 1,
-      name: "Men's Blue Suit",
-      price: 99.99,
-      original_price: 129.99,
-      discount_percentage: 23,
-      stock: 5,
-      category: "mens",
-      image: MenSuitPic,
-    },
-    {
-      id: 2,
-      name: "Women's Red Dress",
-      price: 59.99,
-      original_price: 69.99,
-      discount_percentage: 15,
-      stock: 10,
-      category: "womens",
-      image: WomenDressPic,
-    },
-    {
-      id: 3,
-      name: "Kids' Pants",
-      price: 19.99,
-      original_price: 22.99,
-      discount_percentage: 10,
-      stock: 3,
-      category: "childrens",
-      image: kidPantsPic,
-    },
-    {
-      id: 4,
-      name: "Kids' Matching Set",
-      price: 29.99,
-      original_price: null,
-      discount_percentage: null,
-      stock: 8,
-      category: "childrens",
-      image: kidMatchPic,
-    },
-    {
-      id: 5,
-      name: "Men's Ombre Shirt",
-      price: 39.99,
-      original_price: 49.99,
-      discount_percentage: 20,
-      stock: 12,
-      category: "mens",
-      image: MenOmbrePic,
-    },
-    {
-      id: 6,
-      name: "Nice Blanket",
-      price: 44.99,
-      original_price: 59.99,
-      discount_percentage: 25,
-      stock: 4,
-      category: "beddings",
-      image: BeddingPic,
-    },
-  ];
+  const defaultProducts = useMemo<Product[]>(
+    () => [
+      {
+        id: 1,
+        name: "Men's Blue Suit",
+        price: 99.99,
+        original_price: 129.99,
+        discount_percentage: 23,
+        stock: 5,
+        category: "mens",
+        image: MenSuitPic,
+      },
+      {
+        id: 2,
+        name: "Women's Red Dress",
+        price: 59.99,
+        original_price: 69.99,
+        discount_percentage: 15,
+        stock: 10,
+        category: "womens",
+        image: WomenDressPic,
+      },
+      {
+        id: 3,
+        name: "Kids' Pants",
+        price: 19.99,
+        original_price: 22.99,
+        discount_percentage: 10,
+        stock: 3,
+        category: "childrens",
+        image: kidPantsPic,
+      },
+      {
+        id: 4,
+        name: "Kids' Matching Set",
+        price: 29.99,
+        original_price: null,
+        discount_percentage: null,
+        stock: 8,
+        category: "childrens",
+        image: kidMatchPic,
+      },
+      {
+        id: 5,
+        name: "Men's Ombre Shirt",
+        price: 39.99,
+        original_price: 49.99,
+        discount_percentage: 20,
+        stock: 12,
+        category: "mens",
+        image: MenOmbrePic,
+      },
+      {
+        id: 6,
+        name: "Nice Blanket",
+        price: 44.99,
+        original_price: 59.99,
+        discount_percentage: 25,
+        stock: 4,
+        category: "beddings",
+        image: BeddingPic,
+      },
+    ],
+    []
+  );
 
   const [featuredProducts, setFeaturedProducts] =
     useState<Product[]>(defaultProducts);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/products?featured=true")
+    fetch("http://localhost:5000/api/products?featured=true", {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
       .then(async (res) => {
-        if (!res.ok) throw new Error(`Failed to fetch products: ${res.status}`);
+        if (!res.ok) {
+          throw new Error(`Failed to fetch products: ${res.status}`);
+        }
         return res.json();
       })
       .then((data: Product[]) => {
-        setFeaturedProducts(
-          data.map((product) => ({
-            ...product,
-            image: product.image || "https://placehold.co/300x300",
-            price: parseFloat(String(product.price)),
-            original_price: product.original_price
-              ? parseFloat(String(product.original_price))
-              : null,
-            stock: Number(product.stock),
-            discount_percentage: product.discount_percentage
-              ? Number(product.discount_percentage)
-              : null,
-          }))
-        );
-        setError(null);
+        if (data.length === 0) {
+          setFeaturedProducts(defaultProducts);
+          setError("No featured products in database. Showing demo content.");
+        } else {
+          setFeaturedProducts(
+            data.map((product) => ({
+              ...product,
+              image: product.image || "https://placehold.co/300x300",
+              price: parseFloat(String(product.price)),
+              original_price: product.original_price
+                ? parseFloat(String(product.original_price))
+                : null,
+              stock: Number(product.stock),
+              discount_percentage: product.discount_percentage
+                ? Number(product.discount_percentage)
+                : null,
+            }))
+          );
+          setError(null);
+        }
       })
       .catch((err) => {
         console.error("Error fetching products:", err);
-        setError("Failed to load products. Showing static content.");
+        setFeaturedProducts(defaultProducts);
+        setError("Server unavailable. Showing demo content.");
       });
-  }, []);
+  }, [defaultProducts]);
 
   const sliderSettings = {
     dots: false,

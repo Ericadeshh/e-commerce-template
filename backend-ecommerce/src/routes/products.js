@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const jwt = require("jsonwebtoken");
 
 console.log("Initializing products routes...");
 
@@ -16,13 +17,38 @@ router.use((req, res, next) => {
   next();
 });
 
-// Get all products with optional filters (featured, category, new, accessory)
+// Authentication middleware
+const authenticateToken = (req, res, next) => {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
+  if (!token) return res.status(401).json({ error: "Access token required" });
+
+  jwt.verify(
+    token,
+    process.env.JWT_SECRET || "your_jwt_secret",
+    (err, user) => {
+      if (err) return res.status(403).json({ error: "Invalid token" });
+      req.user = user;
+      next();
+    }
+  );
+};
+
+// Admin access middleware
+const requireAdmin = (req, res, next) => {
+  if (req.user.role !== "admin") {
+    return res.status(403).json({ error: "Admin access required" });
+  }
+  next();
+};
+
+// Get all products with optional filters (public)
 router.get("/", async (req, res) => {
   console.log(`GET /api/products called with query:`, req.query);
   try {
     const { featured, category, new: isNew, accessory } = req.query;
     let query =
-      "SELECT id, name, price, image, stock, featured, is_accessory, is_new, category FROM products";
+      "SELECT id, name, price, image, stock, featured, is_accessory, is_new, category, original_price, discount_percentage FROM products";
     const params = [];
 
     const conditions = [];
@@ -46,15 +72,143 @@ router.get("/", async (req, res) => {
 
     const [rows] = await req.pool.query(query, params);
     console.log("Products query result:", rows);
-    if (rows.length === 0) {
-      return res.status(404).json({ error: "No products found" });
-    }
     res.json(rows);
   } catch (err) {
     console.error("Error fetching products:", err);
     res.status(500).json({ error: "Failed to fetch products" });
   }
 });
+
+// Get all products (admin)
+router.get("/admin", authenticateToken, requireAdmin, async (req, res) => {
+  try {
+    const [rows] = await req.pool.query(
+      "SELECT id, name, price, image, stock, featured, is_accessory, is_new, category, original_price, discount_percentage FROM products"
+    );
+    res.json(rows);
+  } catch (err) {
+    console.error("Error fetching admin products:", err);
+    res.status(500).json({ error: "Failed to fetch products" });
+  }
+});
+
+// Create a product (admin)
+router.post("/admin", authenticateToken, requireAdmin, async (req, res) => {
+  const {
+    name,
+    price,
+    image,
+    stock,
+    featured,
+    is_accessory,
+    is_new,
+    category,
+    original_price,
+    discount_percentage,
+  } = req.body;
+
+  if (!name || !price || !image || !category) {
+    return res
+      .status(400)
+      .json({ error: "Name, price, image, and category are required" });
+  }
+
+  try {
+    await req.pool.query(
+      `
+      INSERT INTO products (name, price, image, stock, featured, is_accessory, is_new, category, original_price, discount_percentage)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `,
+      [
+        name,
+        price,
+        image,
+        stock ?? 0,
+        featured ?? false,
+        is_accessory ?? false,
+        is_new ?? false,
+        category,
+        original_price ?? null,
+        discount_percentage ?? null,
+      ]
+    );
+    res.status(201).json({ message: "Product created" });
+  } catch (err) {
+    console.error("Error creating product:", err);
+    res.status(500).json({ error: "Failed to create product" });
+  }
+});
+
+// Update a product (admin)
+router.put("/admin/:id", authenticateToken, requireAdmin, async (req, res) => {
+  const { id } = req.params;
+  const {
+    name,
+    price,
+    image,
+    stock,
+    featured,
+    is_accessory,
+    is_new,
+    category,
+    original_price,
+    discount_percentage,
+  } = req.body;
+
+  try {
+    const [result] = await req.pool.query(
+      `
+      UPDATE products
+      SET name = ?, price = ?, image = ?, stock = ?, featured = ?, is_accessory = ?, is_new = ?, category = ?, original_price = ?, discount_percentage = ?
+      WHERE id = ?
+    `,
+      [
+        name,
+        price,
+        image,
+        stock,
+        featured,
+        is_accessory,
+        is_new,
+        category,
+        original_price,
+        discount_percentage,
+        id,
+      ]
+    );
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+    res.json({ message: "Product updated" });
+  } catch (err) {
+    console.error("Error updating product:", err);
+    res.status(500).json({ error: "Failed to update product" });
+  }
+});
+
+// Delete a product (admin)
+router.delete(
+  "/admin/:id",
+  authenticateToken,
+  requireAdmin,
+  async (req, res) => {
+    const { id } = req.params;
+
+    try {
+      const [result] = await req.pool.query(
+        "DELETE FROM products WHERE id = ?",
+        [id]
+      );
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ error: "Product not found" });
+      }
+      res.json({ message: "Product deleted" });
+    } catch (err) {
+      console.error("Error deleting product:", err);
+      res.status(500).json({ error: "Failed to delete product" });
+    }
+  }
+);
 
 // Get cart items for a user
 router.get("/cart", async (req, res) => {

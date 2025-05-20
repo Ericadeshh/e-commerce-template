@@ -107,13 +107,15 @@ async function initializeDatabase() {
           CREATE TABLE IF NOT EXISTS products (
             id INT AUTO_INCREMENT PRIMARY KEY,
             name VARCHAR(255) NOT NULL,
-            price VARCHAR(10) NOT NULL,
+            price DECIMAL(10,2) NOT NULL,
             image VARCHAR(255),
             stock INT NOT NULL,
             featured BOOLEAN DEFAULT FALSE,
             is_accessory BOOLEAN DEFAULT FALSE,
             is_new BOOLEAN DEFAULT FALSE,
-            category ENUM('womens', 'mens', 'childrens', 'beddings', 'shoes') NOT NULL
+            category ENUM('womens', 'mens', 'childrens', 'beddings', 'shoes') NOT NULL,
+            original_price DECIMAL(10,2),
+            discount_percentage INT
           )
         `,
         sampleData: async () => {
@@ -122,12 +124,12 @@ async function initializeDatabase() {
           );
           if (count[0].count === 0) {
             await connection.query(`
-              INSERT INTO products (id, name, price, image, stock, featured, is_accessory, is_new, category) VALUES
-              (1, 'Summer Dress', '49.99', 'https://placehold.co/150x150', 20, TRUE, FALSE, TRUE, 'womens'),
-              (2, 'Men Sneakers', '79.99', 'https://placehold.co/150x150', 15, TRUE, FALSE, TRUE, 'shoes'),
-              (3, 'Kids T-Shirt', '19.99', 'https://placehold.co/150x150', 30, FALSE, FALSE, FALSE, 'childrens'),
-              (4, 'Silk Scarf', '29.99', 'https://placehold.co/150x150', 25, TRUE, TRUE, TRUE, 'womens'),
-              (5, 'Cotton Duvet', '99.99', 'https://placehold.co/150x150', 10, FALSE, FALSE, TRUE, 'beddings')
+              INSERT INTO products (id, name, price, image, stock, featured, is_accessory, is_new, category, original_price, discount_percentage) VALUES
+              (1, 'Summer Dress', 49.99, 'https://placehold.co/150x150', 20, TRUE, FALSE, TRUE, 'womens', 59.99, 15),
+              (2, 'Men Sneakers', 79.99, 'https://placehold.co/150x150', 15, TRUE, FALSE, TRUE, 'shoes', 89.99, 10),
+              (3, 'Kids T-Shirt', 19.99, 'https://placehold.co/150x150', 30, FALSE, FALSE, FALSE, 'childrens', NULL, NULL),
+              (4, 'Silk Scarf', 29.99, 'https://placehold.co/150x150', 25, TRUE, TRUE, TRUE, 'womens', 34.99, 14),
+              (5, 'Cotton Duvet', 99.99, 'https://placehold.co/150x150', 10, FALSE, FALSE, TRUE, 'beddings', 119.99, 16)
             `);
             console.log("Inserted sample products");
           }

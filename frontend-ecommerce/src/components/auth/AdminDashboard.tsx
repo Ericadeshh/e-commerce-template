@@ -1,513 +1,938 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Routes, Route, NavLink, useNavigate } from "react-router-dom";
+import {
+  Button,
+  Card,
+  Form,
+  Table,
+  Container,
+  Navbar,
+  Offcanvas,
+  Nav,
+} from "react-bootstrap";
+import {
+  FaChartLine,
+  FaBox,
+  FaUsers,
+  FaComments,
+  FaDollarSign,
+  FaExclamationTriangle,
+  FaStar,
+  FaImage,
+  FaTag,
+  FaBoxOpen,
+  FaUserCog,
+  FaShoppingCart,
+} from "react-icons/fa";
+import { motion, AnimatePresence } from "framer-motion";
 import styles from "./AdminDashboard.module.css";
-
-interface Banner {
-  id: number;
-  title: string;
-  description: string;
-  image_url: string;
-  cta_text: string;
-  cta_url: string;
-  is_active: boolean;
-}
-
-interface Promotion {
-  id: number;
-  title: string;
-  description: string;
-  image_url: string;
-  cta_text: string;
-  cta_url: string;
-  is_active: boolean;
-}
 
 interface Product {
   id: number;
   name: string;
+  price: number;
+  image: string;
+  stock: number;
+  featured: boolean;
   is_accessory: boolean;
+  is_new: boolean;
+  category: string;
+  original_price: number | null;
+  discount_percentage: number | null;
 }
 
-export default function AdminDashboard() {
-  const [banners, setBanners] = useState<Banner[]>([]);
-  const [promotions, setPromotions] = useState<Promotion[]>([]);
-  const [products, setProducts] = useState<Product[]>([]);
-  const [newBanner, setNewBanner] = useState({
-    title: "",
-    description: "",
-    image_url: "",
-    cta_text: "",
-    cta_url: "",
-    is_active: true,
-  });
-  const [newPromotion, setNewPromotion] = useState({
-    title: "",
-    description: "",
-    image_url: "",
-    cta_text: "",
-    cta_url: "",
-    is_active: true,
-  });
+interface DashboardStats {
+  totalOrders: number;
+  totalStock: number;
+  totalUsers: number;
+  unreadChats: number;
+  totalRevenue: number;
+  lowStockItems: number;
+  recentReviews: number;
+}
+
+const DashboardOverview: React.FC = () => {
+  const [stats, setStats] = useState<DashboardStats | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const navigate = useNavigate();
+
+  const fetchStats = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch("http://localhost:5000/api/admin/stats", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      if (!res.ok) throw new Error(`Failed to fetch stats: ${res.status}`);
+      const data = await res.json();
+      setStats(data);
+      setError(null);
+    } catch (err) {
+      console.error("Error fetching stats:", err);
+      setError("Failed to load dashboard stats");
+    }
+  };
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    const role = localStorage.getItem("role");
-    if (!token || role !== "admin") {
-      navigate("/login");
+    fetchStats();
+  }, []);
+
+  if (error) return <div className={styles.error}>{error}</div>;
+  if (!stats) return <div>Loading...</div>;
+
+  return (
+    <motion.div
+      className={styles.overview}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
+    >
+      <h3>Dashboard Overview</h3>
+      <div className={styles.statsGrid}>
+        <Card className={styles.statCard}>
+          <Card.Body>
+            <FaShoppingCart className={styles.icon} />
+            <Card.Title>Total Orders</Card.Title>
+            <Card.Text>{stats.totalOrders}</Card.Text>
+          </Card.Body>
+        </Card>
+        <Card className={styles.statCard}>
+          <Card.Body>
+            <FaBox className={styles.icon} />
+            <Card.Title>Total Stock</Card.Title>
+            <Card.Text>{stats.totalStock}</Card.Text>
+          </Card.Body>
+        </Card>
+        <Card className={styles.statCard}>
+          <Card.Body>
+            <FaUsers className={styles.icon} />
+            <Card.Title>Total Users</Card.Title>
+            <Card.Text>{stats.totalUsers}</Card.Text>
+          </Card.Body>
+        </Card>
+        <Card className={styles.statCard}>
+          <Card.Body>
+            <FaComments className={styles.icon} />
+            <Card.Title>Unread Chats</Card.Title>
+            <Card.Text>{stats.unreadChats}</Card.Text>
+          </Card.Body>
+        </Card>
+        <Card className={styles.statCard}>
+          <Card.Body>
+            <FaDollarSign className={styles.icon} />
+            <Card.Title>Total Revenue</Card.Title>
+            <Card.Text>${stats.totalRevenue.toFixed(2)}</Card.Text>
+          </Card.Body>
+        </Card>
+        <Card className={styles.statCard}>
+          <Card.Body>
+            <FaExclamationTriangle className={styles.icon} />
+            <Card.Title>Low Stock Items</Card.Title>
+            <Card.Text>{stats.lowStockItems}</Card.Text>
+          </Card.Body>
+        </Card>
+        <Card className={styles.statCard}>
+          <Card.Body>
+            <FaStar className={styles.icon} />
+            <Card.Title>Recent Reviews</Card.Title>
+            <Card.Text>{stats.recentReviews}</Card.Text>
+          </Card.Body>
+        </Card>
+      </div>
+    </motion.div>
+  );
+};
+
+const ProductManagement: React.FC = () => {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+  const [newProduct, setNewProduct] = useState<Partial<Product>>({
+    name: "",
+    price: 0,
+    image: "",
+    stock: 0,
+    featured: false,
+    is_accessory: false,
+    is_new: false,
+    category: "",
+    original_price: null,
+    discount_percentage: null,
+  });
+
+  const fetchProducts = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch("http://localhost:5000/api/products/admin", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      if (!res.ok) throw new Error(`Failed to fetch products: ${res.status}`);
+      const data = await res.json();
+      setProducts(data);
+      setError(null);
+    } catch (err) {
+      console.error("Error fetching products:", err);
+      setError("Failed to fetch products");
+    }
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const handleCreateProduct = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch("http://localhost:5000/api/products/admin", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newProduct),
+      });
+      if (!res.ok) throw new Error(`Failed to create product: ${res.status}`);
+      setNewProduct({
+        name: "",
+        price: 0,
+        image: "",
+        stock: 0,
+        featured: false,
+        is_accessory: false,
+        is_new: false,
+        category: "",
+        original_price: null,
+        discount_percentage: null,
+      });
+      fetchProducts();
+    } catch (err) {
+      console.error("Error creating product:", err);
+      setError("Failed to create product");
+    }
+  };
+
+  const handleUpdateProduct = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingProduct) return;
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch(
+        `http://localhost:5000/api/products/admin/${editingProduct.id}`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(editingProduct),
+        }
+      );
+      if (!res.ok) throw new Error(`Failed to update product: ${res.status}`);
+      setEditingProduct(null);
+      fetchProducts();
+    } catch (err) {
+      console.error("Error updating product:", err);
+      setError("Failed to update product");
+    }
+  };
+
+  const handleDeleteProduct = async (id: number) => {
+    if (!window.confirm("Are you sure you want to delete this product?"))
       return;
-    }
-
-    const fetchData = async () => {
-      try {
-        // Fetch banners
-        const bannersResponse = await fetch(
-          "http://localhost:5000/api/admin/banners",
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-        if (!bannersResponse.ok) throw new Error("Failed to fetch banners");
-        const bannersData: Banner[] = await bannersResponse.json();
-        setBanners(bannersData);
-
-        // Fetch promotions
-        const promotionsResponse = await fetch(
-          "http://localhost:5000/api/admin/promotions",
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-        if (!promotionsResponse.ok)
-          throw new Error("Failed to fetch promotions");
-        const promotionsData: Promotion[] = await promotionsResponse.json();
-        setPromotions(promotionsData);
-
-        // Fetch products for accessories
-        const productsResponse = await fetch(
-          "http://localhost:5000/api/products",
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-        if (!productsResponse.ok) throw new Error("Failed to fetch products");
-        const productsData: Product[] = await productsResponse.json();
-        setProducts(productsData);
-      } catch (err) {
-        console.error("Error fetching data:", err);
-        setError("Failed to load data. Please try again.");
-        // Avoid clearing token/role unless explicitly unauthorized
-        if (err instanceof Error && err.message.includes("401")) {
-          localStorage.removeItem("token");
-          localStorage.removeItem("role");
-          navigate("/login");
-        }
-      }
-    };
-
-    fetchData();
-  }, [navigate]);
-
-  const handleCreateBanner = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const token = localStorage.getItem("token");
     try {
-      const response = await fetch(
-        "http://localhost:5000/api/admin/admin/banners",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(newBanner),
-        }
-      );
-      if (!response.ok) throw new Error("Failed to create banner");
-      setNewBanner({
-        title: "",
-        description: "",
-        image_url: "",
-        cta_text: "",
-        cta_url: "",
-        is_active: true,
-      });
-      const fetchResponse = await fetch(
-        "http://localhost:5000/api/admin/banners",
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      const data: Banner[] = await fetchResponse.json();
-      setBanners(data);
-    } catch (err) {
-      console.error("Error creating banner:", err);
-      setError("Failed to create banner");
-    }
-  };
-
-  const handleUpdateBanner = async (
-    id: number,
-    updatedBanner: Partial<Banner>
-  ) => {
-    const token = localStorage.getItem("token");
-    try {
-      const response = await fetch(
-        `http://localhost:5000/api/admin/admin/banners/${id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(updatedBanner),
-        }
-      );
-      if (!response.ok) throw new Error("Failed to update banner");
-      const fetchResponse = await fetch(
-        "http://localhost:5000/api/admin/banners",
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      const data: Banner[] = await fetchResponse.json();
-      setBanners(data);
-    } catch (err) {
-      console.error("Error updating banner:", err);
-      setError("Failed to update banner");
-    }
-  };
-
-  const handleDeleteBanner = async (id: number) => {
-    const token = localStorage.getItem("token");
-    try {
-      const response = await fetch(
-        `http://localhost:5000/api/admin/admin/banners/${id}`,
+      const token = localStorage.getItem("token");
+      const res = await fetch(
+        `http://localhost:5000/api/products/admin/${id}`,
         {
           method: "DELETE",
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      if (!response.ok) throw new Error("Failed to delete banner");
-      setBanners(banners.filter((banner) => banner.id !== id));
-    } catch (err) {
-      console.error("Error deleting banner:", err);
-      setError("Failed to delete banner");
-    }
-  };
-
-  const handleCreatePromotion = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const token = localStorage.getItem("token");
-    try {
-      const response = await fetch(
-        "http://localhost:5000/api/admin/admin/promotions",
-        {
-          method: "POST",
           headers: {
-            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(newPromotion),
-        }
-      );
-      if (!response.ok) throw new Error("Failed to create promotion");
-      setNewPromotion({
-        title: "",
-        description: "",
-        image_url: "",
-        cta_text: "",
-        cta_url: "",
-        is_active: true,
-      });
-      const fetchResponse = await fetch(
-        "http://localhost:5000/api/admin/promotions",
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      const data: Promotion[] = await fetchResponse.json();
-      setPromotions(data);
-    } catch (err) {
-      console.error("Error creating promotion:", err);
-      setError("Failed to create promotion");
-    }
-  };
-
-  const handleUpdatePromotion = async (
-    id: number,
-    updatedPromotion: Partial<Promotion>
-  ) => {
-    const token = localStorage.getItem("token");
-    try {
-      const response = await fetch(
-        `http://localhost:5000/api/admin/admin/promotions/${id}`,
-        {
-          method: "PUT",
-          headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify(updatedPromotion),
         }
       );
-      if (!response.ok) throw new Error("Failed to update promotion");
-      const fetchResponse = await fetch(
-        "http://localhost:5000/api/admin/promotions",
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      const data: Promotion[] = await fetchResponse.json();
-      setPromotions(data);
+      if (!res.ok) throw new Error(`Failed to delete product: ${res.status}`);
+      fetchProducts();
     } catch (err) {
-      console.error("Error updating promotion:", err);
-      setError("Failed to update promotion");
-    }
-  };
-
-  const handleDeletePromotion = async (id: number) => {
-    const token = localStorage.getItem("token");
-    try {
-      const response = await fetch(
-        `http://localhost:5000/api/admin/admin/promotions/${id}`,
-        {
-          method: "DELETE",
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      if (!response.ok) throw new Error("Failed to delete promotion");
-      setPromotions(promotions.filter((promo) => promo.id !== id));
-    } catch (err) {
-      console.error("Error deleting promotion:", err);
-      setError("Failed to delete promotion");
-    }
-  };
-
-  const handleToggleAccessory = async (id: number, is_accessory: boolean) => {
-    const token = localStorage.getItem("token");
-    try {
-      const response = await fetch(
-        `http://localhost:5000/api/admin/products/${id}/accessory`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ is_accessory }),
-        }
-      );
-      if (!response.ok) throw new Error("Failed to update accessory status");
-      setProducts(
-        products.map((product) =>
-          product.id === id ? { ...product, is_accessory } : product
-        )
-      );
-    } catch (err) {
-      console.error("Error updating accessory status:", err);
-      setError("Failed to update accessory status");
+      console.error("Error deleting product:", err);
+      setError("Failed to delete product");
     }
   };
 
   return (
+    <motion.div
+      className={styles.section}
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -20 }}
+      transition={{ duration: 0.3 }}
+    >
+      <h3>Manage Products</h3>
+      {error && <div className={styles.error}>{error}</div>}
+
+      {/* Create Product Form */}
+      <div className={styles.formSection}>
+        <h4>Create New Product</h4>
+        <Form onSubmit={handleCreateProduct}>
+          <Form.Group className="mb-2">
+            <Form.Label>Name</Form.Label>
+            <Form.Control
+              type="text"
+              value={newProduct.name}
+              onChange={(e) =>
+                setNewProduct({ ...newProduct, name: e.target.value })
+              }
+              required
+            />
+          </Form.Group>
+          <Form.Group className="mb-2">
+            <Form.Label>Price</Form.Label>
+            <Form.Control
+              type="number"
+              step="0.01"
+              value={newProduct.price}
+              onChange={(e) =>
+                setNewProduct({
+                  ...newProduct,
+                  price: parseFloat(e.target.value),
+                })
+              }
+              required
+            />
+          </Form.Group>
+          <Form.Group className="mb-2">
+            <Form.Label>Image URL</Form.Label>
+            <Form.Control
+              type="text"
+              value={newProduct.image}
+              onChange={(e) =>
+                setNewProduct({ ...newProduct, image: e.target.value })
+              }
+              required
+            />
+          </Form.Group>
+          <Form.Group className="mb-2">
+            <Form.Label>Stock</Form.Label>
+            <Form.Control
+              type="number"
+              value={newProduct.stock}
+              onChange={(e) =>
+                setNewProduct({
+                  ...newProduct,
+                  stock: parseInt(e.target.value),
+                })
+              }
+            />
+          </Form.Group>
+          <Form.Group className="mb-2">
+            <Form.Label>Category</Form.Label>
+            <Form.Control
+              as="select"
+              value={newProduct.category}
+              onChange={(e) =>
+                setNewProduct({ ...newProduct, category: e.target.value })
+              }
+              required
+            >
+              <option value="">Select Category</option>
+              <option value="womens">Womens</option>
+              <option value="mens">Mens</option>
+              <option value="childrens">Childrens</option>
+              <option value="beddings">Beddings</option>
+              <option value="shoes">Shoes</option>
+            </Form.Control>
+          </Form.Group>
+          <Form.Group className="mb-2">
+            <Form.Label>Original Price</Form.Label>
+            <Form.Control
+              type="number"
+              step="0.01"
+              value={newProduct.original_price ?? ""}
+              onChange={(e) =>
+                setNewProduct({
+                  ...newProduct,
+                  original_price: e.target.value
+                    ? parseFloat(e.target.value)
+                    : null,
+                })
+              }
+            />
+          </Form.Group>
+          <Form.Group className="mb-2">
+            <Form.Label>Discount Percentage</Form.Label>
+            <Form.Control
+              type="number"
+              value={newProduct.discount_percentage ?? ""}
+              onChange={(e) =>
+                setNewProduct({
+                  ...newProduct,
+                  discount_percentage: e.target.value
+                    ? parseInt(e.target.value)
+                    : null,
+                })
+              }
+            />
+          </Form.Group>
+          <Form.Check
+            type="checkbox"
+            label="Featured"
+            checked={newProduct.featured}
+            onChange={(e) =>
+              setNewProduct({ ...newProduct, featured: e.target.checked })
+            }
+            className="mb-2"
+          />
+          <Form.Check
+            type="checkbox"
+            label="Accessory"
+            checked={newProduct.is_accessory}
+            onChange={(e) =>
+              setNewProduct({
+                ...newProduct,
+                is_accessory: e.target.checked,
+              })
+            }
+            className="mb-2"
+          />
+          <Form.Check
+            type="checkbox"
+            label="New"
+            checked={newProduct.is_new}
+            onChange={(e) =>
+              setNewProduct({ ...newProduct, is_new: e.target.checked })
+            }
+            className="mb-2"
+          />
+          <Button type="submit" className={styles.submitButton}>
+            Create Product
+          </Button>
+        </Form>
+      </div>
+
+      {/* Edit Product Form */}
+      {editingProduct && (
+        <div className={styles.formSection}>
+          <h4>Edit Product</h4>
+          <Form onSubmit={handleUpdateProduct}>
+            <Form.Group className="mb-2">
+              <Form.Label>Name</Form.Label>
+              <Form.Control
+                type="text"
+                value={editingProduct.name}
+                onChange={(e) =>
+                  setEditingProduct({
+                    ...editingProduct,
+                    name: e.target.value,
+                  })
+                }
+                required
+              />
+            </Form.Group>
+            <Form.Group className="mb-2">
+              <Form.Label>Price</Form.Label>
+              <Form.Control
+                type="number"
+                step="0.01"
+                value={editingProduct.price}
+                onChange={(e) =>
+                  setEditingProduct({
+                    ...editingProduct,
+                    price: parseFloat(e.target.value),
+                  })
+                }
+                required
+              />
+            </Form.Group>
+            <Form.Group className="mb-2">
+              <Form.Label>Image URL</Form.Label>
+              <Form.Control
+                type="text"
+                value={editingProduct.image}
+                onChange={(e) =>
+                  setEditingProduct({
+                    ...editingProduct,
+                    image: e.target.value,
+                  })
+                }
+                required
+              />
+            </Form.Group>
+            <Form.Group className="mb-2">
+              <Form.Label>Stock</Form.Label>
+              <Form.Control
+                type="number"
+                value={editingProduct.stock}
+                onChange={(e) =>
+                  setEditingProduct({
+                    ...editingProduct,
+                    stock: parseInt(e.target.value),
+                  })
+                }
+              />
+            </Form.Group>
+            <Form.Group className="mb-2">
+              <Form.Label>Category</Form.Label>
+              <Form.Control
+                as="select"
+                value={editingProduct.category}
+                onChange={(e) =>
+                  setEditingProduct({
+                    ...editingProduct,
+                    category: e.target.value,
+                  })
+                }
+                required
+              >
+                <option value="">Select Category</option>
+                <option value="womens">Womens</option>
+                <option value="mens">Mens</option>
+                <option value="childrens">Childrens</option>
+                <option value="beddings">Beddings</option>
+                <option value="shoes">Shoes</option>
+              </Form.Control>
+            </Form.Group>
+            <Form.Group className="mb-2">
+              <Form.Label>Original Price</Form.Label>
+              <Form.Control
+                type="number"
+                step="0.01"
+                value={editingProduct.original_price ?? ""}
+                onChange={(e) =>
+                  setEditingProduct({
+                    ...editingProduct,
+                    original_price: e.target.value
+                      ? parseFloat(e.target.value)
+                      : null,
+                  })
+                }
+              />
+            </Form.Group>
+            <Form.Group className="mb-2">
+              <Form.Label>Discount Percentage</Form.Label>
+              <Form.Control
+                type="number"
+                value={editingProduct.discount_percentage ?? ""}
+                onChange={(e) =>
+                  setEditingProduct({
+                    ...editingProduct,
+                    discount_percentage: e.target.value
+                      ? parseInt(e.target.value)
+                      : null,
+                  })
+                }
+              />
+            </Form.Group>
+            <Form.Check
+              type="checkbox"
+              label="Featured"
+              checked={editingProduct.featured}
+              onChange={(e) =>
+                setEditingProduct({
+                  ...editingProduct,
+                  featured: e.target.checked,
+                })
+              }
+              className="mb-2"
+            />
+            <Form.Check
+              type="checkbox"
+              label="Accessory"
+              checked={editingProduct.is_accessory}
+              onChange={(e) =>
+                setEditingProduct({
+                  ...editingProduct,
+                  is_accessory: e.target.checked,
+                })
+              }
+              className="mb-2"
+            />
+            <Form.Check
+              type="checkbox"
+              label="New"
+              checked={editingProduct.is_new}
+              onChange={(e) =>
+                setEditingProduct({
+                  ...editingProduct,
+                  is_new: e.target.checked,
+                })
+              }
+              className="mb-2"
+            />
+            <Button type="submit" className={styles.submitButton}>
+              Update Product
+            </Button>
+            <Button
+              variant="outline-secondary"
+              onClick={() => setEditingProduct(null)}
+              className="ms-2"
+            >
+              Cancel
+            </Button>
+          </Form>
+        </div>
+      )}
+
+      {/* Products Table */}
+      <div className={styles.tableSection}>
+        <h4>All Products</h4>
+        <Table striped bordered hover responsive size="sm">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Price</th>
+              <th>Stock</th>
+              <th>Category</th>
+              <th>Featured</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {products.map((product) => (
+              <tr key={product.id}>
+                <td>{product.id}</td>
+                <td>{product.name}</td>
+                <td>${product.price.toFixed(2)}</td>
+                <td>{product.stock}</td>
+                <td>{product.category}</td>
+                <td>{product.featured ? "Yes" : "No"}</td>
+                <td>
+                  <Button
+                    variant="outline-primary"
+                    size="sm"
+                    onClick={() => setEditingProduct(product)}
+                  >
+                    Edit
+                  </Button>{" "}
+                  <Button
+                    variant="outline-danger"
+                    size="sm"
+                    onClick={() => handleDeleteProduct(product.id)}
+                  >
+                    Delete
+                  </Button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </div>
+    </motion.div>
+  );
+};
+
+const BannerManagement: React.FC = () => {
+  return (
+    <motion.div
+      className={styles.section}
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -20 }}
+      transition={{ duration: 0.3 }}
+    >
+      <h3>Banner Management</h3>
+      <p>Placeholder for banner management (add forms/tables as needed).</p>
+    </motion.div>
+  );
+};
+
+const PromotionManagement: React.FC = () => {
+  return (
+    <motion.div
+      className={styles.section}
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -20 }}
+      transition={{ duration: 0.3 }}
+    >
+      <h3>Promotion Management</h3>
+      <p>Placeholder for promotion management (add forms/tables as needed).</p>
+    </motion.div>
+  );
+};
+
+const AccessoryManagement: React.FC = () => {
+  return (
+    <motion.div
+      className={styles.section}
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -20 }}
+      transition={{ duration: 0.3 }}
+    >
+      <h3>Accessory Management</h3>
+      <p>
+        Placeholder for accessory management (filter products by is_accessory).
+      </p>
+    </motion.div>
+  );
+};
+
+const UserManagement: React.FC = () => {
+  return (
+    <motion.div
+      className={styles.section}
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -20 }}
+      transition={{ duration: 0.3 }}
+    >
+      <h3>User Management</h3>
+      <p>Placeholder for user management (add user list/edit forms).</p>
+    </motion.div>
+  );
+};
+
+const OrderManagement: React.FC = () => {
+  return (
+    <motion.div
+      className={styles.section}
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -20 }}
+      transition={{ duration: 0.3 }}
+    >
+      <h3>Order Management</h3>
+      <p>Placeholder for order management (add order list/status updates).</p>
+    </motion.div>
+  );
+};
+
+export default function AdminDashboard() {
+  const [showSidebar, setShowSidebar] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
+
+  return (
     <div className={styles.dashboard}>
-      <h1>Admin Dashboard</h1>
-      {error && <p className={styles.error}>{error}</p>}
+      {/* Mobile Navbar */}
+      <Navbar
+        bg="dark"
+        variant="dark"
+        expand={false}
+        className={styles.mobileNav}
+      >
+        <Container fluid>
+          <Navbar.Brand>Admin Dashboard</Navbar.Brand>
+          <Navbar.Toggle onClick={() => setShowSidebar(true)} />
+        </Container>
+      </Navbar>
 
-      {/* Banners Management */}
-      <h2>Manage Banners</h2>
-      <form onSubmit={handleCreateBanner} className={styles.bannerForm}>
-        <input
-          type="text"
-          placeholder="Title"
-          value={newBanner.title}
-          onChange={(e) =>
-            setNewBanner({ ...newBanner, title: e.target.value })
-          }
-          required
-        />
-        <textarea
-          placeholder="Description"
-          value={newBanner.description}
-          onChange={(e) =>
-            setNewBanner({ ...newBanner, description: e.target.value })
-          }
-        />
-        <input
-          type="text"
-          placeholder="Image URL"
-          value={newBanner.image_url}
-          onChange={(e) =>
-            setNewBanner({ ...newBanner, image_url: e.target.value })
-          }
-          required
-        />
-        <input
-          type="text"
-          placeholder="CTA Text"
-          value={newBanner.cta_text}
-          onChange={(e) =>
-            setNewBanner({ ...newBanner, cta_text: e.target.value })
-          }
-        />
-        <input
-          type="text"
-          placeholder="CTA URL"
-          value={newBanner.cta_url}
-          onChange={(e) =>
-            setNewBanner({ ...newBanner, cta_url: e.target.value })
-          }
-        />
-        <label>
-          <input
-            type="checkbox"
-            checked={newBanner.is_active}
-            onChange={(e) =>
-              setNewBanner({ ...newBanner, is_active: e.target.checked })
-            }
-          />
-          Active
-        </label>
-        <button type="submit">Create Banner</button>
-      </form>
-      <h3>Existing Banners</h3>
-      <ul className={styles.bannerList}>
-        {banners.map((banner) => (
-          <li key={banner.id} className={styles.bannerItem}>
-            <p>
-              <strong>{banner.title}</strong> (
-              {banner.is_active ? "Active" : "Inactive"})
-            </p>
-            <p>{banner.description}</p>
-            <p>Image: {banner.image_url}</p>
-            <p>
-              CTA: {banner.cta_text} ({banner.cta_url})
-            </p>
-            <button
-              onClick={() =>
-                handleUpdateBanner(banner.id, {
-                  ...banner,
-                  is_active: !banner.is_active,
-                })
+      {/* Mobile Sidebar */}
+      <Offcanvas
+        show={showSidebar}
+        onHide={() => setShowSidebar(false)}
+        placement="start"
+        className={styles.offcanvas}
+      >
+        <Offcanvas.Header closeButton>
+          <Offcanvas.Title>Admin Menu</Offcanvas.Title>
+        </Offcanvas.Header>
+        <Offcanvas.Body>
+          <motion.div
+            initial={{ x: -100 }}
+            animate={{ x: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <Nav className={styles.nav}>
+              <h5>Overview</h5>
+              <NavLink
+                to="/admin"
+                end
+                className={({ isActive }) =>
+                  isActive ? styles.activeLink : styles.navLink
+                }
+                onClick={() => setShowSidebar(false)}
+              >
+                <FaChartLine /> Dashboard
+              </NavLink>
+              <h5>Hero Section Updates</h5>
+              <NavLink
+                to="/admin/banners"
+                className={({ isActive }) =>
+                  isActive ? styles.activeLink : styles.navLink
+                }
+                onClick={() => setShowSidebar(false)}
+              >
+                <FaImage /> Banner Update
+              </NavLink>
+              <NavLink
+                to="/admin/promotions"
+                className={({ isActive }) =>
+                  isActive ? styles.activeLink : styles.navLink
+                }
+                onClick={() => setShowSidebar(false)}
+              >
+                <FaTag /> Promotion Update
+              </NavLink>
+              <h5>Product Management</h5>
+              <NavLink
+                to="/admin/products"
+                className={({ isActive }) =>
+                  isActive ? styles.activeLink : styles.navLink
+                }
+                onClick={() => setShowSidebar(false)}
+              >
+                <FaBox /> Featured Products
+              </NavLink>
+              <NavLink
+                to="/admin/accessories"
+                className={({ isActive }) =>
+                  isActive ? styles.activeLink : styles.navLink
+                }
+                onClick={() => setShowSidebar(false)}
+              >
+                <FaBoxOpen /> Accessories
+              </NavLink>
+              <h5>Other Tasks</h5>
+              <NavLink
+                to="/admin/users"
+                className={({ isActive }) =>
+                  isActive ? styles.activeLink : styles.navLink
+                }
+                onClick={() => setShowSidebar(false)}
+              >
+                <FaUsers /> User Management
+              </NavLink>
+              <NavLink
+                to="/admin/orders"
+                className={({ isActive }) =>
+                  isActive ? styles.activeLink : styles.navLink
+                }
+                onClick={() => setShowSidebar(false)}
+              >
+                <FaShoppingCart /> Order Management
+              </NavLink>
+              <Button
+                variant="outline-danger"
+                onClick={handleLogout}
+                className={styles.logoutButton}
+              >
+                <FaUserCog /> Logout
+              </Button>
+            </Nav>
+          </motion.div>
+        </Offcanvas.Body>
+      </Offcanvas>
+
+      <div className={styles.layout}>
+        {/* PC Sidebar */}
+        <motion.div
+          className={styles.sidebar}
+          initial={{ x: -200 }}
+          animate={{ x: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <h3 className={styles.sidebarTitle}>Admin Panel</h3>
+          <Nav className={styles.nav}>
+            <h5>Overview</h5>
+            <NavLink
+              to="/admin"
+              end
+              className={({ isActive }) =>
+                isActive ? styles.activeLink : styles.navLink
               }
             >
-              Toggle Active
-            </button>
-            <button onClick={() => handleDeleteBanner(banner.id)}>
-              Delete
-            </button>
-          </li>
-        ))}
-      </ul>
-
-      {/* Promotions Management */}
-      <h2>Manage Promotions</h2>
-      <form onSubmit={handleCreatePromotion} className={styles.bannerForm}>
-        <input
-          type="text"
-          placeholder="Title"
-          value={newPromotion.title}
-          onChange={(e) =>
-            setNewPromotion({ ...newPromotion, title: e.target.value })
-          }
-          required
-        />
-        <textarea
-          placeholder="Description"
-          value={newPromotion.description}
-          onChange={(e) =>
-            setNewPromotion({ ...newPromotion, description: e.target.value })
-          }
-        />
-        <input
-          type="text"
-          placeholder="Image URL"
-          value={newPromotion.image_url}
-          onChange={(e) =>
-            setNewPromotion({ ...newPromotion, image_url: e.target.value })
-          }
-          required
-        />
-        <input
-          type="text"
-          placeholder="CTA Text"
-          value={newPromotion.cta_text}
-          onChange={(e) =>
-            setNewPromotion({ ...newPromotion, cta_text: e.target.value })
-          }
-        />
-        <input
-          type="text"
-          placeholder="CTA URL"
-          value={newPromotion.cta_url}
-          onChange={(e) =>
-            setNewPromotion({ ...newPromotion, cta_url: e.target.value })
-          }
-        />
-        <label>
-          <input
-            type="checkbox"
-            checked={newPromotion.is_active}
-            onChange={(e) =>
-              setNewPromotion({ ...newPromotion, is_active: e.target.checked })
-            }
-          />
-          Active
-        </label>
-        <button type="submit">Create Promotion</button>
-      </form>
-      <h3>Existing Promotions</h3>
-      <ul className={styles.bannerList}>
-        {promotions.map((promo) => (
-          <li key={promo.id} className={styles.bannerItem}>
-            <p>
-              <strong>{promo.title}</strong> (
-              {promo.is_active ? "Active" : "Inactive"})
-            </p>
-            <p>{promo.description}</p>
-            <p>Image: {promo.image_url}</p>
-            <p>
-              CTA: {promo.cta_text} ({promo.cta_url})
-            </p>
-            <button
-              onClick={() =>
-                handleUpdatePromotion(promo.id, {
-                  ...promo,
-                  is_active: !promo.is_active,
-                })
+              <FaChartLine /> Dashboard
+            </NavLink>
+            <h5>Hero Section Updates</h5>
+            <NavLink
+              to="/admin/banners"
+              className={({ isActive }) =>
+                isActive ? styles.activeLink : styles.navLink
               }
             >
-              Toggle Active
-            </button>
-            <button onClick={() => handleDeletePromotion(promo.id)}>
-              Delete
-            </button>
-          </li>
-        ))}
-      </ul>
-
-      {/* Accessories Management */}
-      <h2>Manage Accessories</h2>
-      <h3>Products</h3>
-      <ul className={styles.bannerList}>
-        {products.map((product) => (
-          <li key={product.id} className={styles.bannerItem}>
-            <p>
-              <strong>{product.name}</strong> (
-              {product.is_accessory ? "Accessory" : "Not Accessory"})
-            </p>
-            <button
-              onClick={() =>
-                handleToggleAccessory(product.id, !product.is_accessory)
+              <FaImage /> Banner Update
+            </NavLink>
+            <NavLink
+              to="/admin/promotions"
+              className={({ isActive }) =>
+                isActive ? styles.activeLink : styles.navLink
               }
             >
-              Toggle Accessory
-            </button>
-          </li>
-        ))}
-      </ul>
+              <FaTag /> Promotion Update
+            </NavLink>
+            <h5>Product Management</h5>
+            <NavLink
+              to="/admin/products"
+              className={({ isActive }) =>
+                isActive ? styles.activeLink : styles.navLink
+              }
+            >
+              <FaBox /> Featured Products
+            </NavLink>
+            <NavLink
+              to="/admin/accessories"
+              className={({ isActive }) =>
+                isActive ? styles.activeLink : styles.navLink
+              }
+            >
+              <FaBoxOpen /> Accessories
+            </NavLink>
+            <h5>Other Tasks</h5>
+            <NavLink
+              to="/admin/users"
+              className={({ isActive }) =>
+                isActive ? styles.activeLink : styles.navLink
+              }
+            >
+              <FaUsers /> User Management
+            </NavLink>
+            <NavLink
+              to="/admin/orders"
+              className={({ isActive }) =>
+                isActive ? styles.activeLink : styles.navLink
+              }
+            >
+              <FaShoppingCart /> Order Management
+            </NavLink>
+          </Nav>
+        </motion.div>
+
+        {/* Main Content */}
+        <div className={styles.main}>
+          <motion.div
+            className={styles.topBar}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            <h2>Admin Dashboard</h2>
+            <div className={styles.adminInfo}>
+              <span>Welcome, Admin</span>
+              <Button
+                variant="outline-danger"
+                onClick={handleLogout}
+                className={styles.logoutButton}
+              >
+                <FaUserCog /> Logout
+              </Button>
+            </div>
+          </motion.div>
+
+          <AnimatePresence mode="wait">
+            <Routes>
+              <Route index element={<DashboardOverview />} />
+              <Route path="products" element={<ProductManagement />} />
+              <Route path="banners" element={<BannerManagement />} />
+              <Route path="promotions" element={<PromotionManagement />} />
+              <Route path="accessories" element={<AccessoryManagement />} />
+              <Route path="users" element={<UserManagement />} />
+              <Route path="orders" element={<OrderManagement />} />
+            </Routes>
+          </AnimatePresence>
+        </div>
+      </div>
     </div>
   );
 }

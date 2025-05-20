@@ -304,4 +304,42 @@ router.put(
   }
 );
 
+// Get dashboard stats (for AdminDashboard)
+router.get("/stats", authenticateToken, requireAdmin, async (req, res) => {
+  try {
+    const [orders] = await req.pool.query(
+      "SELECT COUNT(*) as count FROM orders"
+    );
+    const [stock] = await req.pool.query(
+      "SELECT SUM(stock) as total FROM products"
+    );
+    const [users] = await req.pool.query("SELECT COUNT(*) as count FROM users");
+    const [chats] = await req.pool.query(
+      "SELECT COUNT(*) as count FROM chats WHERE is_read = FALSE"
+    );
+    const [revenue] = await req.pool.query(
+      "SELECT SUM(total_amount) as total FROM orders WHERE status = 'delivered'"
+    );
+    const [lowStock] = await req.pool.query(
+      "SELECT COUNT(*) as count FROM products WHERE stock <= 5"
+    );
+    const [reviews] = await req.pool.query(
+      "SELECT COUNT(*) as count FROM reviews WHERE created_at >= NOW() - INTERVAL 7 DAY"
+    );
+
+    res.json({
+      totalOrders: orders[0].count,
+      totalStock: stock[0].total || 0,
+      totalUsers: users[0].count,
+      unreadChats: chats[0].count,
+      totalRevenue: revenue[0].total || 0,
+      lowStockItems: lowStock[0].count,
+      recentReviews: reviews[0].count,
+    });
+  } catch (err) {
+    console.error("Error fetching stats:", err);
+    res.status(500).json({ error: "Failed to fetch stats" });
+  }
+});
+
 module.exports = router;

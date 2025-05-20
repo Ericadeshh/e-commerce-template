@@ -7,11 +7,12 @@ const adminRouter = require("./routes/admin");
 const app = express();
 const port = process.env.PORT || 5000;
 
+// Enable CORS for all origins, methods, and headers
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN || "http://localhost:5173",
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    origin: "*", // Allow all origins
+    methods: "*", // Allow all methods (GET, POST, PUT, DELETE, OPTIONS, etc.)
+    allowedHeaders: "*", // Allow all headers (Content-Type, Authorization, Cache-Control, etc.)
   })
 );
 app.use(express.json());
