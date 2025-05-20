@@ -5,6 +5,13 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import MenSuitPic from "../../assets/Men's blue suitjpg.jpg";
+import WomenDressPic from "../../assets/lady red suit.jpg";
+import kidPantsPic from "../../assets/kids pants.jpg";
+import kidMatchPic from "../../assets/kids matching cloth.jpg";
+import MenOmbrePic from "../../assets/Men Ombre Japanese.jpg";
+import BeachShirtPic from "../../assets/beach shirt.jpg";
+import BeddingPic from "../../assets/nice blankets.jpg";
 import styles from "./HeroSection.module.css";
 
 interface Banner {
@@ -30,40 +37,120 @@ interface Promotion {
 }
 
 export default function HeroSection() {
-  const [banners, setBanners] = useState<Banner[]>([]);
-  const [promotions, setPromotions] = useState<Promotion[]>([]);
+  const defaultBanners: Banner[] = [
+    {
+      id: 1,
+      title: "Discover Men's Fashion",
+      description: "Elevate your style with our premium suits!",
+      image_url: MenSuitPic,
+      cta_text: "Shop Men's",
+      cta_url: "/products?category=mens",
+    },
+    {
+      id: 2,
+      title: "Summer Collection",
+      description: "Vibrant styles for women!",
+      image_url: BeachShirtPic,
+      cta_text: "Discover Women's",
+      cta_url: "/products?category=womens",
+    },
+    {
+      id: 3,
+      title: "Kids' Matching Sets",
+      description: "Adorable outfits for your little ones!",
+      image_url: kidMatchPic,
+      cta_text: "Shop Kids",
+      cta_url: "/products?category=childrens",
+    },
+    {
+      id: 4,
+      title: "Welcome to Milliwin Boutique",
+      description: "Explore the latest trends in fashion!",
+      image_url: MenOmbrePic,
+      cta_text: "Shop Now",
+      cta_url: "/products",
+    },
+  ];
+
+  const defaultPromotions: Promotion[] = [
+    {
+      id: 1,
+      title: "Free Shipping",
+      description: "On orders over $50",
+      image_url: WomenDressPic,
+      cta_text: "Shop Now",
+      cta_url: "/products",
+      is_active: true,
+      discount_percentage: null,
+      start_date: null,
+      end_date: null,
+    },
+    {
+      id: 2,
+      title: "Beddings Sale",
+      description: "20% off all beddings",
+      image_url: BeddingPic,
+      cta_text: "Shop Sale",
+      cta_url: "/products/beddings",
+      is_active: true,
+      discount_percentage: 20,
+      start_date: null,
+      end_date: null,
+    },
+    {
+      id: 3,
+      title: "Kids' Clothing Sale",
+      description: "15% off children's pants and sets",
+      image_url: kidPantsPic,
+      cta_text: "Shop Kids Sale",
+      cta_url: "/products?category=childrens",
+      is_active: true,
+      discount_percentage: 15,
+      start_date: null,
+      end_date: null,
+    },
+  ];
+
+  const [banners, setBanners] = useState<Banner[]>(defaultBanners);
+  const [promotions, setPromotions] = useState<Promotion[]>(defaultPromotions);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Fetch banners
     fetch("http://localhost:5000/api/admin/banners")
       .then(async (res) => {
-        if (!res.ok) throw new Error(`Failed to fetch banners: ${res.status}`);
+        if (!res.ok) {
+          throw new Error(`Failed to fetch banners: ${res.status}`);
+        }
         return res.json();
       })
-      .then((data: Banner[]) => setBanners(data))
+      .then((data: Banner[]) => {
+        setBanners(data);
+        setError(null);
+      })
       .catch((err) => {
         console.error("Error fetching banners:", err);
-        setError("Failed to load banners.");
+        setError("Failed to load banners. Showing static content.");
       });
 
-    // Fetch promotions
     fetch("http://localhost:5000/api/admin/promotions")
       .then(async (res) => {
-        if (!res.ok)
+        if (!res.ok) {
           throw new Error(`Failed to fetch promotions: ${res.status}`);
+        }
         return res.json();
       })
-      .then((data: Promotion[]) => setPromotions(data))
+      .then((data: Promotion[]) => {
+        setPromotions(data.slice(0, 3));
+        setError(null);
+      })
       .catch((err) => {
         console.error("Error fetching promotions:", err);
-        setError("Failed to load promotions.");
-        setPromotions([]); // Ensure panel renders even if API fails
+        setError("Failed to load promotions. Showing static content.");
       });
   }, []);
 
-  const sliderSettings = {
-    dots: true,
+  const bannerSliderSettings = {
+    dots: false,
     infinite: true,
     speed: 500,
     slidesToShow: 1,
@@ -74,7 +161,35 @@ export default function HeroSection() {
     responsive: [
       {
         breakpoint: 768,
-        settings: { arrows: false },
+        settings: { arrows: true }, // Keep arrows visible on mobile
+      },
+    ],
+  };
+
+  const quickLinksSliderSettings = {
+    dots: false,
+    infinite: true,
+    speed: 5000,
+    slidesToShow: 4,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 0,
+    cssEase: "linear",
+    arrows: false,
+    variableWidth: true,
+    pauseOnHover: true,
+    responsive: [
+      {
+        breakpoint: 992,
+        settings: {
+          slidesToShow: 3,
+        },
+      },
+      {
+        breakpoint: 576,
+        settings: {
+          slidesToShow: 2,
+        },
       },
     ],
   };
@@ -156,7 +271,7 @@ export default function HeroSection() {
                   {section.items.map((item) => (
                     <motion.li
                       key={item.name}
-                      whileHover={{ x: 5 }}
+                      whileHover={{ x: 5, color: "#FF1493" }}
                       transition={{ duration: 0.3 }}
                     >
                       <Link to={item.url} className={styles.linkItem}>
@@ -172,87 +287,52 @@ export default function HeroSection() {
 
         {/* Center: Banner Carousel */}
         <Col md={6} className={styles.bannerCarousel}>
-          <Slider {...sliderSettings}>
-            {banners.length > 0 ? (
-              banners.map((banner, index) => (
-                <motion.div
-                  key={banner.id}
-                  className={styles.bannerSlide}
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.6, delay: index * 0.2 }}
-                >
-                  <img
-                    src={banner.image_url}
-                    alt={banner.title}
-                    className={styles.bannerImage}
-                    onError={(e) => {
-                      e.currentTarget.src = "https://placehold.co/1200x400";
-                    }}
-                  />
-                  <div className={styles.bannerContent}>
-                    <motion.h2
-                      className={styles.bannerTitle}
-                      initial={{ y: 20, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      transition={{ duration: 0.5, delay: 0.3 }}
-                    >
-                      {banner.title}
-                    </motion.h2>
-                    <motion.p
-                      className={styles.bannerDescription}
-                      initial={{ y: 20, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      transition={{ duration: 0.5, delay: 0.4 }}
-                    >
-                      {banner.description}
-                    </motion.p>
-                    <motion.div
-                      initial={{ y: 20, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      transition={{ duration: 0.5, delay: 0.5 }}
-                    >
-                      <Button
-                        href={banner.cta_url}
-                        className={styles.bannerCta}
-                        style={{
-                          backgroundColor: "#9400D3",
-                          borderColor: "#9400D3",
-                        }}
-                      >
-                        {banner.cta_text}
-                      </Button>
-                    </motion.div>
-                  </div>
-                </motion.div>
-              ))
-            ) : (
-              <div className={styles.bannerSlide}>
+          <Slider {...bannerSliderSettings}>
+            {banners.map((banner, index) => (
+              <motion.div
+                key={banner.id}
+                className={styles.bannerSlide}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.6, delay: index * 0.2 }}
+              >
                 <img
-                  src="https://placehold.co/1200x400"
-                  alt="Placeholder"
+                  src={banner.image_url}
+                  alt={banner.title}
                   className={styles.bannerImage}
+                  onError={(e) => {
+                    e.currentTarget.src = "https://placehold.co/1200x400";
+                  }}
                 />
                 <div className={styles.bannerContent}>
-                  <h2 className={styles.bannerTitle}>
-                    Welcome to Milliwin Boutique
-                  </h2>
-                  <p className={styles.bannerDescription}>
-                    Shop the latest trends!
-                  </p>
-                  <Button
-                    href="/products"
-                    className={styles.bannerCta}
-                    style={{
-                      backgroundColor: "#9400D3",
-                      borderColor: "#9400D3",
-                    }}
+                  <motion.h2
+                    className={styles.bannerTitle}
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 0.3 }}
                   >
-                    Shop Now
-                  </Button>
+                    {banner.title}
+                  </motion.h2>
+                  <motion.p
+                    className={styles.bannerDescription}
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 0.4 }}
+                  >
+                    {banner.description}
+                  </motion.p>
+                  <motion.div
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 0.5 }}
+                  >
+                    <Button href={banner.cta_url} className={styles.bannerCta}>
+                      {banner.cta_text}
+                    </Button>
+                  </motion.div>
                 </div>
-              </div>
-            )}
+              </motion.div>
+            ))}
           </Slider>
         </Col>
 
@@ -264,78 +344,42 @@ export default function HeroSection() {
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
             <h3 className={styles.promoPanelTitle}>Offers & Deals</h3>
-            {promotions.length > 0 ? (
-              promotions.slice(0, 2).map((promo, index) => (
-                <motion.div
-                  key={promo.id}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.3 }}
-                >
-                  <Card className={styles.promoCard}>
-                    <Card.Img
-                      variant="top"
-                      src={promo.image_url}
-                      alt={promo.title}
-                      className={styles.promoImage}
-                      onError={(e) => {
-                        e.currentTarget.src = "https://placehold.co/400x200";
-                      }}
-                    />
-                    <Card.Body>
-                      <Card.Title className={styles.promoTitle}>
-                        {promo.title}
-                      </Card.Title>
-                      {promo.discount_percentage && (
-                        <Card.Text className={styles.promoDiscount}>
-                          {promo.discount_percentage}% Off
-                        </Card.Text>
-                      )}
-                      <Card.Text className={styles.promoDescription}>
-                        {promo.description}
-                      </Card.Text>
-                      <Button
-                        href={promo.cta_url}
-                        className={styles.promoCta}
-                        style={{
-                          backgroundColor: "#FF1493",
-                          borderColor: "#FF1493",
-                        }}
-                      >
-                        {promo.cta_text}
-                      </Button>
-                    </Card.Body>
-                  </Card>
-                </motion.div>
-              ))
-            ) : (
-              <Card className={styles.promoCard}>
-                <Card.Img
-                  variant="top"
-                  src="https://placehold.co/400x200"
-                  alt="No Promotions"
-                  className={styles.promoImage}
-                />
-                <Card.Body>
-                  <Card.Title className={styles.promoTitle}>
-                    No Active Offers
-                  </Card.Title>
-                  <Card.Text className={styles.promoDescription}>
-                    Check back soon for exciting deals!
-                  </Card.Text>
-                  <Button
-                    href="/products"
-                    className={styles.promoCta}
-                    style={{
-                      backgroundColor: "#FF1493",
-                      borderColor: "#FF1493",
+            {promotions.slice(0, 2).map((promo, index) => (
+              <motion.div
+                key={promo.id}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.3 }}
+              >
+                <Card className={styles.promoCard}>
+                  <Card.Img
+                    variant="top"
+                    src={promo.image_url}
+                    alt={promo.title}
+                    className={styles.promoImage}
+                    onError={(e) => {
+                      e.currentTarget.src = "https://placehold.co/400x200";
                     }}
-                  >
-                    Browse Products
-                  </Button>
-                </Card.Body>
-              </Card>
-            )}
+                  />
+                  <Card.Body>
+                    <Card.Title className={styles.promoTitle}>
+                      {promo.title}
+                    </Card.Title>
+                    {promo.discount_percentage && (
+                      <Card.Text className={styles.promoDiscount}>
+                        {promo.discount_percentage}% Off
+                      </Card.Text>
+                    )}
+                    <Card.Text className={styles.promoDescription}>
+                      {promo.description}
+                    </Card.Text>
+                    <Button href={promo.cta_url} className={styles.promoCta}>
+                      {promo.cta_text}
+                    </Button>
+                  </Card.Body>
+                </Card>
+              </motion.div>
+            ))}
           </motion.div>
         </Col>
       </Row>
@@ -343,16 +387,14 @@ export default function HeroSection() {
       {/* Mobile Layout */}
       <div className={`${styles.mobileLayout} d-md-none`}>
         {/* Banner Carousel */}
-        <Slider {...sliderSettings}>
-          {banners.length > 0 ? (
-            banners.map((banner) => (
-              <motion.div
-                key={banner.id}
-                className={styles.bannerSlide}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.6 }}
-              >
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <Slider {...bannerSliderSettings}>
+            {banners.map((banner) => (
+              <div key={banner.id} className={styles.bannerSlide}>
                 <img
                   src={banner.image_url}
                   alt={banner.title}
@@ -383,153 +425,91 @@ export default function HeroSection() {
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ duration: 0.5, delay: 0.2 }}
                   >
-                    <Button
-                      href={banner.cta_url}
-                      className={styles.bannerCta}
-                      style={{
-                        backgroundColor: "#9400D3",
-                        borderColor: "#9400D3",
-                      }}
-                    >
+                    <Button href={banner.cta_url} className={styles.bannerCta}>
                       {banner.cta_text}
                     </Button>
                   </motion.div>
                 </div>
-              </motion.div>
-            ))
-          ) : (
-            <div className={styles.bannerSlide}>
-              <img
-                src="https://placehold.co/1200x400"
-                alt="Placeholder"
-                className={styles.bannerImage}
-              />
-              <div className={styles.bannerContent}>
-                <h2 className={styles.bannerTitle}>
-                  Welcome to Milliwin Boutique
-                </h2>
-                <p className={styles.bannerDescription}>
-                  Shop the latest trends!
-                </p>
-                <Button
-                  href="/products"
-                  className={styles.bannerCta}
-                  style={{ backgroundColor: "#9400D3", borderColor: "#9400D3" }}
-                >
-                  Shop Now
-                </Button>
               </div>
-            </div>
-          )}
-        </Slider>
+            ))}
+          </Slider>
+        </motion.div>
 
         {/* Quick Links */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
+          transition={{ duration: 0.6, delay: 0.2 }}
           className={styles.quickLinks}
         >
           <h3 className={styles.quickLinksTitle}>Quick Links</h3>
           {quickLinks.map((section) => (
             <div key={section.title} className={styles.linkSection}>
               <h4 className={styles.linkSectionTitle}>{section.title}</h4>
-              <div className={styles.scrollableLinks}>
+              <Slider {...quickLinksSliderSettings}>
                 {section.items.map((item) => (
                   <motion.div
                     key={item.name}
-                    className={styles.scrollableLinkItem}
+                    className={styles.linkItem}
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.95 }}
                     transition={{ duration: 0.3 }}
                   >
-                    <Link to={item.url} className={styles.linkItem}>
+                    <Link to={item.url} className={styles.linkButton}>
                       {item.name}
                     </Link>
                   </motion.div>
                 ))}
-              </div>
+              </Slider>
             </div>
           ))}
         </motion.div>
 
         {/* Promotions */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className={styles.promoPanel}
         >
           <h3 className={styles.promoPanelTitle}>Offers & Deals</h3>
-          {promotions.length > 0 ? (
-            promotions.slice(0, 2).map((promo) => (
-              <motion.div
-                key={promo.id}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-                className={styles.promoCard}
-              >
-                <Card>
-                  <Card.Img
-                    variant="top"
-                    src={promo.image_url}
-                    alt={promo.title}
-                    className={styles.promoImage}
-                    onError={(e) => {
-                      e.currentTarget.src = "https://placehold.co/400x200";
-                    }}
-                  />
-                  <Card.Body>
-                    <Card.Title className={styles.promoTitle}>
-                      {promo.title}
-                    </Card.Title>
-                    {promo.discount_percentage && (
-                      <Card.Text className={styles.promoDiscount}>
-                        {promo.discount_percentage}% Off
-                      </Card.Text>
-                    )}
-                    <Card.Text className={styles.promoDescription}>
-                      {promo.description}
+          {promotions.slice(0, 2).map((promo) => (
+            <motion.div
+              key={promo.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className={styles.promoCard}
+            >
+              <Card>
+                <Card.Img
+                  variant="top"
+                  src={promo.image_url}
+                  alt={promo.title}
+                  className={styles.promoImage}
+                  onError={(e) => {
+                    e.currentTarget.src = "https://placehold.co/400x200";
+                  }}
+                />
+                <Card.Body>
+                  <Card.Title className={styles.promoTitle}>
+                    {promo.title}
+                  </Card.Title>
+                  {promo.discount_percentage && (
+                    <Card.Text className={styles.promoDiscount}>
+                      {promo.discount_percentage}% Off
                     </Card.Text>
-                    <Button
-                      href={promo.cta_url}
-                      className={styles.promoCta}
-                      style={{
-                        backgroundColor: "#FF1493",
-                        borderColor: "#FF1493",
-                      }}
-                    >
-                      {promo.cta_text}
-                    </Button>
-                  </Card.Body>
-                </Card>
-              </motion.div>
-            ))
-          ) : (
-            <Card className={styles.promoCard}>
-              <Card.Img
-                variant="top"
-                src="https://placehold.co/400x200"
-                alt="No Promotions"
-                className={styles.promoImage}
-              />
-              <Card.Body>
-                <Card.Title className={styles.promoTitle}>
-                  No Active Offers
-                </Card.Title>
-                <Card.Text className={styles.promoDescription}>
-                  Check back soon for exciting deals!
-                </Card.Text>
-                <Button
-                  href="/products"
-                  className={styles.promoCta}
-                  style={{ backgroundColor: "#FF1493", borderColor: "#FF1493" }}
-                >
-                  Browse Products
-                </Button>
-              </Card.Body>
-            </Card>
-          )}
+                  )}
+                  <Card.Text className={styles.promoDescription}>
+                    {promo.description}
+                  </Card.Text>
+                  <Button href={promo.cta_url} className={styles.promoCta}>
+                    {promo.cta_text}
+                  </Button>
+                </Card.Body>
+              </Card>
+            </motion.div>
+          ))}
         </motion.div>
       </div>
     </div>

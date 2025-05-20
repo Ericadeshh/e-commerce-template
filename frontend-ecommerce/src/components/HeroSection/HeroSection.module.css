@@ -1,9 +1,12 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
 .hero {
-  padding: 0.75rem;
-  background-color: #e6e6fa; /* Lavender */
+  padding: 0.5rem;
+  background: linear-gradient(135deg, #e6e6fa 0%, #f3e8ff 100%);
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  font-family: "Poppins", sans-serif;
 }
 
 @media (min-width: 993px) {
@@ -15,25 +18,51 @@
 
 .desktopLayout {
   display: flex;
-  align-items: stretch; /* Ensures equal height for all columns */
-  flex: 1; /* Fill available space */
-  height: 100%; /* Match hero height */
+  align-items: stretch;
+  flex: 1;
+  height: 100%;
 }
 
 .quickLinks {
-  padding: 0.75rem;
-  background-color: #fff;
+  padding: 0.5rem;
+  background: #ffffff;
   border-radius: 0.5rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   display: flex;
   flex-direction: column;
-  height: 100%; /* Full height of parent */
-  overflow-y: auto; /* Scroll if content overflows */
+  height: 100%;
+  overflow-y: auto;
+}
+
+.quickLinks::-webkit-scrollbar {
+  width: 6px;
+}
+
+.quickLinks::-webkit-scrollbar-track {
+  background: #f3e8ff;
+  border-radius: 3px;
+}
+
+.quickLinks::-webkit-scrollbar-thumb {
+  background: #dda0dd;
+  border-radius: 3px;
+}
+
+.quickLinks::-webkit-scrollbar-thumb:hover {
+  background: #ff1493;
+}
+
+@supports (scrollbar-width: thin) {
+  .quickLinks {
+    scrollbar-width: thin;
+    scrollbar-color: #dda0dd #f3e8ff;
+  }
 }
 
 .quickLinksTitle {
-  font-size: clamp(0.9rem, 1.5vw, 1rem);
-  color: #9400d3; /* Purple */
+  font-size: clamp(0.9rem, 1.2vw, 1rem);
+  font-weight: 600;
+  color: #9400d3;
   margin-bottom: 0.5rem;
 }
 
@@ -42,8 +71,9 @@
 }
 
 .linkSectionTitle {
-  font-size: clamp(0.75rem, 1.2vw, 0.85rem);
-  color: #dda0dd; /* Plum */
+  font-size: clamp(0.75rem, 1vw, 0.85rem);
+  font-weight: 500;
+  color: #dda0dd;
   margin-bottom: 0.3rem;
 }
 
@@ -58,19 +88,40 @@
   padding: 0.2rem 0;
   color: #333;
   text-decoration: none;
-  font-size: clamp(0.65rem, 1vw, 0.75rem);
-  transition: color 0.3s ease;
+  font-size: clamp(0.65rem, 0.9vw, 0.75rem);
+  transition: color 0.3s ease, transform 0.3s ease;
 }
 
 .linkItem:hover {
-  color: #ff1493; /* Fuchsia Pink */
+  color: #ff1493;
+  transform: translateX(5px);
+}
+
+.linkButton {
+  display: inline-block;
+  padding: 0.4rem 0.8rem;
+  margin: 0 0.4rem;
+  color: #ffffff;
+  background: linear-gradient(45deg, #9400d3, #ff1493);
+  border-radius: 1.5rem;
+  text-decoration: none;
+  font-size: clamp(0.65rem, 0.9vw, 0.75rem);
+  font-weight: 500;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.linkButton:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 15px rgba(255, 20, 147, 0.5);
+  color: #ffffff;
 }
 
 .bannerCarousel {
   padding: 0 0.5rem;
   display: flex;
   flex-direction: column;
-  height: 100%; /* Full height of parent */
+  height: 100%;
+  position: relative;
 }
 
 .bannerSlide {
@@ -80,10 +131,10 @@
 
 .bannerImage {
   width: 100%;
-  height: 100%;
-  max-height: 100%; /* Fit within carousel */
+  max-height: 400px;
   object-fit: cover;
   border-radius: 0.5rem;
+  filter: brightness(0.8);
 }
 
 .bannerContent {
@@ -91,13 +142,17 @@
   top: 50%;
   left: 1rem;
   transform: translateY(-50%);
-  color: #fff;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  color: #ffffff;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.3);
+  padding: 0.75rem;
+  border-radius: 0.5rem;
 }
 
 .bannerTitle {
-  font-size: clamp(1rem, 2vw, 1.25rem);
-  color: #dda0dd; /* Plum */
+  font-size: clamp(1rem, 1.8vw, 1.2rem);
+  font-weight: 700;
+  color: #ffffff;
   margin-bottom: 0.3rem;
 }
 
@@ -108,38 +163,40 @@
 
 .bannerCta {
   font-size: clamp(0.65rem, 1vw, 0.75rem);
-  padding: 0.3rem 0.6rem;
-  background-color: #9400d3; /* Purple */
-  border-color: #9400d3;
-  transition: background-color 0.3s ease, transform 0.3s ease;
+  padding: 0.4rem 0.8rem;
+  background: linear-gradient(45deg, #9400d3, #ff1493);
+  border: none;
+  border-radius: 1.5rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .bannerCta:hover {
-  background-color: #ff1493; /* Fuchsia Pink */
   transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(255, 20, 147, 0.5);
 }
 
 .promoPanel {
-  padding: 0.75rem;
-  background-color: #fff;
+  padding: 0.5rem;
+  background: #ffffff;
   border-radius: 0.5rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   display: flex;
   flex-direction: column;
-  height: 100%; /* Full height of parent */
-  overflow-y: auto; /* Scroll if content overflows */
+  height: 100%;
+  overflow: hidden;
 }
 
 .promoPanelTitle {
-  font-size: clamp(0.9rem, 1.5vw, 1rem);
-  color: #9400d3; /* Purple */
+  font-size: clamp(0.9rem, 1.2vw, 1rem);
+  font-weight: 600;
+  color: #9400d3;
   margin-bottom: 0.5rem;
 }
 
 .promoCard {
-  background-color: #fff;
+  background: #ffffff;
   border-radius: 0.5rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   transition: transform 0.3s ease;
   margin-bottom: 0.5rem;
 }
@@ -156,104 +213,118 @@
 }
 
 .promoTitle {
-  font-size: clamp(0.75rem, 1.2vw, 0.85rem);
-  color: #9400d3; /* Purple */
+  font-size: clamp(0.75rem, 1vw, 0.85rem);
+  font-weight: 600;
+  color: #9400d3;
   margin-bottom: 0.3rem;
 }
 
 .promoDiscount {
-  font-size: clamp(0.65rem, 1vw, 0.75rem);
-  color: #ff1493; /* Fuchsia Pink */
-  font-weight: bold;
+  font-size: clamp(0.65rem, 0.9vw, 0.75rem);
+  color: #ff1493;
+  font-weight: 500;
   margin-bottom: 0.3rem;
 }
 
 .promoDescription {
-  font-size: clamp(0.6rem, 1vw, 0.7rem);
+  font-size: clamp(0.6rem, 0.9vw, 0.7rem);
   color: #333;
   margin-bottom: 0.5rem;
 }
 
 .promoCta {
   font-size: clamp(0.6rem, 0.9vw, 0.65rem);
-  padding: 0.25rem 0.5rem;
-  background-color: #ff1493; /* Fuchsia Pink */
-  border-color: #ff1493;
-  transition: background-color 0.3s ease, transform 0.3s ease;
+  padding: 0.4rem 0.8rem;
+  background: linear-gradient(45deg, #ff1493, #dda0dd);
+  border: none;
+  border-radius: 1.5rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .promoCta:hover {
-  background-color: #dda0dd; /* Plum */
   transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(221, 160, 221, 0.5);
 }
 
 .mobileLayout {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  height: 100%; /* Fit within hero */
-}
-
-.scrollableLinks {
-  display: flex;
-  overflow-x: auto;
-  gap: 0.75rem;
-  padding-bottom: 0.5rem;
-  scrollbar-width: thin;
-}
-
-.scrollableLinks::-webkit-scrollbar {
-  height: 6px;
-}
-
-.scrollableLinks::-webkit-scrollbar-thumb {
-  background-color: #dda0dd; /* Plum */
-  border-radius: 3px;
-}
-
-.scrollableLinkItem {
-  flex: 0 0 auto;
-  padding: 0.4rem 0.8rem;
-  background-color: #fff;
-  border-radius: 0.3rem;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
 
 .error {
   text-align: center;
-  color: #ff1493; /* Fuchsia Pink */
-  margin-bottom: 0.75rem;
+  color: #ff1493;
+  font-size: 0.8rem;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.slick-slide > div {
+  margin: 0 0.4rem;
+}
+
+.slick-list {
+  overflow: visible !important;
+}
+
+/* Custom Previous/Next Arrows */
+.slick-prev,
+.slick-next {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(45deg, #9400d3, #ff1493);
+  border-radius: 50%;
+  opacity: 0.9;
+  transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  z-index: 10;
+}
+
+.slick-prev:hover,
+.slick-next:hover {
+  opacity: 1;
+  transform: scale(1.1);
+  box-shadow: 0 0 15px rgba(255, 20, 147, 0.5);
+}
+
+.slick-prev {
+  left: 15px;
+}
+
+.slick-next {
+  right: 15px;
+}
+
+.slick-prev:before,
+.slick-next:before {
+  font-size: 24px;
+  color: #ffffff;
+  opacity: 1;
+}
+
+.slick-prev:before {
+  content: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>');
+}
+
+.slick-next:before {
+  content: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>');
+}
+
+.slick-disabled {
+  opacity: 0.5 !important;
+  cursor: not-allowed;
 }
 
 /* Tablet and Mobile */
 @media (max-width: 992px) {
   .hero {
-    min-height: calc(100vh - 80px); /* Adjust for taller header on mobile */
-    max-height: calc(100vh - 80px);
-    margin-top: 80px;
-  }
-
-  .bannerImage {
-    max-height: 250px;
-  }
-
-  .bannerTitle {
-    font-size: 1.5rem;
-  }
-
-  .bannerDescription {
-    font-size: 0.85rem;
-  }
-
-  .bannerCta {
-    font-size: 0.75rem;
-    padding: 0.3rem 0.6rem;
-  }
-}
-
-@media (max-width: 768px) {
-  .hero {
     padding: 0.5rem;
+    min-height: auto;
+    max-height: none;
+  }
+
+  .quickLinks {
+    overflow-y: hidden;
   }
 
   .bannerImage {
@@ -261,29 +332,31 @@
   }
 
   .bannerTitle {
-    font-size: 1.25rem;
+    font-size: clamp(1rem, 3vw, 1.2rem);
   }
 
   .bannerDescription {
-    font-size: 0.75rem;
+    font-size: clamp(0.7rem, 2vw, 0.8rem);
   }
 
   .bannerCta {
-    font-size: 0.7rem;
-    padding: 0.25rem 0.5rem;
+    font-size: clamp(0.7rem, 2vw, 0.8rem);
+    padding: 0.3rem 0.6rem;
   }
 
   .quickLinksTitle,
   .promoPanelTitle {
-    font-size: 1.1rem;
+    font-size: clamp(1rem, 3vw, 1.1rem);
   }
 
   .linkSectionTitle {
-    font-size: 0.9rem;
+    font-size: clamp(0.8rem, 2vw, 0.9rem);
   }
 
-  .linkItem {
-    font-size: 0.8rem;
+  .linkButton {
+    font-size: clamp(0.6rem, 1.5vw, 0.7rem);
+    padding: 0.3rem 0.6rem;
+    margin: 0 0.3rem;
   }
 
   .promoImage {
@@ -291,44 +364,118 @@
   }
 
   .promoTitle {
-    font-size: 0.9rem;
+    font-size: clamp(0.8rem, 2vw, 0.9rem);
   }
 
   .promoDiscount {
-    font-size: 0.8rem;
+    font-size: clamp(0.7rem, 1.5vw, 0.8rem);
   }
 
   .promoDescription {
-    font-size: 0.8rem;
+    font-size: clamp(0.7rem, 1.5vw, 0.8rem);
   }
 
   .promoCta {
-    font-size: 0.7rem;
-    padding: 0.25rem 0.5rem;
+    font-size: clamp(0.6rem, 1.5vw, 0.7rem);
+    padding: 0.3rem 0.6rem;
+  }
+
+  .slick-slide > div {
+    margin: 0 0.3rem;
+  }
+
+  .slick-prev,
+  .slick-next {
+    width: 36px;
+    height: 36px;
+  }
+
+  .slick-prev:before,
+  .slick-next:before {
+    font-size: 20px;
   }
 }
 
-/* Small Mobile */
-@media (max-width: 576px) {
-  .hero {
-    min-height: calc(100vh - 100px); /* Adjust for header height */
-    max-height: calc(100vh - 100px);
-    margin-top: 100px;
-  }
-
+@media (max-width: 768px) {
   .bannerImage {
     max-height: 180px;
   }
 
   .bannerTitle {
-    font-size: 1rem;
+    font-size: clamp(0.9rem, 2.5vw, 1rem);
   }
 
   .bannerDescription {
-    font-size: 0.7rem;
+    font-size: clamp(0.65rem, 2vw, 0.75rem);
   }
 
   .bannerContent {
-    left: 1rem;
+    left: 0.75rem;
+    padding: 0.5rem;
+  }
+
+  .bannerCta {
+    font-size: clamp(0.65rem, 2vw, 0.75rem);
+  }
+
+  .quickLinks {
+    padding: 0.5rem;
+  }
+
+  .promoPanel {
+    padding: 0.5rem;
+  }
+
+  .promoImage {
+    height: 90px;
+  }
+}
+
+@media (max-width: 576px) {
+  .bannerImage {
+    max-height: 160px;
+  }
+
+  .bannerTitle {
+    font-size: clamp(0.8rem, 2vw, 0.9rem);
+  }
+
+  .bannerDescription {
+    font-size: clamp(0.6rem, 1.5vw, 0.7rem);
+  }
+
+  .bannerCta {
+    font-size: clamp(0.6rem, 1.5vw, 0.7rem);
+    padding: 0.25rem 0.5rem;
+  }
+
+  .quickLinksTitle,
+  .promoPanelTitle {
+    font-size: clamp(0.9rem, 2.5vw, 1rem);
+  }
+
+  .linkSectionTitle {
+    font-size: clamp(0.7rem, 2vw, 0.8rem);
+  }
+
+  .linkButton {
+    font-size: clamp(0.55rem, 1.5vw, 0.65rem);
+    padding: 0.25rem 0.5rem;
+  }
+
+  .promoTitle {
+    font-size: clamp(0.7rem, 2vw, 0.8rem);
+  }
+
+  .promoDiscount {
+    font-size: clamp(0.65rem, 1.5vw, 0.75rem);
+  }
+
+  .promoDescription {
+    font-size: clamp(0.65rem, 1.5vw, 0.75rem);
+  }
+
+  .promoCta {
+    font-size: clamp(0.55rem, 1.5vw, 0.65rem);
   }
 }
