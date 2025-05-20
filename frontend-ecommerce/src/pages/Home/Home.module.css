@@ -1,6 +1,9 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
 .home {
-  padding: 2rem 1rem;
-  background-color: #fff;
+  padding: 2rem 0; /* Remove left/right padding, keep top/bottom */
+  background: #f9f9fb;
+  font-family: "Poppins", sans-serif;
 }
 
 .section {
@@ -8,119 +11,289 @@
 }
 
 .sectionTitle {
-  font-size: 1.8rem;
-  color: #9400d3; /* Purple */
+  font-size: clamp(1.5rem, 2vw, 1.8rem);
+  color: #9400d3;
   text-align: center;
   margin-bottom: 1.5rem;
-}
-
-.productSlide {
-  padding: 0 0.5rem;
+  font-weight: 700;
 }
 
 .productCard {
   border: none;
-  border-radius: 0.5rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background: #ffffff;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .productCard:hover {
   transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(255, 20, 147, 0.3);
+}
+
+.imageWrapper {
+  position: relative;
 }
 
 .productImage {
   width: 100%;
-  height: 200px;
+  height: 250px;
   object-fit: cover;
-  border-radius: 0.5rem 0.5rem 0 0;
+  border-radius: 0.75rem 0.75rem 0 0;
+}
+
+.discountBadge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #ff1493;
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.3rem 0.6rem;
+  border-radius: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.newBadge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: #9400d3;
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.3rem 0.6rem;
+  border-radius: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.categoryTag {
+  font-size: 0.75rem;
+  color: #dda0dd;
+  font-weight: 500;
+  margin-bottom: 0.3rem;
+  text-transform: capitalize;
 }
 
 .productName {
-  font-size: 1.2rem;
-  color: #9400d3; /* Purple */
+  font-size: clamp(1rem, 1.2vw, 1.1rem);
+  color: #9400d3;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.priceContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   margin-bottom: 0.5rem;
 }
 
 .productPrice {
-  font-size: 1rem;
-  color: #ff1493; /* Fuchsia Pink */
-  margin-bottom: 1rem;
+  font-size: clamp(1rem, 1.2vw, 1.1rem);
+  color: #ff1493;
+  font-weight: 600;
 }
 
-.productCta {
-  font-size: 0.9rem;
+.originalPrice {
+  font-size: 0.85rem;
+  color: #999;
+  text-decoration: line-through;
+}
+
+.stockStatus {
+  font-size: 0.8rem;
+  color: #333;
+  margin-bottom: 0.75rem;
+}
+
+.stockStatus.low {
+  color: #ff1493;
+  font-weight: 500;
+}
+
+.stockStatus.out {
+  color: #ff0000;
+  font-weight: 500;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.productCta,
+.cartCta {
+  font-size: 0.85rem;
   padding: 0.5rem 1rem;
-  transition: background-color 0.3s ease;
+  border-radius: 1.5rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.productCta:hover {
-  background-color: #dda0dd !important; /* Plum */
+.productCta:hover,
+.cartCta:hover:not(:disabled) {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(255, 20, 147, 0.5);
+}
+
+.cartCta:disabled {
+  background-color: #cccccc !important;
+  border-color: #cccccc !important;
+  cursor: not-allowed;
 }
 
 .categoryCard {
   border: none;
-  border-radius: 0.5rem;
-  background-color: #e6e6fa; /* Lavender */
+  border-radius: 0.75rem;
+  background: #e6e6fa;
   text-align: center;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .categoryCard:hover {
   transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(255, 20, 147, 0.3);
 }
 
 .categoryTitle {
-  font-size: 1.2rem;
-  color: #9400d3; /* Purple */
+  font-size: clamp(1rem, 1.2vw, 1.1rem);
+  color: #9400d3;
   margin-bottom: 1rem;
 }
 
 .categoryCta {
-  font-size: 0.9rem;
+  font-size: 0.85rem atol;
   padding: 0.5rem 1rem;
-  transition: background-color 0.3s ease;
+  border-radius: 1.5rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .categoryCta:hover {
-  background-color: #dda0dd !important; /* Plum */
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(255, 20, 147, 0.5);
 }
 
 .error {
   text-align: center;
-  color: #ff1493; /* Fuchsia Pink */
+  color: #ff1493;
+  font-size: 0.9rem;
   margin-bottom: 1rem;
+  font-weight: 500;
 }
 
-/* Mobile */
-@media (max-width: 768px) {
+/* Responsive */
+@media (max-width: 992px) {
   .sectionTitle {
-    font-size: 1.4rem;
+    font-size: clamp(1.3rem, 1.8vw, 1.5rem);
   }
 
   .productImage {
-    height: 150px;
+    height: 200px;
   }
 
   .productName {
-    font-size: 1rem;
+    font-size: clamp(0.9rem, 1vw, 1rem);
+  }
+
+  .productPrice {
+    font-size: clamp(0.9rem, 1vw, 1rem);
+  }
+
+  .originalPrice {
+    font-size: 0.75rem;
+  }
+
+  .stockStatus {
+    font-size: 0.75rem;
+  }
+
+  .categoryTag {
+    font-size: 0.7rem;
+  }
+
+  .productCta,
+  .cartCta {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  .categoryTitle {
+    font-size: clamp(0.9rem, 1vw, 1rem);
+  }
+
+  .categoryCta {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.8rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .home {
+    padding: 1rem 0; /* Adjust top/bottom padding for mobile */
+  }
+
+  .section {
+    margin-bottom: 2rem;
+  }
+
+  .productImage {
+    height: 180px;
+  }
+
+  .productName {
+    font-size: 0.9rem;
   }
 
   .productPrice {
     font-size: 0.9rem;
   }
 
-  .productCta {
-    font-size: 0.8rem;
-    padding: 0.4rem 0.8rem;
+  .originalPrice {
+    font-size: 0.7rem;
   }
 
-  .categoryTitle {
-    font-size: 1rem;
+  .stockStatus {
+    font-size: 0.7rem;
   }
 
-  .categoryCta {
-    font-size: 0.8rem;
-    padding: 0.4rem 0.8rem;
+  .categoryTag {
+    font-size: 0.65rem;
+  }
+
+  .productCta,
+  .cartCta {
+    font-size: 0.75rem;
+    padding: 0.3rem 0.6rem;
+  }
+
+  .discountBadge,
+  .newBadge {
+    font-size: 0.7rem;
+    padding: 0.25rem 0.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .sectionTitle {
+    font-size: clamp(1.2rem, 1.5vw, 1.3rem);
+  }
+
+  .productImage {
+    height: 160px;
+  }
+
+  .productName {
+    font-size: 0.85rem;
+  }
+
+  .productPrice {
+    font-size: 0.85rem;
+  }
+
+  .productCta,
+  .cartCta {
+    font-size: 0.7rem;
+    padding: 0.25rem 0.5rem;
   }
 }

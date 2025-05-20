@@ -1,17 +1,20 @@
 import { useState, useEffect } from "react";
 import { Button, Card, Col, Row } from "react-bootstrap";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 import HeroSection from "../../components/HeroSection/HeroSection";
+import FeaturedProducts from "../../components/FeaturedProducts/FeaturedProducts";
 import styles from "./Home.module.css";
 import { motion } from "framer-motion";
 
 interface Product {
   id: number;
   name: string;
-  price: string | number;
+  price: number;
+  original_price?: number | null;
+  discount_percentage?: number | null;
+  stock: number;
+  category: string;
   image: string;
+  is_new?: boolean;
 }
 
 export default function Home() {
@@ -28,33 +31,24 @@ export default function Home() {
         setFeaturedProducts(
           data.map((product) => ({
             ...product,
-            image: product.image || "https://placehold.co/150x150",
-            price: parseFloat(product.price as string),
+            image: product.image || "https://placehold.co/300x300",
+            price: parseFloat(String(product.price)),
+            original_price: product.original_price
+              ? parseFloat(String(product.original_price))
+              : null,
+            stock: Number(product.stock),
+            discount_percentage: product.discount_percentage
+              ? Number(product.discount_percentage)
+              : null,
           }))
         );
+        setError(null);
       })
       .catch((err) => {
         console.error("Error fetching products:", err);
-        setError("Failed to load products. Please try again later.");
+        setError("Failed to load products. Showing static content.");
       });
   }, []);
-
-  const sliderSettings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 3000,
-    arrows: true,
-    responsive: [
-      {
-        breakpoint: 768,
-        settings: { slidesToShow: 1 },
-      },
-    ],
-  };
 
   return (
     <div className={styles.home}>
@@ -62,54 +56,7 @@ export default function Home() {
       {error && <div className={styles.error}>{error}</div>}
 
       {/* Featured Products */}
-      <section className={styles.section}>
-        <h2 className={styles.sectionTitle}>Featured Products</h2>
-        <Slider {...sliderSettings}>
-          {featuredProducts.map((product) => (
-            <motion.div
-              key={product.id}
-              className={styles.productSlide}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <Card className={styles.productCard}>
-                <Card.Img
-                  variant="top"
-                  src={product.image}
-                  alt={product.name}
-                  className={styles.productImage}
-                  onError={(e) => {
-                    e.currentTarget.src = "https://placehold.co/150x150";
-                  }}
-                />
-                <Card.Body>
-                  <Card.Title className={styles.productName}>
-                    {product.name}
-                  </Card.Title>
-                  <Card.Text className={styles.productPrice}>
-                    $
-                    {(typeof product.price === "string"
-                      ? parseFloat(product.price)
-                      : product.price
-                    ).toFixed(2)}
-                  </Card.Text>
-                  <Button
-                    className={styles.productCta}
-                    href={`/products/${product.id}`}
-                    style={{
-                      backgroundColor: "#9400D3",
-                      borderColor: "#9400D3",
-                    }}
-                  >
-                    View Product
-                  </Button>
-                </Card.Body>
-              </Card>
-            </motion.div>
-          ))}
-        </Slider>
-      </section>
+      <FeaturedProducts />
 
       {/* Featured Categories */}
       <section className={styles.section}>
@@ -152,9 +99,9 @@ export default function Home() {
         <h2 className={styles.sectionTitle}>New Arrivals</h2>
         <Row xs={1} md={3} className="g-4">
           {featuredProducts
-            .filter((product) => product.id % 2 === 0)
+            .filter((product: Product) => product.id % 2 === 0)
             .slice(0, 3)
-            .map((product) => (
+            .map((product: Product) => (
               <Col key={product.id}>
                 <motion.div
                   initial={{ opacity: 0, x: -20 }}
@@ -162,36 +109,89 @@ export default function Home() {
                   transition={{ duration: 0.5 }}
                 >
                   <Card className={styles.productCard}>
-                    <Card.Img
-                      variant="top"
-                      src={product.image}
-                      alt={product.name}
-                      className={styles.productImage}
-                      onError={(e) => {
-                        e.currentTarget.src = "https://placehold.co/150x150";
-                      }}
-                    />
+                    <div className={styles.imageWrapper}>
+                      <Card.Img
+                        variant="top"
+                        src={product.image}
+                        alt={product.name}
+                        className={styles.productImage}
+                        onError={(e) => {
+                          e.currentTarget.src = "https://placehold.co/300x300";
+                        }}
+                      />
+                      {product.discount_percentage && (
+                        <div className={styles.discountBadge}>
+                          {product.discount_percentage}% Off
+                        </div>
+                      )}
+                      {product.is_new && (
+                        <div className={styles.newBadge}>New</div>
+                      )}
+                    </div>
                     <Card.Body>
+                      <div className={styles.categoryTag}>
+                        {product.category.charAt(0).toUpperCase() +
+                          product.category.slice(1)}
+                      </div>
                       <Card.Title className={styles.productName}>
                         {product.name}
                       </Card.Title>
-                      <Card.Text className={styles.productPrice}>
-                        $
-                        {(typeof product.price === "string"
-                          ? parseFloat(product.price)
-                          : product.price
-                        ).toFixed(2)}
+                      <div className={styles.priceContainer}>
+                        <span className={styles.productPrice}>
+                          ${product.price.toFixed(2)}
+                        </span>
+                        {product.original_price && (
+                          <span className={styles.originalPrice}>
+                            ${product.original_price.toFixed(2)}
+                          </span>
+                        )}
+                      </div>
+                      <Card.Text className={styles.stockStatus}>
+                        {product.stock <= 0
+                          ? "Out of Stock"
+                          : product.stock <= 5
+                          ? `Only ${product.stock} Left!`
+                          : "In Stock"}
                       </Card.Text>
-                      <Button
-                        className={styles.productCta}
-                        href={`/products/${product.id}`}
-                        style={{
-                          backgroundColor: "#9400D3",
-                          borderColor: "#9400D3",
-                        }}
-                      >
-                        View Product
-                      </Button>
+                      <div className={styles.buttonGroup}>
+                        <Button
+                          className={styles.productCta}
+                          href={`/products/${product.id}`}
+                          style={{
+                            backgroundColor: "#9400D3",
+                            borderColor: "#9400D3",
+                          }}
+                        >
+                          View Details
+                        </Button>
+                        <Button
+                          className={styles.cartCta}
+                          disabled={product.stock <= 0}
+                          onClick={() => alert("Add to cart functionality TBD")}
+                          style={{
+                            backgroundColor: "#FF1493",
+                            borderColor: "#FF1493",
+                          }}
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="white"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            style={{ marginRight: "0.5rem" }}
+                          >
+                            <circle cx="9" cy="21" r="1" />
+                            <circle cx="20" cy="21" r="1" />
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+                          </svg>
+                          Add to Cart
+                        </Button>
+                      </div>
                     </Card.Body>
                   </Card>
                 </motion.div>
