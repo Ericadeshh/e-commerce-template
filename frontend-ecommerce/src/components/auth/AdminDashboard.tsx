@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Routes, Route, NavLink, useNavigate } from "react-router-dom";
 import {
   Button,
@@ -54,29 +54,46 @@ interface DashboardStats {
 const DashboardOverview: React.FC = () => {
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
-  const fetchStats = async () => {
+  const fetchStats = useCallback(async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setError("Please log in as an admin");
+      navigate("/login");
+      return;
+    }
+
     try {
-      const token = localStorage.getItem("token");
       const res = await fetch("http://localhost:5000/api/admin/stats", {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
       });
-      if (!res.ok) throw new Error(`Failed to fetch stats: ${res.status}`);
+      if (!res.ok) {
+        if (res.status === 403) {
+          throw new Error("Access denied: Admin privileges required");
+        }
+        throw new Error(`Failed to fetch stats: ${res.status}`);
+      }
       const data = await res.json();
       setStats(data);
       setError(null);
-    } catch (err) {
+    } catch (err: unknown) {
       console.error("Error fetching stats:", err);
-      setError("Failed to load dashboard stats");
+      const errorMessage =
+        err instanceof Error ? err.message : "Failed to load dashboard stats";
+      setError(errorMessage);
+      if (errorMessage.includes("Admin privileges required")) {
+        navigate("/login");
+      }
     }
-  };
+  }, [navigate]);
 
   useEffect(() => {
     fetchStats();
-  }, []);
+  }, [fetchStats, navigate]);
 
   if (error) return <div className={styles.error}>{error}</div>;
   if (!stats) return <div>Loading...</div>;
@@ -161,34 +178,57 @@ const ProductManagement: React.FC = () => {
     original_price: null,
     discount_percentage: null,
   });
+  const navigate = useNavigate();
 
-  const fetchProducts = async () => {
+  const fetchProducts = useCallback(async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setError("Please log in as an admin");
+      navigate("/login");
+      return;
+    }
+
     try {
-      const token = localStorage.getItem("token");
       const res = await fetch("http://localhost:5000/api/products/admin", {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
       });
-      if (!res.ok) throw new Error(`Failed to fetch products: ${res.status}`);
+      if (!res.ok) {
+        if (res.status === 403) {
+          throw new Error("Access denied: Admin privileges required");
+        }
+        throw new Error(`Failed to fetch products: ${res.status}`);
+      }
       const data = await res.json();
       setProducts(data);
       setError(null);
-    } catch (err) {
+    } catch (err: unknown) {
       console.error("Error fetching products:", err);
-      setError("Failed to fetch products");
+      const errorMessage =
+        err instanceof Error ? err.message : "Failed to fetch products";
+      setError(errorMessage);
+      if (errorMessage.includes("Admin privileges required")) {
+        navigate("/login");
+      }
     }
-  };
+  }, [navigate]);
 
   useEffect(() => {
     fetchProducts();
-  }, []);
+  }, [fetchProducts, navigate]);
 
   const handleCreateProduct = async (e: React.FormEvent) => {
     e.preventDefault();
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setError("Please log in as an admin");
+      navigate("/login");
+      return;
+    }
+
     try {
-      const token = localStorage.getItem("token");
       const res = await fetch("http://localhost:5000/api/products/admin", {
         method: "POST",
         headers: {
@@ -197,7 +237,12 @@ const ProductManagement: React.FC = () => {
         },
         body: JSON.stringify(newProduct),
       });
-      if (!res.ok) throw new Error(`Failed to create product: ${res.status}`);
+      if (!res.ok) {
+        if (res.status === 403) {
+          throw new Error("Access denied: Admin privileges required");
+        }
+        throw new Error(`Failed to create product: ${res.status}`);
+      }
       setNewProduct({
         name: "",
         price: 0,
@@ -211,17 +256,28 @@ const ProductManagement: React.FC = () => {
         discount_percentage: null,
       });
       fetchProducts();
-    } catch (err) {
+    } catch (err: unknown) {
       console.error("Error creating product:", err);
-      setError("Failed to create product");
+      const errorMessage =
+        err instanceof Error ? err.message : "Failed to create product";
+      setError(errorMessage);
+      if (errorMessage.includes("Admin privileges required")) {
+        navigate("/login");
+      }
     }
   };
 
   const handleUpdateProduct = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!editingProduct) return;
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setError("Please log in as an admin");
+      navigate("/login");
+      return;
+    }
+
     try {
-      const token = localStorage.getItem("token");
       const res = await fetch(
         `http://localhost:5000/api/products/admin/${editingProduct.id}`,
         {
@@ -233,20 +289,39 @@ const ProductManagement: React.FC = () => {
           body: JSON.stringify(editingProduct),
         }
       );
-      if (!res.ok) throw new Error(`Failed to update product: ${res.status}`);
+      if (!res.ok) {
+        if (res.status === 403) {
+          throw new Error("Access denied: Admin privileges required");
+        }
+        throw new Error(`Failed to update product: ${res.status}`);
+      }
       setEditingProduct(null);
       fetchProducts();
-    } catch (err) {
+    } catch (err: unknown) {
       console.error("Error updating product:", err);
-      setError("Failed to update product");
+      const errorMessage =
+        err instanceof Error ? err.message : "Failed to update product";
+      setError(errorMessage);
+      if (errorMessage.includes("Admin privileges required")) {
+        navigate("/login");
+      }
+    } finally {
+      setEditingProduct(null);
+      fetchProducts();
     }
   };
 
   const handleDeleteProduct = async (id: number) => {
     if (!window.confirm("Are you sure you want to delete this product?"))
       return;
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setError("Please log in as an admin");
+      navigate("/login");
+      return;
+    }
+
     try {
-      const token = localStorage.getItem("token");
       const res = await fetch(
         `http://localhost:5000/api/products/admin/${id}`,
         {
@@ -257,11 +332,21 @@ const ProductManagement: React.FC = () => {
           },
         }
       );
-      if (!res.ok) throw new Error(`Failed to delete product: ${res.status}`);
+      if (!res.ok) {
+        if (res.status === 403) {
+          throw new Error("Access denied: Admin privileges required");
+        }
+        throw new Error(`Failed to delete product: ${res.status}`);
+      }
       fetchProducts();
-    } catch (err) {
+    } catch (err: unknown) {
       console.error("Error deleting product:", err);
-      setError("Failed to delete product");
+      const errorMessage =
+        err instanceof Error ? err.message : "Failed to delete product";
+      setError(errorMessage);
+      if (errorMessage.includes("Admin privileges required")) {
+        navigate("/login");
+      }
     }
   };
 
@@ -747,7 +832,7 @@ export default function AdminDashboard() {
             <Nav className={styles.nav}>
               <h5>Overview</h5>
               <NavLink
-                to="/admin"
+                to="/admin/dashboard"
                 end
                 className={({ isActive }) =>
                   isActive ? styles.activeLink : styles.navLink
@@ -758,7 +843,7 @@ export default function AdminDashboard() {
               </NavLink>
               <h5>Hero Section Updates</h5>
               <NavLink
-                to="/admin/banners"
+                to="/admin/dashboard/banners"
                 className={({ isActive }) =>
                   isActive ? styles.activeLink : styles.navLink
                 }
@@ -767,7 +852,7 @@ export default function AdminDashboard() {
                 <FaImage /> Banner Update
               </NavLink>
               <NavLink
-                to="/admin/promotions"
+                to="/admin/dashboard/promotions"
                 className={({ isActive }) =>
                   isActive ? styles.activeLink : styles.navLink
                 }
@@ -777,7 +862,7 @@ export default function AdminDashboard() {
               </NavLink>
               <h5>Product Management</h5>
               <NavLink
-                to="/admin/products"
+                to="/admin/dashboard/products"
                 className={({ isActive }) =>
                   isActive ? styles.activeLink : styles.navLink
                 }
@@ -786,7 +871,7 @@ export default function AdminDashboard() {
                 <FaBox /> Featured Products
               </NavLink>
               <NavLink
-                to="/admin/accessories"
+                to="/admin/dashboard/accessories"
                 className={({ isActive }) =>
                   isActive ? styles.activeLink : styles.navLink
                 }
@@ -796,7 +881,7 @@ export default function AdminDashboard() {
               </NavLink>
               <h5>Other Tasks</h5>
               <NavLink
-                to="/admin/users"
+                to="/admin/dashboard/users"
                 className={({ isActive }) =>
                   isActive ? styles.activeLink : styles.navLink
                 }
@@ -805,7 +890,7 @@ export default function AdminDashboard() {
                 <FaUsers /> User Management
               </NavLink>
               <NavLink
-                to="/admin/orders"
+                to="/admin/dashboard/orders"
                 className={({ isActive }) =>
                   isActive ? styles.activeLink : styles.navLink
                 }
@@ -837,7 +922,7 @@ export default function AdminDashboard() {
           <Nav className={styles.nav}>
             <h5>Overview</h5>
             <NavLink
-              to="/admin"
+              to="/admin/dashboard"
               end
               className={({ isActive }) =>
                 isActive ? styles.activeLink : styles.navLink
@@ -847,7 +932,7 @@ export default function AdminDashboard() {
             </NavLink>
             <h5>Hero Section Updates</h5>
             <NavLink
-              to="/admin/banners"
+              to="/admin/dashboard/banners"
               className={({ isActive }) =>
                 isActive ? styles.activeLink : styles.navLink
               }
@@ -855,7 +940,7 @@ export default function AdminDashboard() {
               <FaImage /> Banner Update
             </NavLink>
             <NavLink
-              to="/admin/promotions"
+              to="/admin/dashboard/promotions"
               className={({ isActive }) =>
                 isActive ? styles.activeLink : styles.navLink
               }
@@ -864,7 +949,7 @@ export default function AdminDashboard() {
             </NavLink>
             <h5>Product Management</h5>
             <NavLink
-              to="/admin/products"
+              to="/admin/dashboard/products"
               className={({ isActive }) =>
                 isActive ? styles.activeLink : styles.navLink
               }
@@ -872,7 +957,7 @@ export default function AdminDashboard() {
               <FaBox /> Featured Products
             </NavLink>
             <NavLink
-              to="/admin/accessories"
+              to="/admin/dashboard/accessories"
               className={({ isActive }) =>
                 isActive ? styles.activeLink : styles.navLink
               }
@@ -881,7 +966,7 @@ export default function AdminDashboard() {
             </NavLink>
             <h5>Other Tasks</h5>
             <NavLink
-              to="/admin/users"
+              to="/admin/dashboard/users"
               className={({ isActive }) =>
                 isActive ? styles.activeLink : styles.navLink
               }
@@ -889,7 +974,7 @@ export default function AdminDashboard() {
               <FaUsers /> User Management
             </NavLink>
             <NavLink
-              to="/admin/orders"
+              to="/admin/dashboard/orders"
               className={({ isActive }) =>
                 isActive ? styles.activeLink : styles.navLink
               }
