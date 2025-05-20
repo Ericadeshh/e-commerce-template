@@ -1,0 +1,90 @@
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #e6e6fa; /* lavender */
+}
+
+.mobileNav {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+@media (min-width: 768px) {
+  .mobileNav {
+    display: none;
+  }
+}
+
+.layout {
+  display: flex;
+  flex: 1;
+}
+
+.desktopSidebar {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .desktopSidebar {
+    display: block;
+  }
+}
+
+.main {
+  flex: 1;
+  padding: 16px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin: 16px;
+}
+
+@media (min-width: 768px) {
+  .main {
+    margin-left: 272px; /* sidebar width + padding */
+    padding: 24px;
+  }
+}
+
+.topBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding: 16px;
+  background-color: #dda0dd; /* plum */
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #9400d3; /* purple */
+}
+
+.adminInfo {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+}
+
+.welcomeText {
+  color: #333;
+}
+
+.logoutButton {
+  margin-left: 16px;
+  border: 1px solid #ff1493; /* fuchsia */
+  color: #ff1493;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.logoutButton:hover {
+  background-color: #ff1493;
+  color: white;
+}
+
+.icon {
+  margin-right: 8px;
+}

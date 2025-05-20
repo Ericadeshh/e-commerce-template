@@ -1,0 +1,120 @@
+.section {
+  padding: 24px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #9400d3; /* purple */
+  margin-bottom: 24px;
+}
+
+.subtitle {
+  font-size: 18px;
+  color: #9400d3; /* purple */
+  margin-bottom: 16px;
+}
+
+.formSection {
+  margin-bottom: 24px;
+  padding: 16px;
+  background-color: #e6e6fa; /* lavender */
+  border-radius: 8px;
+}
+
+.inputField {
+  border: 1px solid #dda0dd; /* plum */
+  border-radius: 4px;
+  transition: border-color 0.3s ease;
+}
+
+.inputField:focus {
+  border-color: #ff1493; /* fuchsia */
+  box-shadow: 0 0 0 2px rgba(255, 20, 147, 0.2);
+}
+
+.checkbox {
+  color: #dda0dd; /* plum */
+}
+
+.submitButton {
+  background-color: #a1dc17; /* limelight */
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submitButton:hover {
+  background-color: #9400d3; /* purple */
+}
+
+.cancelButton {
+  background-color: transparent;
+  border: 1px solid #dda0dd; /* plum */
+  color: #dda0dd;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  margin-left: 8px;
+}
+
+.cancelButton:hover {
+  background-color: #dda0dd;
+  color: white;
+}
+
+.tableSection {
+  margin-top: 24px;
+}
+
+.table {
+  background-color: white;
+}
+
+.noBanners {
+  text-align: center;
+  color: #9400d3; /* purple */
+  font-weight: bold;
+}
+
+.loadingSpinner {
+  text-align: center;
+  color: #9400d3; /* purple */
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+.editButton {
+  border: 1px solid #9400d3; /* purple */
+  color: #9400d3;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.editButton:hover {
+  background-color: #9400d3;
+  color: white;
+}
+
+.deleteButton {
+  border: 1px solid #ff1493; /* fuchsia */
+  color: #ff1493;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.deleteButton:hover {
+  background-color: #ff1493;
+  color: white;
+}
+
+.error {
+  color: #ff0000;
+  margin-bottom: 16px;
+  text-align: center;
+}

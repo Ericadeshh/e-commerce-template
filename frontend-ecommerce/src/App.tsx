@@ -6,7 +6,7 @@ import Cart from "./components/Cart/Cart";
 import Footer from "./components/Footer/Footer";
 import LoginForm from "./components/auth/LoginForm";
 import SignupForm from "./components/auth/SignupForm";
-import AdminDashboard from "./components/auth/AdminDashboard";
+import AdminDashboard from "./components/auth/Admin/AdminDashboard/AdminDashboard";
 import UserDashboard from "./components/auth/UserDashboard";
 import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary";
 import styles from "./App.module.css";
