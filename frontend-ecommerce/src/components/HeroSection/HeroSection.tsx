@@ -5,6 +5,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { FaArrowRight, FaShoppingCart, FaTag } from "react-icons/fa";
 import MenSuitPic from "../../assets/Men's blue suitjpg.jpg";
 import WomenDressPic from "../../assets/lady red suit.jpg";
 import kidPantsPic from "../../assets/kids pants.jpg";
@@ -34,6 +35,10 @@ interface Promotion {
   discount_percentage?: number | null;
   start_date?: string | null;
   end_date?: string | null;
+  price_range?: string;
+  tag?: string;
+  timer?: string;
+  stock?: string;
 }
 
 export default function HeroSection() {
@@ -59,7 +64,7 @@ export default function HeroSection() {
       title: "Kids' Matching Sets",
       description: "Adorable outfits for your little ones!",
       image_url: kidMatchPic,
-      cta_text: "Shop Kids",
+      cta_text: "Shop by Category",
       cta_url: "/products?category=childrens",
     },
     {
@@ -84,6 +89,9 @@ export default function HeroSection() {
       discount_percentage: null,
       start_date: null,
       end_date: null,
+      price_range: "$50+",
+      tag: "LIMITED TIME",
+      timer: "Ends in 3 days",
     },
     {
       id: 2,
@@ -96,6 +104,9 @@ export default function HeroSection() {
       discount_percentage: 20,
       start_date: null,
       end_date: null,
+      price_range: "From $29.99",
+      tag: "20% OFF",
+      stock: "Only 50 left!",
     },
     {
       id: 3,
@@ -113,40 +124,42 @@ export default function HeroSection() {
 
   const [banners, setBanners] = useState<Banner[]>(defaultBanners);
   const [promotions, setPromotions] = useState<Promotion[]>(defaultPromotions);
-  const [error, setError] = useState<string | null>(null);
+  const [serverStatus, setServerStatus] = useState<boolean>(true);
+  const [activeLink, setActiveLink] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/admin/banners")
+    const fetchBanners = fetch("http://localhost:5000/api/admin/banners")
       .then(async (res) => {
-        if (!res.ok) {
-          throw new Error(`Failed to fetch banners: ${res.status}`);
-        }
+        if (!res.ok) throw new Error(`Failed to fetch banners: ${res.status}`);
         return res.json();
       })
       .then((data: Banner[]) => {
         setBanners(data);
-        setError(null);
+        setServerStatus(true);
       })
       .catch((err) => {
         console.error("Error fetching banners:", err);
-        setError("Failed to load banners. Showing static content.");
+        setServerStatus(false);
       });
 
-    fetch("http://localhost:5000/api/admin/promotions")
+    const fetchPromotions = fetch("http://localhost:5000/api/admin/promotions")
       .then(async (res) => {
-        if (!res.ok) {
+        if (!res.ok)
           throw new Error(`Failed to fetch promotions: ${res.status}`);
-        }
         return res.json();
       })
       .then((data: Promotion[]) => {
         setPromotions(data.slice(0, 3));
-        setError(null);
+        setServerStatus(true);
       })
       .catch((err) => {
         console.error("Error fetching promotions:", err);
-        setError("Failed to load promotions. Showing static content.");
+        setServerStatus(false);
       });
+
+    Promise.all([fetchBanners, fetchPromotions]).catch(() => {
+      setServerStatus(false);
+    });
   }, []);
 
   const bannerSliderSettings = {
@@ -161,7 +174,7 @@ export default function HeroSection() {
     responsive: [
       {
         breakpoint: 768,
-        settings: { arrows: true }, // Keep arrows visible on mobile
+        settings: { arrows: true },
       },
     ],
   };
@@ -181,15 +194,11 @@ export default function HeroSection() {
     responsive: [
       {
         breakpoint: 992,
-        settings: {
-          slidesToShow: 3,
-        },
+        settings: { slidesToShow: 3 },
       },
       {
         breakpoint: 576,
-        settings: {
-          slidesToShow: 2,
-        },
+        settings: { slidesToShow: 2 },
       },
     ],
   };
@@ -250,13 +259,24 @@ export default function HeroSection() {
     },
   ];
 
+  const handleLinkClick = (name: string) => {
+    setActiveLink(name);
+  };
+
   return (
     <div className={styles.hero}>
-      {error && <div className={styles.error}>{error}</div>}
+      <div className={styles.heroTitleBar}>
+        <div className={styles.heroHeader}>
+          <h1 className={styles.heroTitle}>Milliwin Boutique</h1>
+          <span
+            className={styles.serverStatusDot}
+            style={{ backgroundColor: serverStatus ? "#00FF00" : "#FF0000" }}
+          ></span>
+        </div>
+      </div>
 
       {/* Desktop Layout */}
       <Row className={`${styles.desktopLayout} d-none d-md-flex`}>
-        {/* Left Panel: Quick Links */}
         <Col md={3} className={styles.quickLinks}>
           <motion.div
             initial={{ opacity: 0, x: -50 }}
@@ -285,7 +305,6 @@ export default function HeroSection() {
           </motion.div>
         </Col>
 
-        {/* Center: Banner Carousel */}
         <Col md={6} className={styles.bannerCarousel}>
           <Slider {...bannerSliderSettings}>
             {banners.map((banner, index) => (
@@ -307,24 +326,24 @@ export default function HeroSection() {
                 <div className={styles.bannerContent}>
                   <motion.h2
                     className={styles.bannerTitle}
-                    initial={{ y: 20, opacity: 0 }}
+                    initial={{ y: 30, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
-                    transition={{ duration: 0.5, delay: 0.3 }}
+                    transition={{ duration: 0.5, delay: 0.3, ease: "easeOut" }}
                   >
                     {banner.title}
                   </motion.h2>
                   <motion.p
                     className={styles.bannerDescription}
-                    initial={{ y: 20, opacity: 0 }}
+                    initial={{ y: 30, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
-                    transition={{ duration: 0.5, delay: 0.4 }}
+                    transition={{ duration: 0.5, delay: 0.6, ease: "easeOut" }}
                   >
                     {banner.description}
                   </motion.p>
                   <motion.div
-                    initial={{ y: 20, opacity: 0 }}
+                    initial={{ y: 30, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
-                    transition={{ duration: 0.5, delay: 0.5 }}
+                    transition={{ duration: 0.5, delay: 0.9, ease: "easeOut" }}
                   >
                     <Button href={banner.cta_url} className={styles.bannerCta}>
                       {banner.cta_text}
@@ -336,7 +355,6 @@ export default function HeroSection() {
           </Slider>
         </Col>
 
-        {/* Right Panel: Promotions */}
         <Col md={3} className={styles.promoPanel}>
           <motion.div
             initial={{ opacity: 0, x: 50 }}
@@ -363,17 +381,38 @@ export default function HeroSection() {
                   />
                   <Card.Body>
                     <Card.Title className={styles.promoTitle}>
-                      {promo.title}
+                      <FaTag className={styles.titleIcon} /> {promo.title}
                     </Card.Title>
                     {promo.discount_percentage && (
                       <Card.Text className={styles.promoDiscount}>
                         {promo.discount_percentage}% Off
                       </Card.Text>
                     )}
+                    {promo.price_range && (
+                      <Card.Text className={styles.promoPrice}>
+                        {promo.price_range}
+                      </Card.Text>
+                    )}
+                    {promo.tag && (
+                      <Card.Text className={styles.promoTag}>
+                        {promo.tag}
+                      </Card.Text>
+                    )}
                     <Card.Text className={styles.promoDescription}>
                       {promo.description}
                     </Card.Text>
+                    {promo.timer && (
+                      <Card.Text className={styles.promoTimer}>
+                        {promo.timer}
+                      </Card.Text>
+                    )}
+                    {promo.stock && (
+                      <Card.Text className={styles.promoStock}>
+                        {promo.stock}
+                      </Card.Text>
+                    )}
                     <Button href={promo.cta_url} className={styles.promoCta}>
+                      <FaShoppingCart className={styles.ctaIcon} />{" "}
                       {promo.cta_text}
                     </Button>
                   </Card.Body>
@@ -386,7 +425,6 @@ export default function HeroSection() {
 
       {/* Mobile Layout */}
       <div className={`${styles.mobileLayout} d-md-none`}>
-        {/* Banner Carousel */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -406,24 +444,24 @@ export default function HeroSection() {
                 <div className={styles.bannerContent}>
                   <motion.h2
                     className={styles.bannerTitle}
-                    initial={{ y: 20, opacity: 0 }}
+                    initial={{ y: 30, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
-                    transition={{ duration: 0.5 }}
+                    transition={{ duration: 0.5, delay: 0.3, ease: "easeOut" }}
                   >
                     {banner.title}
                   </motion.h2>
                   <motion.p
                     className={styles.bannerDescription}
-                    initial={{ y: 20, opacity: 0 }}
+                    initial={{ y: 30, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
-                    transition={{ duration: 0.5, delay: 0.1 }}
+                    transition={{ duration: 0.5, delay: 0.6, ease: "easeOut" }}
                   >
                     {banner.description}
                   </motion.p>
                   <motion.div
-                    initial={{ y: 20, opacity: 0 }}
+                    initial={{ y: 30, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
-                    transition={{ duration: 0.5, delay: 0.2 }}
+                    transition={{ duration: 0.5, delay: 0.9, ease: "easeOut" }}
                   >
                     <Button href={banner.cta_url} className={styles.bannerCta}>
                       {banner.cta_text}
@@ -435,7 +473,6 @@ export default function HeroSection() {
           </Slider>
         </motion.div>
 
-        {/* Quick Links */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -451,12 +488,18 @@ export default function HeroSection() {
                   <motion.div
                     key={item.name}
                     className={styles.linkItem}
-                    whileHover={{ scale: 1.1 }}
+                    whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     transition={{ duration: 0.3 }}
                   >
-                    <Link to={item.url} className={styles.linkButton}>
-                      {item.name}
+                    <Link
+                      to={item.url}
+                      className={`${styles.linkButton} ${
+                        activeLink === item.name ? styles.active : ""
+                      }`}
+                      onClick={() => handleLinkClick(item.name)}
+                    >
+                      <FaArrowRight className={styles.linkIcon} /> {item.name}
                     </Link>
                   </motion.div>
                 ))}
@@ -465,7 +508,6 @@ export default function HeroSection() {
           ))}
         </motion.div>
 
-        {/* Promotions */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -473,43 +515,66 @@ export default function HeroSection() {
           className={styles.promoPanel}
         >
           <h3 className={styles.promoPanelTitle}>Offers & Deals</h3>
-          {promotions.slice(0, 2).map((promo) => (
-            <motion.div
-              key={promo.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className={styles.promoCard}
-            >
-              <Card>
-                <Card.Img
-                  variant="top"
-                  src={promo.image_url}
-                  alt={promo.title}
-                  className={styles.promoImage}
-                  onError={(e) => {
-                    e.currentTarget.src = "https://placehold.co/400x200";
-                  }}
-                />
-                <Card.Body>
-                  <Card.Title className={styles.promoTitle}>
-                    {promo.title}
-                  </Card.Title>
-                  {promo.discount_percentage && (
-                    <Card.Text className={styles.promoDiscount}>
-                      {promo.discount_percentage}% Off
+          <div className={styles.promoContainer}>
+            {promotions.slice(0, 2).map((promo) => (
+              <motion.div
+                key={promo.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                className={styles.promoCard}
+              >
+                <Card>
+                  <Card.Img
+                    variant="top"
+                    src={promo.image_url}
+                    alt={promo.title}
+                    className={styles.promoImage}
+                    onError={(e) => {
+                      e.currentTarget.src = "https://placehold.co/400x200";
+                    }}
+                  />
+                  <Card.Body>
+                    <Card.Title className={styles.promoTitle}>
+                      <FaTag className={styles.titleIcon} /> {promo.title}
+                    </Card.Title>
+                    {promo.discount_percentage && (
+                      <Card.Text className={styles.promoDiscount}>
+                        {promo.discount_percentage}% Off
+                      </Card.Text>
+                    )}
+                    {promo.price_range && (
+                      <Card.Text className={styles.promoPrice}>
+                        {promo.price_range}
+                      </Card.Text>
+                    )}
+                    {promo.tag && (
+                      <Card.Text className={styles.promoTag}>
+                        {promo.tag}
+                      </Card.Text>
+                    )}
+                    <Card.Text className={styles.promoDescription}>
+                      {promo.description}
                     </Card.Text>
-                  )}
-                  <Card.Text className={styles.promoDescription}>
-                    {promo.description}
-                  </Card.Text>
-                  <Button href={promo.cta_url} className={styles.promoCta}>
-                    {promo.cta_text}
-                  </Button>
-                </Card.Body>
-              </Card>
-            </motion.div>
-          ))}
+                    {promo.timer && (
+                      <Card.Text className={styles.promoTimer}>
+                        {promo.timer}
+                      </Card.Text>
+                    )}
+                    {promo.stock && (
+                      <Card.Text className={styles.promoStock}>
+                        {promo.stock}
+                      </Card.Text>
+                    )}
+                    <Button href={promo.cta_url} className={styles.promoCta}>
+                      <FaShoppingCart className={styles.ctaIcon} />{" "}
+                      {promo.cta_text}
+                    </Button>
+                  </Card.Body>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
         </motion.div>
       </div>
     </div>
