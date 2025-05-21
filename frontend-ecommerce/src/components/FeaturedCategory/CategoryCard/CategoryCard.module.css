@@ -1,0 +1,189 @@
+.cardWrapper {
+  padding: 0.5rem;
+}
+
+.productCard {
+  border: none;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background: #ffffff;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.imageWrapper {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+
+.productImage {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.cardWrapper:hover .productImage {
+  transform: scale(1.1);
+}
+
+.discountBadge {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  background: #ff1493;
+  color: #fff;
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.25rem;
+  font-size: 0.7rem;
+  font-weight: 500;
+}
+
+.newBadge {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: #9400d3;
+  color: #fff;
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.25rem;
+  font-size: 0.7rem;
+  font-weight: 500;
+}
+
+.cardBody {
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.categoryTag {
+  font-size: 0.7rem;
+  color: #dda0dd;
+  margin-bottom: 0.5rem;
+  text-transform: capitalize;
+}
+
+.productName {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #9400d3;
+  margin-bottom: 0.5rem;
+}
+
+.priceContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.productPrice {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #ff1493;
+}
+
+.originalPrice {
+  font-size: 0.8rem;
+  color: #6c757d;
+  text-decoration: line-through;
+}
+
+.stockStatus {
+  font-size: 0.7rem;
+  color: #495057;
+  margin-bottom: 0.75rem;
+}
+
+.linkGroup {
+  display: flex;
+  gap: 1rem;
+  margin-top: auto;
+}
+
+.detailLink,
+.shopLink {
+  font-size: 0.8rem;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.detailLink {
+  color: #9400d3;
+}
+
+.detailLink:hover {
+  color: #a1dc17;
+}
+
+.shopLink {
+  color: #ff1493;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.shopLink:hover {
+  color: #a1dc17;
+}
+
+.cartIcon {
+  font-size: 0.8rem;
+}
+
+@media (max-width: 768px) {
+  .cardWrapper {
+    padding: 0.3rem;
+  }
+
+  .productCard {
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .productImage {
+    height: 150px;
+  }
+
+  .cardBody {
+    padding: 0.5rem;
+  }
+
+  .categoryTag {
+    font-size: 0.65rem;
+  }
+
+  .productName {
+    font-size: 0.8rem;
+  }
+
+  .productPrice {
+    font-size: 0.9rem;
+  }
+
+  .originalPrice {
+    font-size: 0.7rem;
+  }
+
+  .stockStatus {
+    font-size: 0.65rem;
+  }
+
+  .detailLink,
+  .shopLink {
+    font-size: 0.75rem;
+  }
+
+  .cartIcon {
+    font-size: 0.75rem;
+  }
+
+  .discountBadge,
+  .newBadge {
+    font-size: 0.65rem;
+    padding: 0.15rem 0.3rem;
+  }
+}

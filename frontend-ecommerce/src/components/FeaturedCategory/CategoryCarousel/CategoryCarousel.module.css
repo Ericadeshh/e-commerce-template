@@ -1,0 +1,129 @@
+.carouselContainer {
+  margin-bottom: 2rem;
+  padding: 0 1rem;
+}
+
+.tab {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(90deg, #9400d3, #ff1493);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.categoryTitle {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+}
+
+.viewMore {
+  font-size: 0.9rem;
+  color: #a1dc17;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.3s ease;
+}
+
+.viewMore:hover {
+  color: #ffffff;
+}
+
+.description {
+  font-size: 0.9rem;
+  color: #495057;
+  text-align: center;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.starIcon {
+  color: #a1dc17;
+  font-size: 1rem;
+}
+
+.productSlide {
+  padding: 0 0.5rem;
+}
+
+.prevArrow,
+.nextArrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #9400d3;
+  color: #ffffff;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 10;
+  transition: background 0.3s ease;
+}
+
+.prevArrow:hover,
+.nextArrow:hover {
+  background: #ff1493;
+}
+
+.prevArrow {
+  left: -2.5rem;
+}
+
+.nextArrow {
+  right: -2.5rem;
+}
+
+@media (max-width: 768px) {
+  .carouselContainer {
+    margin-bottom: 1.5rem;
+    padding: 0 0.5rem;
+  }
+
+  .tab {
+    padding: 0.4rem 0.8rem;
+    border-radius: 0.4rem;
+  }
+
+  .categoryTitle {
+    font-size: 1rem;
+  }
+
+  .viewMore {
+    font-size: 0.8rem;
+  }
+
+  .description {
+    font-size: 0.8rem;
+  }
+
+  .starIcon {
+    font-size: 0.9rem;
+  }
+
+  .prevArrow,
+  .nextArrow {
+    width: 1.5rem;
+    height: 1.5rem;
+    font-size: 0.8rem;
+  }
+
+  .prevArrow {
+    left: -1.5rem;
+  }
+
+  .nextArrow {
+    right: -1.5rem;
+  }
+}

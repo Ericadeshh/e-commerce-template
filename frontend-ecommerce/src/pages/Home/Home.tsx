@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Button, Card, Col, Row } from "react-bootstrap";
 import HeroSection from "../../components/HeroSection/HeroSection";
 import FeaturedProducts from "../../components/FeaturedProducts/FeaturedProducts";
+import FeaturedCategories from "../../components/FeaturedCategory/FeaturedCategories/FeaturedCategories";
 import styles from "./Home.module.css";
 import { motion } from "framer-motion";
 
@@ -59,40 +60,7 @@ export default function Home() {
       <FeaturedProducts />
 
       {/* Featured Categories */}
-      <section className={styles.section}>
-        <h2 className={styles.sectionTitle}>Featured Categories</h2>
-        <Row xs={1} md={3} className="g-4">
-          {["Women's", "Men's", "Children's", "Beddings", "Shoes"].map(
-            (category) => (
-              <Col key={category}>
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <Card className={styles.categoryCard}>
-                    <Card.Body>
-                      <Card.Title className={styles.categoryTitle}>
-                        {category}
-                      </Card.Title>
-                      <Button
-                        className={styles.categoryCta}
-                        href={`/products?category=${category.toLowerCase()}`}
-                        style={{
-                          backgroundColor: "#FF1493",
-                          borderColor: "#FF1493",
-                        }}
-                      >
-                        Shop Now
-                      </Button>
-                    </Card.Body>
-                  </Card>
-                </motion.div>
-              </Col>
-            )
-          )}
-        </Row>
-      </section>
+      <FeaturedCategories />
 
       {/* New Arrivals */}
       <section className={styles.section}>

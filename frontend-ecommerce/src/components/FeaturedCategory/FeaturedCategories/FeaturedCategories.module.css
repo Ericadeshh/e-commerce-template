@@ -1,0 +1,29 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+.section {
+  font-family: "Poppins", sans-serif;
+  padding: 0;
+  background: #f5f6f5;
+  text-align: center;
+}
+
+.sectionTitle {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #9400d3;
+  margin: 2rem 0;
+}
+
+.error {
+  color: #ff1493;
+  font-size: 0.9rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+  .sectionTitle {
+    font-size: 1.5rem;
+    margin: 1.5rem 0;
+  }
+}
