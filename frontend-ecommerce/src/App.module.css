@@ -7,11 +7,15 @@
 .main {
   flex: 1;
   padding: 1rem;
-  padding-top: clamp(5rem, 10vw, 6.25rem); /* ~80px to 100px, offsets header */
+  padding-top: 5.5rem;
 }
-
+@media (max-width: 768px) {
+  .main {
+    padding-top: 5.2rem;
+  }
+}
 @media (max-width: 576px) {
   .main {
-    padding-top: clamp(4rem, 9vw, 5rem); /* ~64px to 80px for mobile header */
+    padding-top: 4rem;
   }
 }

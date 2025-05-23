@@ -13,6 +13,7 @@ import kidMatchPic from "../../assets/kids matching cloth.jpg";
 import MenOmbrePic from "../../assets/Men Ombre Japanese.jpg";
 import BeachShirtPic from "../../assets/beach shirt.jpg";
 import BeddingPic from "../../assets/nice blankets.jpg";
+import MidBanner from "./mid_banner/mid_banner";
 import styles from "./HeroSection.module.css";
 
 interface Banner {
@@ -353,6 +354,7 @@ export default function HeroSection() {
               </motion.div>
             ))}
           </Slider>
+          <MidBanner />
         </Col>
 
         <Col md={3} className={styles.promoPanel}>
@@ -471,6 +473,7 @@ export default function HeroSection() {
               </div>
             ))}
           </Slider>
+          <MidBanner />
         </motion.div>
 
         <motion.div
