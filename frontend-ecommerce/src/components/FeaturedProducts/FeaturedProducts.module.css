@@ -3,11 +3,12 @@
 .section {
   font-family: "Poppins", sans-serif;
   padding: 0;
-  background: #f5f6f5;
+  background-color: rgba(0, 0, 0, 0.01);
+  backdrop-filter: blur(12px);
   text-align: center;
   width: 100vw;
   max-width: 100%;
-  margin: 0;
+  margin: 1.5rem auto;
   box-sizing: border-box;
   overflow-x: hidden;
 }
@@ -56,7 +57,7 @@
 
 .description {
   font-size: 0.9rem;
-  color: #495057;
+  color: #555;
   text-align: center;
   margin: 0 1rem 1.5rem;
   display: flex;
@@ -67,7 +68,7 @@
 }
 
 .highlight {
-  font-weight: 600;
+  font-weight: 500;
   color: #ff1493;
 }
 
@@ -275,27 +276,6 @@
   padding: 0 !important;
 }
 
-@media (max-width: 992px) {
-  .sectionTitle {
-    font-size: 1.3rem;
-  }
-
-  .viewMore {
-    font-size: 0.85rem;
-  }
-
-  .description {
-    font-size: 0.85rem;
-    margin: 0 0.8rem 1.2rem;
-  }
-
-  .starIcon,
-  .gemIcon,
-  .heartIcon {
-    font-size: 0.95rem;
-  }
-}
-
 @media (max-width: 768px) {
   .section {
     width: 100vw;
@@ -324,7 +304,9 @@
     margin: 0 auto 1rem;
     justify-content: center;
   }
-
+  .highlight {
+    font-size: 0.7rem;
+  }
   .description {
     font-size: 0.8rem;
     margin: 0 0.5rem 1rem;
@@ -337,11 +319,11 @@
   }
 
   .productCard {
-    min-height: 360px;
+    min-height: 310px;
   }
 
   .productImage {
-    height: 160px;
+    height: 180px;
   }
 
   .cardBody {

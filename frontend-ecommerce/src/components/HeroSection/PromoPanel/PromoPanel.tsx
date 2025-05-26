@@ -52,6 +52,23 @@ const buttonVariants = {
   tap: { scale: 0.95, transition: { duration: 0.2, ease: "easeInOut" } },
 };
 
+const desktopCardVariants = {
+  initial: { opacity: 1, y: 0 },
+  hover: {
+    opacity: 1,
+    y: -5,
+    transition: { duration: 0.3, ease: "easeInOut" },
+  },
+};
+
+const desktopImageVariants = {
+  initial: { scale: 1 },
+  hover: {
+    scale: [1, 1.1, 1],
+    transition: { duration: 1, ease: "easeInOut", times: [0, 0.5, 1] },
+  },
+};
+
 const PromoPanel: React.FC<PromoPanelProps> = ({ promotions }) => {
   return (
     <>
@@ -70,52 +87,56 @@ const PromoPanel: React.FC<PromoPanelProps> = ({ promotions }) => {
               transition={{ duration: 0.6, delay: index * 0.3 }}
             >
               <Card className={styles.promoCard}>
-                <Card.Img
-                  variant="top"
-                  src={promo.image_url}
-                  alt={promo.title}
-                  className={styles.promoImage}
-                  onError={(e) => {
-                    e.currentTarget.src = "https://placehold.co/400x200";
-                  }}
-                />
-                <Card.Body>
-                  <Card.Title className={styles.promoTitle}>
-                    <FaTag className={styles.titleIcon} /> {promo.title}
-                  </Card.Title>
-                  {promo.discount_percentage && (
-                    <Card.Text className={styles.promoDiscount}>
-                      {promo.discount_percentage}% Off
-                    </Card.Text>
-                  )}
-                  {promo.price_range && (
-                    <Card.Text className={styles.promoPrice}>
-                      {promo.price_range}
-                    </Card.Text>
-                  )}
-                  {promo.tag && (
-                    <Card.Text className={styles.promoTag}>
-                      {promo.tag}
-                    </Card.Text>
-                  )}
-                  <Card.Text className={styles.promoDescription}>
-                    {promo.description}
-                  </Card.Text>
-                  {promo.timer && (
-                    <Card.Text className={styles.promoTimer}>
-                      {promo.timer}
-                    </Card.Text>
-                  )}
-                  {promo.stock && (
-                    <Card.Text className={styles.promoStock}>
-                      {promo.stock}
-                    </Card.Text>
-                  )}
-                  <Button href={promo.cta_url} className={styles.promoCta}>
-                    <FaShoppingCart className={styles.ctaIcon} />{" "}
-                    {promo.cta_text}
-                  </Button>
-                </Card.Body>
+                <motion.div whileHover="hover">
+                  <motion.img
+                    variants={desktopImageVariants}
+                    src={promo.image_url}
+                    alt={promo.title}
+                    className={styles.promoImage}
+                    onError={(e) => {
+                      e.currentTarget.src = "https://placehold.co/400x200";
+                    }}
+                  />
+                  <Card.Body>
+                    <motion.div variants={desktopCardVariants}>
+                      <Card.Title className={styles.promoTitle}>
+                        <FaTag className={styles.titleIcon} /> {promo.title}
+                      </Card.Title>
+                      {promo.discount_percentage && (
+                        <Card.Text className={styles.promoDiscount}>
+                          {promo.discount_percentage}% Off
+                        </Card.Text>
+                      )}
+                      {promo.price_range && (
+                        <Card.Text className={styles.promoPrice}>
+                          {promo.price_range}
+                        </Card.Text>
+                      )}
+                      {promo.tag && (
+                        <Card.Text className={styles.promoTag}>
+                          {promo.tag}
+                        </Card.Text>
+                      )}
+                      <Card.Text className={styles.promoDescription}>
+                        {promo.description}
+                      </Card.Text>
+                      {promo.timer && (
+                        <Card.Text className={styles.promoTimer}>
+                          {promo.timer}
+                        </Card.Text>
+                      )}
+                      {promo.stock && (
+                        <Card.Text className={styles.promoStock}>
+                          {promo.stock}
+                        </Card.Text>
+                      )}
+                      <Button href={promo.cta_url} className={styles.promoCta}>
+                        <FaShoppingCart className={styles.ctaIcon} />{" "}
+                        {promo.cta_text}
+                      </Button>
+                    </motion.div>
+                  </Card.Body>
+                </motion.div>
               </Card>
             </motion.div>
           ))}
