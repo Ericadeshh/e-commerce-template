@@ -18,6 +18,9 @@ import {
   FaCreditCard,
   FaBoxOpen,
   FaTag,
+  FaMobileAlt,
+  FaUniversity,
+  FaPaypal,
 } from "react-icons/fa";
 import styles from "./Cart.module.css";
 
@@ -106,6 +109,9 @@ const Cart: React.FC<CartProps> = ({ show, onHide }) => {
     "standard" | "express" | "pickup"
   >("standard");
   const [giftWrapping, setGiftWrapping] = useState(false);
+  const [selectedPayment, setSelectedPayment] = useState<
+    "credit_card" | "mpesa" | "paypal" | "bank_transfer" | null
+  >(null);
   const userId = 1;
 
   useEffect(() => {
@@ -283,120 +289,144 @@ const Cart: React.FC<CartProps> = ({ show, onHide }) => {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
           >
-            {cartItems.map((item, index) => (
-              <motion.div
-                key={item.product_id}
-                custom={index}
-                variants={cardVariants}
-                initial="hidden"
-                animate="visible"
-                whileHover="hover"
-                className={styles.cartItem}
-              >
-                <div className={styles.itemImageContainer}>
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    className={styles.itemImage}
-                    onError={(e) => {
-                      e.currentTarget.src = "https://placehold.co/150x150";
-                    }}
-                  />
-                </div>
-                <div className={styles.itemDetails}>
-                  <h3 className={styles.itemName}>
-                    {item.original_price && (
-                      <span className={styles.saleTag}>
-                        <FaTag /> Sale
-                      </span>
-                    )}
-                    {item.name}
-                  </h3>
-                  <p className={styles.itemCategory}>{item.category}</p>
-                  {item.size && (
-                    <p className={styles.itemOption}>
-                      <FaTag /> Size: {item.size}
-                    </p>
-                  )}
-                  {item.color && (
-                    <p className={styles.itemOption}>
-                      <FaTag /> Color: {item.color}
-                    </p>
-                  )}
-                  <div className={styles.itemPricing}>
-                    <span className={styles.itemPrice}>
-                      KSh {parseFloat(item.price as string).toFixed(0)}
+            <div className={styles.cartItemsScroll}>
+              {cartItems.map((item, index) => (
+                <motion.div
+                  key={item.product_id}
+                  custom={index}
+                  variants={cardVariants}
+                  initial="hidden"
+                  animate="visible"
+                  whileHover="hover"
+                  className={styles.cartItem}
+                >
+                  <span
+                    className={`${styles.itemNumber} ${
+                      styles[`numberColor${index % 4}`]
+                    }`}
+                  >
+                    {index + 1}
+                  </span>
+                  <div className={styles.itemImageContainer}>
+                    <img
+                      src={item.image}
+                      alt={item.name}
+                      className={styles.itemImage}
+                      onError={(e) => {
+                        e.currentTarget.src = "https://placehold.co/150x150";
+                      }}
+                    />
+                  </div>
+                  <div className={styles.itemDetails}>
+                    <span className={styles.itemName}>
+                      {item.original_price && (
+                        <span className={styles.saleTag}>
+                          <FaTag /> Sale
+                        </span>
+                      )}
+                      {item.name}
                     </span>
-                    {item.original_price && (
-                      <span className={styles.originalPrice}>
-                        KSh{" "}
-                        {parseFloat(item.original_price as string).toFixed(0)}
-                      </span>
+                    <span className={styles.separator}>|</span>
+                    <span className={styles.itemCategory}>
+                      <FaTag /> {item.category}
+                    </span>
+                    {item.size && (
+                      <>
+                        <span className={styles.separator}>|</span>
+                        <span className={styles.itemOption}>
+                          <FaTag /> Size: {item.size}
+                        </span>
+                      </>
                     )}
-                  </div>
-                  <div className={styles.quantityControl}>
-                    <motion.button
-                      variants={buttonVariants}
-                      whileHover="hover"
-                      whileTap="tap"
-                      onClick={() =>
-                        updateQuantity(item.product_id, item.quantity - 1)
-                      }
-                      className={styles.quantityButton}
-                      disabled={item.quantity <= 1}
-                    >
-                      <FaMinus className={styles.actionIcon} />
-                    </motion.button>
-                    <span className={styles.quantity}>{item.quantity}</span>
-                    <motion.button
-                      variants={buttonVariants}
-                      whileHover="hover"
-                      whileTap="tap"
-                      onClick={() =>
-                        updateQuantity(item.product_id, item.quantity + 1)
-                      }
-                      className={styles.quantityButton}
-                    >
-                      <FaPlus className={styles.actionIcon} />
-                    </motion.button>
-                  </div>
-                  {item.stock_status === "out_of_stock" && (
-                    <p className={styles.stockStatus}>
-                      <FaTag /> Out of stock - will ship when available
-                    </p>
-                  )}
-                  <div className={styles.itemActions}>
-                    <motion.div
-                      variants={buttonVariants}
-                      whileHover="hover"
-                      whileTap="tap"
-                    >
-                      <Button
-                        onClick={() => removeFromCart(item.product_id)}
-                        className={styles.removeButton}
+                    {item.color && (
+                      <>
+                        <span className={styles.separator}>|</span>
+                        <span className={styles.itemOption}>
+                          <FaTag /> Color: {item.color}
+                        </span>
+                      </>
+                    )}
+                    <span className={styles.separator}>|</span>
+                    <span className={styles.itemPricing}>
+                      <span className={styles.itemPrice}>
+                        KSh {parseFloat(item.price as string).toFixed(0)}
+                      </span>
+                      {item.original_price && (
+                        <span className={styles.originalPrice}>
+                          KSh{" "}
+                          {parseFloat(item.original_price as string).toFixed(0)}
+                        </span>
+                      )}
+                    </span>
+                    {item.stock_status === "out_of_stock" && (
+                      <>
+                        <span className={styles.separator}>|</span>
+                        <span className={styles.stockStatus}>
+                          <FaTag /> Out of stock - will ship when available
+                        </span>
+                      </>
+                    )}
+                    <span className={styles.separator}>|</span>
+                    <div className={styles.quantityControl}>
+                      <motion.button
+                        variants={buttonVariants}
+                        whileHover="hover"
+                        whileTap="tap"
+                        onClick={() =>
+                          updateQuantity(item.product_id, item.quantity - 1)
+                        }
+                        className={styles.quantityButton}
+                        disabled={item.quantity <= 1}
                       >
-                        <FaTrash className={styles.actionIcon} /> Remove
-                      </Button>
-                    </motion.div>
-                    <motion.div
-                      variants={buttonVariants}
-                      whileHover="hover"
-                      whileTap="tap"
-                    >
-                      <Button
-                        onClick={() => saveItem(item.product_id)}
-                        className={styles.saveButton}
+                        <FaMinus className={styles.actionIcon} />
+                      </motion.button>
+                      <span className={styles.quantity}>{item.quantity}</span>
+                      <motion.button
+                        variants={buttonVariants}
+                        whileHover="hover"
+                        whileTap="tap"
+                        onClick={() =>
+                          updateQuantity(item.product_id, item.quantity + 1)
+                        }
+                        className={styles.quantityButton}
                       >
-                        <FaBookmark className={styles.actionIcon} /> Save
-                      </Button>
-                    </motion.div>
+                        <FaPlus className={styles.actionIcon} />
+                      </motion.button>
+                    </div>
+                    <span className={styles.separator}>|</span>
+                    <div className={styles.itemActions}>
+                      <motion.div
+                        variants={buttonVariants}
+                        whileHover="hover"
+                        whileTap="tap"
+                      >
+                        <Button
+                          onClick={() => removeFromCart(item.product_id)}
+                          className={styles.removeButton}
+                        >
+                          <FaTrash className={styles.actionIcon} /> Remove
+                        </Button>
+                      </motion.div>
+                      <motion.div
+                        variants={buttonVariants}
+                        whileHover="hover"
+                        whileTap="tap"
+                      >
+                        <Button
+                          onClick={() => saveItem(item.product_id)}
+                          className={styles.saveButton}
+                        >
+                          <FaBookmark className={styles.actionIcon} /> Save
+                        </Button>
+                      </motion.div>
+                    </div>
                   </div>
-                </div>
-              </motion.div>
-            ))}
+                </motion.div>
+              ))}
+            </div>
           </motion.div>
           <motion.div
-            className={styles.cartSummarySection}
+            className={styles.checkoutOptionsSection}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.2 }}
@@ -421,59 +451,56 @@ const Cart: React.FC<CartProps> = ({ show, onHide }) => {
               </p>
             </div>
             <hr className={styles.divider} />
-            <div className={styles.orderSummary}>
+            <div className={styles.paymentMethods}>
               <h4 className={styles.sectionTitle}>
-                <FaCheck className={styles.sectionIcon} /> Order Summary
+                <FaCreditCard className={styles.sectionIcon} /> Payment Methods
               </h4>
-              <div className={styles.summaryRow}>
-                <span>
-                  <FaTag /> Subtotal
-                </span>
-                <span>KSh {subtotal.toFixed(0)}</span>
-              </div>
-              <div className={styles.summaryRow}>
-                <span>
-                  <FaTruck /> Shipping
-                </span>
-                <span>KSh {shippingCost.toFixed(0)}</span>
-              </div>
-              <div className={styles.summaryRow}>
-                <span>
-                  <FaTag /> VAT (16%)
-                </span>
-                <span>KSh {vat.toFixed(0)}</span>
-              </div>
-              {giftWrapping && (
-                <div className={styles.summaryRow}>
-                  <span>
-                    <FaGift /> Gift Wrapping
-                  </span>
-                  <span>KSh {giftWrappingCost.toFixed(0)}</span>
-                </div>
-              )}
-              <div className={styles.summaryTotal}>
-                <span>
-                  <FaCreditCard /> Total
-                </span>
-                <span>KSh {total.toFixed(0)}</span>
-              </div>
-              <motion.div
-                variants={buttonVariants}
-                whileHover="hover"
-                whileTap="tap"
-              >
-                <Button
-                  href="/checkout"
-                  className={styles.checkoutButton}
-                  disabled={cartItems.length === 0}
+              <div className={styles.paymentOptions}>
+                <motion.div
+                  variants={buttonVariants}
+                  whileHover="hover"
+                  whileTap="tap"
+                  className={`${styles.paymentOption} ${
+                    selectedPayment === "credit_card" ? styles.selected : ""
+                  }`}
+                  onClick={() => setSelectedPayment("credit_card")}
                 >
-                  <FaLock className={styles.actionIcon} /> Proceed to Checkout
-                </Button>
-              </motion.div>
-              <p className={styles.secureCheckout}>
-                <FaLock className={styles.actionIcon} /> Secure checkout with
-                SSL encryption
-              </p>
+                  <FaCreditCard className={styles.optionIcon} /> Credit Card
+                </motion.div>
+                <motion.div
+                  variants={buttonVariants}
+                  whileHover="hover"
+                  whileTap="tap"
+                  className={`${styles.paymentOption} ${
+                    selectedPayment === "mpesa" ? styles.selected : ""
+                  }`}
+                  onClick={() => setSelectedPayment("mpesa")}
+                >
+                  <FaMobileAlt className={styles.optionIcon} /> M-Pesa
+                </motion.div>
+                <motion.div
+                  variants={buttonVariants}
+                  whileHover="hover"
+                  whileTap="tap"
+                  className={`${styles.paymentOption} ${
+                    selectedPayment === "paypal" ? styles.selected : ""
+                  }`}
+                  onClick={() => setSelectedPayment("paypal")}
+                >
+                  <FaPaypal className={styles.optionIcon} /> PayPal
+                </motion.div>
+                <motion.div
+                  variants={buttonVariants}
+                  whileHover="hover"
+                  whileTap="tap"
+                  className={`${styles.paymentOption} ${
+                    selectedPayment === "bank_transfer" ? styles.selected : ""
+                  }`}
+                  onClick={() => setSelectedPayment("bank_transfer")}
+                >
+                  <FaUniversity className={styles.optionIcon} /> Bank Transfer
+                </motion.div>
+              </div>
             </div>
             <hr className={styles.divider} />
             <div className={styles.shippingOptions}>
@@ -529,6 +556,67 @@ const Cart: React.FC<CartProps> = ({ show, onHide }) => {
                 className={styles.shippingOption}
               />
               <div className={styles.shippingCost}>Free</div>
+            </div>
+          </motion.div>
+          <motion.div
+            className={styles.orderDetailsSection}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+          >
+            <div className={styles.orderSummary}>
+              <h4 className={styles.sectionTitle}>
+                <FaCheck className={styles.sectionIcon} /> Order Summary
+              </h4>
+              <div className={styles.summaryRow}>
+                <span>
+                  <FaTag /> Subtotal
+                </span>
+                <span>KSh {subtotal.toFixed(0)}</span>
+              </div>
+              <div className={styles.summaryRow}>
+                <span>
+                  <FaTruck /> Shipping
+                </span>
+                <span>KSh {shippingCost.toFixed(0)}</span>
+              </div>
+              <div className={styles.summaryRow}>
+                <span>
+                  <FaTag /> VAT (16%)
+                </span>
+                <span>KSh {vat.toFixed(0)}</span>
+              </div>
+              {giftWrapping && (
+                <div className={styles.summaryRow}>
+                  <span>
+                    <FaGift /> Gift Wrapping
+                  </span>
+                  <span>KSh {giftWrappingCost.toFixed(0)}</span>
+                </div>
+              )}
+              <div className={styles.summaryTotal}>
+                <span>
+                  <FaCreditCard /> Total
+                </span>
+                <span>KSh {total.toFixed(0)}</span>
+              </div>
+              <motion.div
+                variants={buttonVariants}
+                whileHover="hover"
+                whileTap="tap"
+              >
+                <Button
+                  href="/checkout"
+                  className={styles.checkoutButton}
+                  disabled={cartItems.length === 0 || !selectedPayment}
+                >
+                  <FaLock className={styles.actionIcon} /> Proceed to Checkout
+                </Button>
+              </motion.div>
+              <p className={styles.secureCheckout}>
+                <FaLock className={styles.actionIcon} /> Secure checkout with
+                SSL encryption
+              </p>
             </div>
             <hr className={styles.divider} />
             <div className={styles.additionalOptions}>
