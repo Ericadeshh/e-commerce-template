@@ -13,8 +13,8 @@
 }
 
 .sectionTitle {
-  font-size: 1.8rem;
-  font-weight: 600;
+  font-size: 1.5rem;
+  font-weight: 500;
   color: #9400d3;
   margin: 2rem 0;
 }
@@ -37,7 +37,7 @@
   }
 
   .sectionTitle {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     margin: 1.5rem 0;
   }
 }

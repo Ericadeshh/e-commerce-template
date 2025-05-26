@@ -20,7 +20,7 @@
 
 .productImage {
   width: 100%;
-  height: 200px;
+  height: 150px;
   object-fit: cover;
   transition: transform 0.3s ease;
 }
@@ -63,7 +63,7 @@
 .categoryTag {
   font-size: 0.7rem;
   color: #dda0dd;
-  margin-bottom: 0.5rem;
+
   text-transform: capitalize;
 }
 
@@ -71,19 +71,17 @@
   font-size: 0.9rem;
   font-weight: 500;
   color: #9400d3;
-  margin-bottom: 0.5rem;
 }
 
 .priceContainer {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-bottom: 0.5rem;
 }
 
 .productPrice {
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 500;
   color: #ff1493;
 }
 
@@ -96,7 +94,6 @@
 .stockStatus {
   font-size: 0.7rem;
   color: #495057;
-  margin-bottom: 0.75rem;
 }
 
 .linkGroup {
@@ -142,6 +139,8 @@
 
   .productCard {
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    min-width: 150px;
   }
 
   .productImage {
@@ -157,11 +156,11 @@
   }
 
   .productName {
-    font-size: 0.8rem;
+    font-size: 0.65rem;
   }
 
   .productPrice {
-    font-size: 0.9rem;
+    font-size: 0.7rem;
   }
 
   .originalPrice {
@@ -174,11 +173,11 @@
 
   .detailLink,
   .shopLink {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
   }
 
   .cartIcon {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
   }
 
   .discountBadge,

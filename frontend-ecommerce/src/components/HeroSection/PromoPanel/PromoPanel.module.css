@@ -16,7 +16,8 @@
 @media (max-width: 768px) {
   .promoPanel {
     min-height: unset;
-    padding: 3rem 0.8rem;
+    max-height: unset;
+    padding: 3rem 1rem;
     margin: 0.8rem 0;
     background: linear-gradient(135deg, #f3e8ff, #ffffff);
     position: relative;
@@ -63,7 +64,7 @@
 
 .promoPanelTitle {
   font-size: clamp(0.9rem, 1.2vw, 1rem);
-  font-weight: 600;
+  font-weight: 500;
   color: #9400d3;
   margin-bottom: 0.5rem;
   text-align: left;
@@ -72,7 +73,7 @@
 @media (max-width: 768px) {
   .promoPanelTitle {
     text-align: center;
-    font-size: clamp(0.9rem, 2.5vw, 1rem);
+    font-size: 1.2rem;
     margin-bottom: 0.8rem;
   }
 }
@@ -162,21 +163,6 @@
   }
 }
 
-@media (max-width: 576px) {
-  .circularCard {
-    width: clamp(210px, 62vw, 230px);
-    height: clamp(210px, 62vw, 230px);
-    padding: clamp(0.8rem, 3vw, 1rem);
-  }
-}
-
-@media (max-width: 360px) {
-  .circularCard {
-    width: clamp(190px, 58vw, 210px);
-    height: clamp(190px, 58vw, 210px);
-  }
-}
-
 .cardImage {
   position: absolute;
   top: -15px;
@@ -190,22 +176,6 @@
   transition: transform 0.2s ease-in-out;
 }
 
-@media (max-width: 576px) {
-  .cardImage {
-    width: clamp(95px, 27vw, 105px);
-    height: clamp(95px, 27vw, 105px);
-    top: -12px;
-    left: -12px;
-  }
-}
-
-@media (max-width: 360px) {
-  .cardImage {
-    width: clamp(85px, 24vw, 95px);
-    height: clamp(85px, 24vw, 95px);
-  }
-}
-
 .cardContent {
   text-align: center;
   padding: clamp(4.5rem, 12vw, 5rem) clamp(1rem, 3vw, 1.5rem)
@@ -215,18 +185,6 @@
   gap: clamp(0.2rem, 0.8vw, 0.3rem);
   z-index: 2;
   width: 100%;
-}
-
-@media (max-width: 576px) {
-  .cardContent {
-    padding: clamp(3.5rem, 10vw, 4rem) clamp(0.8rem, 2.5vw, 1rem);
-  }
-}
-
-@media (max-width: 360px) {
-  .cardContent {
-    padding: clamp(3rem, 9vw, 3.5rem) clamp(0.6rem, 2vw, 0.8rem);
-  }
 }
 
 .detailCircle {
@@ -415,107 +373,5 @@
   .ctaIcon {
     margin-right: 0.15rem;
     font-size: clamp(0.35rem, 0.9vw, 0.4rem);
-  }
-}
-
-@media (max-width: 992px) {
-  .promoPanelTitle {
-    font-size: clamp(1rem, 3vw, 1.1rem);
-  }
-
-  .promoImage {
-    height: 70px;
-  }
-
-  .promoTitle {
-    font-size: clamp(0.6rem, 1.5vw, 0.7rem);
-  }
-
-  .promoDiscount {
-    font-size: clamp(0.55rem, 1.2vw, 0.65rem);
-  }
-
-  .promoPrice {
-    font-size: clamp(0.55rem, 1.2vw, 0.65rem);
-  }
-
-  .promoTag {
-    font-size: clamp(0.5rem, 1.1vw, 0.6rem);
-  }
-
-  .promoDescription {
-    font-size: clamp(0.5rem, 1.2vw, 0.6rem);
-  }
-
-  .promoTimer,
-  .promoStock {
-    font-size: clamp(0.5rem, 1.1vw, 0.6rem);
-  }
-
-  .promoCta {
-    font-size: clamp(0.5rem, 1.2vw, 0.6rem);
-    padding: 0.2rem 0.4rem;
-  }
-}
-
-@media (max-width: 576px) {
-  .promoPanelTitle {
-    font-size: clamp(0.9rem, 2.5vw, 1rem);
-  }
-
-  .promoTitle {
-    font-size: clamp(0.55rem, 1.3vw, 0.65rem);
-  }
-
-  .promoDiscount {
-    font-size: clamp(0.45rem, 1.1vw, 0.55rem);
-  }
-
-  .promoPrice {
-    font-size: clamp(0.45rem, 1.1vw, 0.55rem);
-  }
-
-  .promoTag {
-    font-size: clamp(0.4rem, 1vw, 0.5rem);
-  }
-
-  .promoDescription {
-    font-size: clamp(0.4rem, 1vw, 0.5rem);
-  }
-
-  .promoTimer,
-  .promoStock {
-    font-size: clamp(0.4rem, 1vw, 0.5rem);
-  }
-
-  .promoCta {
-    font-size: clamp(0.35rem, 0.9vw, 0.45rem);
-  }
-}
-
-@media (max-width: 360px) {
-  .promoTitle {
-    font-size: clamp(0.5rem, 1.2vw, 0.6rem);
-  }
-
-  .promoDiscount {
-    font-size: clamp(0.4rem, 1vw, 0.5rem);
-  }
-
-  .promoPrice {
-    font-size: clamp(0.4rem, 1vw, 0.5rem);
-  }
-
-  .promoTag {
-    font-size: clamp(0.35rem, 0.9vw, 0.45rem);
-  }
-
-  .promoDescription {
-    font-size: clamp(0.35rem, 0.9vw, 0.45rem);
-  }
-
-  .promoTimer,
-  .promoStock {
-    font-size: clamp(0.35rem, 0.9vw, 0.45rem);
   }
 }

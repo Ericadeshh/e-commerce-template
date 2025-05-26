@@ -18,7 +18,7 @@
   font-size: clamp(1.5rem, 2vw, 1.8rem);
   color: #9400d3;
   text-align: center;
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .viewMore {
@@ -158,57 +158,6 @@
   overflow: visible !important;
 }
 
-/* Responsive */
-@media (max-width: 992px) {
-  .newArrivals {
-    padding: 1.5rem 0.5rem;
-  }
-
-  .sectionTitle {
-    font-size: clamp(1.3rem, 1.8vw, 1.5rem);
-  }
-
-  .viewMore {
-    font-size: clamp(0.75rem, 0.9vw, 0.85rem);
-    padding: 0.4rem 0.8rem;
-  }
-
-  .cardContainer {
-    height: 180px;
-  }
-
-  .imageCircle,
-  .detailsCircle {
-    width: 150px;
-    height: 150px;
-  }
-
-  .detailsCircle {
-    padding: 1.4rem;
-  }
-
-  .productName {
-    font-size: clamp(0.75rem, 0.9vw, 0.85rem);
-  }
-
-  .productPrice {
-    font-size: clamp(0.7rem, 0.8vw, 0.8rem);
-  }
-
-  .arrivalDate,
-  .shippingInfo {
-    font-size: clamp(0.65rem, 0.7vw, 0.75rem);
-  }
-
-  .newSticker {
-    width: 22px;
-    height: 22px;
-    font-size: 0.6rem;
-    top: 8px;
-    left: 8px;
-  }
-}
-
 @media (max-width: 768px) {
   .newArrivals {
     width: 100%;
@@ -221,7 +170,7 @@
   }
 
   .sectionTitle {
-    font-size: clamp(1.2rem, 1.5vw, 1.3rem);
+    font-size: 1.2rem;
   }
 
   .viewMore {
@@ -266,42 +215,5 @@
 
   .slick-slide > div {
     margin: 0 auto;
-  }
-}
-
-@media (max-width: 576px) {
-  .cardContainer {
-    height: 140px;
-  }
-
-  .imageCircle,
-  .detailsCircle {
-    width: 130px;
-    height: 130px;
-  }
-
-  .detailsCircle {
-    padding: 1rem;
-  }
-
-  .productName {
-    font-size: clamp(0.75rem, 0.9vw, 0.85rem);
-  }
-
-  .productPrice {
-    font-size: clamp(0.7rem, 0.8vw, 0.8rem);
-  }
-
-  .arrivalDate,
-  .shippingInfo {
-    font-size: clamp(0.65rem, 0.7vw, 0.75rem);
-  }
-
-  .newSticker {
-    width: 20px;
-    height: 20px;
-    font-size: 0.55rem;
-    top: 6px;
-    left: 6px;
   }
 }
