@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./components/Header/Header";
 import Home from "./pages/Home/Home";
@@ -12,16 +11,10 @@ import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary";
 import styles from "./App.module.css";
 
 function App() {
-  const [showCart, setShowCart] = useState(false);
-
-  const handleCartClick = () => {
-    setShowCart(true);
-  };
-
   return (
     <Router>
       <div className={styles.app}>
-        <Header onCartClick={handleCartClick} />
+        <Header />
         <main className={styles.main}>
           <Routes>
             <Route path="/" element={<Home />} />
@@ -53,7 +46,6 @@ function App() {
             <Route path="/warranty" element={<div>Warranty (TBD)</div>} />
           </Routes>
         </main>
-        <Cart show={showCart} onHide={() => setShowCart(false)} />
         <Footer />
       </div>
     </Router>

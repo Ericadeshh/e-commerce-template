@@ -6,16 +6,13 @@ import {
   FaQuestionCircle,
   FaShoppingCart,
   FaAngleRight,
+  FaShopify,
+  FaHome,
 } from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import styles from "./Header.module.css";
-import logo from "../../assets/e-commerceLogo.jpeg";
 
-interface HeaderProps {
-  onCartClick: () => void;
-}
-
-export default function Header({ onCartClick }: HeaderProps) {
+export default function Header() {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<
     "account" | "help" | null
@@ -29,6 +26,7 @@ export default function Header({ onCartClick }: HeaderProps) {
   const accountRef = useRef<HTMLDivElement>(null);
   const helpRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+  const location = useLocation();
   const isLoggedIn = !!localStorage.getItem("token");
   const role = localStorage.getItem("role");
 
@@ -49,21 +47,11 @@ export default function Header({ onCartClick }: HeaderProps) {
   };
 
   const handleMobileLinkClick = (destination: string) => {
-    console.log(`Navigating to ${destination}, closing mobile menu`);
     setShowMobileMenu(false);
     setActiveDropdown(null);
     setHoverDropdown(null);
     setActiveMobileSection(null);
     navigate(destination);
-  };
-
-  const handleMobileCartClick = () => {
-    console.log("Cart clicked, opening panel, closing mobile menu");
-    onCartClick();
-    setShowMobileMenu(false);
-    setActiveDropdown(null);
-    setHoverDropdown(null);
-    setActiveMobileSection(null);
   };
 
   const toggleMobileSection = (section: "account" | "help") => {
@@ -96,17 +84,33 @@ export default function Header({ onCartClick }: HeaderProps) {
         <div className={styles.container}>
           {/* Logo and Brand */}
           <Link to="/" className={styles.brand}>
-            <img
-              src={logo}
-              alt="Milliwin Boutique Logo"
-              className={styles.logo}
-            />
-            Milliwin Boutique
+            <FaShopify className={styles.brandIcon} />
+            MILLIWIN BOUTIQUE
           </Link>
 
-          {/* Search Bar */}
+          {/* Search Bar and Hamburger for Mobile */}
+          <div className={styles.searchWrapper}>
+            <form
+              className={styles.searchForm}
+              onSubmit={(e) => e.preventDefault()}
+            >
+              <input
+                type="search"
+                placeholder="Search products, brands, categories..."
+                className={styles.searchInput}
+              />
+              <button type="submit" className={styles.searchButton}>
+                Search
+              </button>
+            </form>
+            <button className={styles.hamburger} onClick={toggleMobileMenu}>
+              <FaBars />
+            </button>
+          </div>
+
+          {/* Search Bar for Desktop */}
           <form
-            className={styles.searchForm}
+            className={`${styles.searchForm} ${styles.desktopSearch}`}
             onSubmit={(e) => e.preventDefault()}
           >
             <input
@@ -114,22 +118,21 @@ export default function Header({ onCartClick }: HeaderProps) {
               placeholder="Search products, brands, categories..."
               className={styles.searchInput}
             />
-            <button
-              type="submit"
-              className={styles.searchButton}
-              style={{ backgroundColor: "#9400D3", borderColor: "#9400D3" }}
-            >
+            <button type="submit" className={styles.searchButton}>
               Search
             </button>
           </form>
 
-          {/* Hamburger for Mobile */}
-          <button className={styles.hamburger} onClick={toggleMobileMenu}>
-            <FaBars />
-          </button>
-
           {/* Desktop Navigation */}
           <nav className={styles.desktopNav}>
+            <Link
+              to="/"
+              className={`${styles.navLink} ${
+                location.pathname === "/" ? styles.active : ""
+              }`}
+            >
+              <FaHome />
+            </Link>
             <div
               className={`${styles.navLink} ${
                 activeDropdown === "account" ? styles.active : ""
@@ -143,7 +146,7 @@ export default function Header({ onCartClick }: HeaderProps) {
                 )
               }
             >
-              <FaUser /> Account
+              <FaUser />
               {isDropdownVisible("account") && (
                 <div className={styles.dropdown}>
                   {isLoggedIn ? (
@@ -204,7 +207,7 @@ export default function Header({ onCartClick }: HeaderProps) {
                 setActiveDropdown(activeDropdown === "help" ? null : "help")
               }
             >
-              <FaQuestionCircle /> Help
+              <FaQuestionCircle />
               {isDropdownVisible("help") && (
                 <div className={styles.dropdown}>
                   <Link to="/help-center" className={styles.dropdownItem}>
@@ -228,21 +231,14 @@ export default function Header({ onCartClick }: HeaderProps) {
                 </div>
               )}
             </div>
-            <div className={styles.navLink}>
-              <button
-                onClick={onCartClick}
-                style={{ background: "none", border: "none", color: "#A1DC17" }}
-              >
-                <FaShoppingCart /> Cart
-              </button>
-              <Link
-                to="/cart"
-                className={styles.dropdownItem}
-                style={{ display: "block", color: "#FF1493" }}
-              >
-                View Cart
-              </Link>
-            </div>
+            <Link
+              to="/cart"
+              className={`${styles.navLink} ${
+                location.pathname === "/cart" ? styles.active : ""
+              }`}
+            >
+              <FaShoppingCart />
+            </Link>
           </nav>
         </div>
       </header>
@@ -252,12 +248,23 @@ export default function Header({ onCartClick }: HeaderProps) {
         className={`${styles.mobileMenu} ${showMobileMenu ? styles.show : ""}`}
       >
         <div className={styles.mobileMenuHeader}>
-          <span>Milliwin Boutique</span>
+          <span>MILLIWIN BOUTIQUE</span>
           <button className={styles.closeButton} onClick={toggleMobileMenu}>
             <FaTimes />
           </button>
         </div>
         <nav className={styles.mobileNav}>
+          <div className={styles.mobileNavSection}>
+            <Link
+              to="/"
+              className={styles.mobileNavTitle}
+              onClick={() => handleMobileLinkClick("/")}
+            >
+              <span>
+                <FaHome /> Home
+              </span>
+            </Link>
+          </div>
           <div className={styles.mobileNavSection}>
             <button
               className={styles.mobileNavTitle}
@@ -418,15 +425,16 @@ export default function Header({ onCartClick }: HeaderProps) {
             )}
           </div>
           <div className={styles.mobileNavSection}>
-            <button
+            <Link
+              to="/cart"
               className={styles.mobileNavTitle}
-              onClick={handleMobileCartClick}
+              onClick={() => handleMobileLinkClick("/cart")}
             >
               <span>
                 <FaShoppingCart /> Cart
               </span>
               <FaAngleRight className={styles.openIcon} />
-            </button>
+            </Link>
           </div>
         </nav>
       </div>

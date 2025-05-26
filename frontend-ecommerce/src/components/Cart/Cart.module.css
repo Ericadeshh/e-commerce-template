@@ -165,7 +165,7 @@
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
   display: flex;
   align-items: center;
-  padding: clamp(0.3rem, 0.8vw, 0.4rem);
+  padding: 2rem 1rem;
   margin-bottom: clamp(0.2rem, 0.5vw, 0.3rem);
   position: relative;
 }
@@ -734,7 +734,7 @@
   .cartItem {
     flex-direction: row;
     align-items: center;
-    padding: clamp(0.2rem, 0.5vw, 0.3rem);
+    padding: 1.5rem 1rem;
     flex-wrap: wrap;
   }
 
@@ -764,44 +764,5 @@
 
   .cartItemsScroll {
     max-height: 300px;
-  }
-}
-
-@media (max-width: 576px) {
-  .cartTitle {
-    font-size: clamp(0.9rem, 2vw, 1rem);
-  }
-
-  .itemName {
-    font-size: clamp(0.7rem, 1.2vw, 0.8rem);
-  }
-
-  .itemPrice {
-    font-size: clamp(0.7rem, 1.2vw, 0.8rem);
-  }
-
-  .quantity {
-    font-size: clamp(0.6rem, 1vw, 0.7rem);
-  }
-
-  .quantityButton {
-    width: clamp(18px, 4vw, 20px);
-    height: clamp(18px, 4vw, 20px);
-    font-size: clamp(0.3rem, 0.8vw, 0.4rem);
-  }
-
-  .removeButton,
-  .saveButton {
-    font-size: clamp(0.5rem, 1vw, 0.6rem);
-    padding: clamp(0.1rem, 0.3vw, 0.2rem) clamp(0.3rem, 0.8vw, 0.4rem);
-  }
-
-  .sectionTitle {
-    font-size: clamp(0.7rem, 1.2vw, 0.8rem);
-  }
-
-  .checkoutButton {
-    font-size: clamp(0.6rem, 1.2vw, 0.7rem);
-    padding: clamp(0.2rem, 0.5vw, 0.3rem) clamp(0.5rem, 1.2vw, 0.6rem);
   }
 }

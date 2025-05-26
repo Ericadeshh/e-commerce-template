@@ -64,8 +64,8 @@ const desktopCardVariants = {
 const desktopImageVariants = {
   initial: { scale: 1 },
   hover: {
-    scale: [1, 1.1, 1],
-    transition: { duration: 1, ease: "easeInOut", times: [0, 0.5, 1] },
+    scale: 1.15,
+    transition: { duration: 0.3, ease: "easeInOut" },
   },
 };
 
@@ -88,15 +88,17 @@ const PromoPanel: React.FC<PromoPanelProps> = ({ promotions }) => {
             >
               <Card className={styles.promoCard}>
                 <motion.div whileHover="hover">
-                  <motion.img
-                    variants={desktopImageVariants}
-                    src={promo.image_url}
-                    alt={promo.title}
-                    className={styles.promoImage}
-                    onError={(e) => {
-                      e.currentTarget.src = "https://placehold.co/400x200";
-                    }}
-                  />
+                  <div className={styles.imageWrapper}>
+                    <motion.img
+                      variants={desktopImageVariants}
+                      src={promo.image_url}
+                      alt={promo.title}
+                      className={styles.promoImage}
+                      onError={(e) => {
+                        e.currentTarget.src = "https://placehold.co/400x200";
+                      }}
+                    />
+                  </div>
                   <Card.Body>
                     <motion.div variants={desktopCardVariants}>
                       <Card.Title className={styles.promoTitle}>

@@ -9,7 +9,7 @@ const HeroHeader: React.FC<HeroHeaderProps> = ({ serverStatus }) => {
   return (
     <div className={styles.heroTitleBar}>
       <div className={styles.heroHeader}>
-        <h1 className={styles.heroTitle}>Milliwin Boutique</h1>
+        <h1 className={styles.heroTitle}></h1>
         <motion.span
           className={styles.serverStatusDot}
           style={{ backgroundColor: serverStatus ? "#00FF00" : "#FF0000" }}

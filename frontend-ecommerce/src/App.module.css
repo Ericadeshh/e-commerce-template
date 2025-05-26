@@ -6,6 +6,7 @@
   max-width: 100%;
   margin: 0;
   padding: 0;
+
   box-sizing: border-box;
   overflow-x: hidden;
   background: #f3e8ff;
@@ -15,7 +16,7 @@
   width: 100%;
   max-width: 100%;
   margin: 0;
-  padding-top: 5.5rem;
+  padding-top: 6rem;
   min-height: calc(100vh - 200px); /* Adjust based on Header/Footer height */
   box-sizing: border-box;
 }
@@ -26,6 +27,6 @@
   }
 
   .main {
-    padding-top: 5.2rem;
+    padding-top: 4rem;
   }
 }

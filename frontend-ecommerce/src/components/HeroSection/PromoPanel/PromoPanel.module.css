@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Dancing+Script:wght@700&display=swap");
 
 .promoPanel {
-  padding: 0.5rem;
+  padding: 1.5rem;
   background: #ffffff;
   border-radius: 0.5rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
@@ -109,6 +109,13 @@
   }
 }
 
+.imageWrapper {
+  position: relative;
+  width: 100%;
+  height: 80px;
+  overflow: hidden;
+}
+
 .promoImage {
   width: 100%;
   height: 80px;
@@ -191,7 +198,7 @@
   position: absolute;
   bottom: -15px;
   right: -50px;
-  width: clamp(90px, 45vw, 100px); /*inc. by 30*/
+  width: clamp(90px, 45vw, 100px);
   height: clamp(90px, 45vw, 100px);
   border-radius: 50%;
   background: rgba(161, 220, 23, 0.25);
@@ -228,125 +235,148 @@
 }
 
 .promoTitle {
-  font-size: clamp(0.6rem, 1.7vw, 0.7rem);
+  font-size: clamp(0.75rem, 1.8vw, 0.85rem);
   font-weight: 600;
-  color: #ffffff;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  color: #333;
   margin-bottom: 0.15rem;
   line-height: 1.2;
   display: flex;
   align-items: center;
-  justify-content: center;
+  text-align: left;
 }
 
 @media (max-width: 768px) {
   .promoTitle {
     font-size: clamp(0.55rem, 1.5vw, 0.65rem);
+    color: #ffffff;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    text-align: center;
   }
 }
 
 .titleIcon {
   margin-right: 0.2rem;
-  font-size: clamp(0.45rem, 1.1vw, 0.55rem);
-  color: #ffd700;
+  font-size: clamp(0.6rem, 1.3vw, 0.7rem);
+  color: #9400d3;
 }
 
 @media (max-width: 768px) {
   .titleIcon {
     font-size: clamp(0.4rem, 1vw, 0.45rem);
+    color: #ffd700;
   }
 }
 
 .promoDiscount {
-  font-size: clamp(0.5rem, 1.4vw, 0.6rem);
-  color: #ff69b4;
+  font-size: clamp(0.65rem, 1.5vw, 0.75rem);
+  color: #9400d3;
   font-weight: 500;
-  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
   margin-bottom: 0.15rem;
   line-height: 1.2;
+  text-align: left;
 }
 
 @media (max-width: 768px) {
   .promoDiscount {
     font-size: clamp(0.45rem, 1.2vw, 0.55rem);
+    color: #ff69b4;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+    text-align: center;
   }
 }
 
 .promoPrice {
-  font-size: clamp(0.5rem, 1.4vw, 0.6rem);
-  color: #ff69b4;
+  font-size: clamp(0.65rem, 1.5vw, 0.75rem);
+  color: #9400d3;
   font-weight: 600;
-  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
   margin-bottom: 0.15rem;
   line-height: 1.2;
+  text-align: left;
 }
 
 @media (max-width: 768px) {
   .promoPrice {
     font-size: clamp(0.45rem, 1.2vw, 0.55rem);
+    color: #ff69b4;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+    text-align: center;
   }
 }
 
 .promoTag {
-  font-size: clamp(0.45rem, 1.2vw, 0.55rem);
-  color: #c6ff00;
+  font-size: clamp(0.55rem, 1.3vw, 0.65rem);
+  color: #333;
   font-weight: 500;
-  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
   margin-bottom: 0.15rem;
   line-height: 1.2;
+  text-align: left;
 }
 
 @media (max-width: 768px) {
   .promoTag {
     font-size: clamp(0.4rem, 1.1vw, 0.5rem);
+    color: #c6ff00;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+    text-align: center;
   }
 }
 
 .promoDescription {
-  font-size: clamp(0.45rem, 1.2vw, 0.55rem);
-  color: #f5f5f5;
-  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+  font-size: clamp(0.55rem, 1.3vw, 0.65rem);
+  color: #555;
   margin-bottom: 0.15rem;
   line-height: 1.2;
+  text-align: left;
 }
 
 @media (max-width: 768px) {
   .promoDescription {
     font-size: clamp(0.4rem, 1.1vw, 0.5rem);
+    color: #f5f5f5;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+    text-align: center;
   }
 }
 
 .promoTimer,
 .promoStock {
-  font-size: clamp(0.45rem, 1.2vw, 0.55rem);
-  color: #f5f5f5;
-  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+  font-size: clamp(0.55rem, 1.3vw, 0.65rem);
+  color: #555;
   margin-bottom: 0.15rem;
   line-height: 1.2;
+  text-align: left;
 }
 
 @media (max-width: 768px) {
   .promoTimer,
   .promoStock {
     font-size: clamp(0.4rem, 1.1vw, 0.5rem);
+    color: #f5f5f5;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+    text-align: center;
   }
 }
 
 .promoCta {
   font-size: clamp(0.5rem, 1.4vw, 0.6rem);
   padding: 0.3rem 0.6rem;
+  text-align: center;
   background: linear-gradient(45deg, #9400d3, #ff1493);
   border: none;
   border-radius: 1.5rem;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   transition: all 0.2s ease-in-out;
+  text-align: left;
 }
 
 @media (max-width: 768px) {
   .promoCta {
     font-size: clamp(0.35rem, 1vw, 0.45rem);
+    justify-content: center;
+    text-align: center;
+    width: 30%;
   }
 }
 
@@ -354,7 +384,7 @@
   border-radius: 0.3rem;
   padding: clamp(0.15rem, 0.5vw, 0.2rem) clamp(0.3rem, 1vw, 0.4rem);
   text-transform: uppercase;
-  font-weight: 600;
+  font-weight: 500;
   width: auto;
 }
 
@@ -366,12 +396,6 @@
 
 .ctaIcon {
   margin-right: 0.2rem;
-  font-size: clamp(0.4rem, 1.1vw, 0.45rem);
-}
-
-@media (max-width: 768px) {
-  .ctaIcon {
-    margin-right: 0.15rem;
-    font-size: clamp(0.35rem, 0.9vw, 0.4rem);
-  }
+  font-size: 0.7rem;
+  color: #c6ff00;
 }
