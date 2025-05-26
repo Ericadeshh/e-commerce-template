@@ -1,0 +1,30 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Dancing+Script:wght@700&display=swap");
+
+.heroTitleBar {
+  background: #ffd700;
+  width: 100%;
+  margin: 0;
+  padding: 0.5rem 0;
+}
+
+.heroHeader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0;
+}
+
+.heroTitle {
+  font-family: "Dancing Script", cursive;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  color: #ff1493;
+  margin: 0;
+  padding: 0;
+}
+
+.serverStatusDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-left: 0.5rem;
+}

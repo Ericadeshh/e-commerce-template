@@ -7,6 +7,9 @@
   width: 100%;
   z-index: 1000;
   padding: clamp(0.5rem, 2vw, 1rem) 0;
+  @media (max-width: 769px) {
+    width: 100%;
+  }
 }
 
 .container {

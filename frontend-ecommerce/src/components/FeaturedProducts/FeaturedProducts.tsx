@@ -207,23 +207,25 @@ export default function FeaturedProducts() {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3 }}
     >
-      <motion.h2
-        className={styles.sectionTitle}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.3 }}
-      >
-        Featured Products
-      </motion.h2>
-      <motion.a
-        href="/products"
-        className={styles.viewMore}
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.3, delay: 0.1 }}
-      >
-        View More <FaArrowCircleRight />
-      </motion.a>
+      <div className={styles.header}>
+        <motion.h2
+          className={styles.sectionTitle}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3 }}
+        >
+          Featured Products
+        </motion.h2>
+        <motion.a
+          href="/products"
+          className={styles.viewMore}
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.3, delay: 0.1 }}
+        >
+          View More <FaArrowCircleRight />
+        </motion.a>
+      </div>
       <motion.div
         className={styles.description}
         initial={{ opacity: 0 }}

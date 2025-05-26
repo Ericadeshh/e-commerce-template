@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
-import { Button, Card, Col, Row } from "react-bootstrap";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
-import { FaArrowRight, FaShoppingCart, FaTag } from "react-icons/fa";
+import { Row } from "react-bootstrap";
+import HeroHeader from "./HeroHeader/HeroHeader";
+import QuickLinks from "./QuickLinks/QuickLinks";
+import BannerCarousel from "./BannerCarousel/BannerCarousel";
+import PromoPanel from "./PromoPanel/PromoPanel";
+import styles from "./HeroSection.module.css";
 import MenSuitPic from "../../assets/Men's blue suitjpg.jpg";
 import WomenDressPic from "../../assets/lady red suit.jpg";
 import kidPantsPic from "../../assets/kids pants.jpg";
@@ -13,8 +12,6 @@ import kidMatchPic from "../../assets/kids matching cloth.jpg";
 import MenOmbrePic from "../../assets/Men Ombre Japanese.jpg";
 import BeachShirtPic from "../../assets/beach shirt.jpg";
 import BeddingPic from "../../assets/nice blankets.jpg";
-import MidBanner from "./mid_banner/mid_banner";
-import styles from "./HeroSection.module.css";
 
 interface Banner {
   id: number;
@@ -65,7 +62,7 @@ export default function HeroSection() {
       title: "Kids' Matching Sets",
       description: "Adorable outfits for your little ones!",
       image_url: kidMatchPic,
-      cta_text: "Shop by Category",
+      cta_text: "Shop by Category",
       cta_url: "/products?category=childrens",
     },
     {
@@ -163,47 +160,6 @@ export default function HeroSection() {
     });
   }, []);
 
-  const bannerSliderSettings = {
-    dots: false,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 3000,
-    arrows: true,
-    responsive: [
-      {
-        breakpoint: 768,
-        settings: { arrows: true },
-      },
-    ],
-  };
-
-  const quickLinksSliderSettings = {
-    dots: false,
-    infinite: true,
-    speed: 5000,
-    slidesToShow: 4,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 0,
-    cssEase: "linear",
-    arrows: false,
-    variableWidth: true,
-    pauseOnHover: true,
-    responsive: [
-      {
-        breakpoint: 992,
-        settings: { slidesToShow: 3 },
-      },
-      {
-        breakpoint: 576,
-        settings: { slidesToShow: 2 },
-      },
-    ],
-  };
-
   const quickLinks = [
     {
       title: "Clothing",
@@ -266,319 +222,24 @@ export default function HeroSection() {
 
   return (
     <div className={styles.hero}>
-      <div className={styles.heroTitleBar}>
-        <div className={styles.heroHeader}>
-          <h1 className={styles.heroTitle}>Milliwin Boutique</h1>
-          <span
-            className={styles.serverStatusDot}
-            style={{ backgroundColor: serverStatus ? "#00FF00" : "#FF0000" }}
-          ></span>
-        </div>
-      </div>
-
-      {/* Desktop Layout */}
+      <HeroHeader serverStatus={serverStatus} />
       <Row className={`${styles.desktopLayout} d-none d-md-flex`}>
-        <Col md={3} className={styles.quickLinks}>
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-          >
-            <h3 className={styles.quickLinksTitle}>Quick Links</h3>
-            {quickLinks.map((section) => (
-              <div key={section.title} className={styles.linkSection}>
-                <h4 className={styles.linkSectionTitle}>{section.title}</h4>
-                <ul className={styles.linkList}>
-                  {section.items.map((item) => (
-                    <motion.li
-                      key={item.name}
-                      whileHover={{ x: 5, color: "#FF1493" }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      <Link to={item.url} className={styles.linkItem}>
-                        {item.name}
-                      </Link>
-                    </motion.li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </motion.div>
-        </Col>
-
-        <Col md={6} className={styles.bannerCarousel}>
-          <Slider {...bannerSliderSettings}>
-            {banners.map((banner, index) => (
-              <motion.div
-                key={banner.id}
-                className={styles.bannerSlide}
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.6, delay: index * 0.2 }}
-              >
-                <img
-                  src={banner.image_url}
-                  alt={banner.title}
-                  className={styles.bannerImage}
-                  onError={(e) => {
-                    e.currentTarget.src = "https://placehold.co/1200x400";
-                  }}
-                />
-                <div className={styles.bannerContent}>
-                  <motion.h2
-                    className={styles.bannerTitle}
-                    initial={{ y: 30, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ duration: 0.5, delay: 0.3, ease: "easeOut" }}
-                  >
-                    {banner.title}
-                  </motion.h2>
-                  <motion.p
-                    className={styles.bannerDescription}
-                    initial={{ y: 30, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ duration: 0.5, delay: 0.6, ease: "easeOut" }}
-                  >
-                    {banner.description}
-                  </motion.p>
-                  <motion.div
-                    initial={{ y: 30, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ duration: 0.5, delay: 0.9, ease: "easeOut" }}
-                  >
-                    <Button href={banner.cta_url} className={styles.bannerCta}>
-                      {banner.cta_text}
-                    </Button>
-                  </motion.div>
-                </div>
-              </motion.div>
-            ))}
-          </Slider>
-          <MidBanner />
-        </Col>
-
-        <Col md={3} className={styles.promoPanel}>
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-          >
-            <h3 className={styles.promoPanelTitle}>Offers & Deals</h3>
-            {promotions.slice(0, 2).map((promo, index) => (
-              <motion.div
-                key={promo.id}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.3 }}
-              >
-                <Card className={styles.promoCard}>
-                  <Card.Img
-                    variant="top"
-                    src={promo.image_url}
-                    alt={promo.title}
-                    className={styles.promoImage}
-                    onError={(e) => {
-                      e.currentTarget.src = "https://placehold.co/400x200";
-                    }}
-                  />
-                  <Card.Body>
-                    <Card.Title className={styles.promoTitle}>
-                      <FaTag className={styles.titleIcon} /> {promo.title}
-                    </Card.Title>
-                    {promo.discount_percentage && (
-                      <Card.Text className={styles.promoDiscount}>
-                        {promo.discount_percentage}% Off
-                      </Card.Text>
-                    )}
-                    {promo.price_range && (
-                      <Card.Text className={styles.promoPrice}>
-                        {promo.price_range}
-                      </Card.Text>
-                    )}
-                    {promo.tag && (
-                      <Card.Text className={styles.promoTag}>
-                        {promo.tag}
-                      </Card.Text>
-                    )}
-                    <Card.Text className={styles.promoDescription}>
-                      {promo.description}
-                    </Card.Text>
-                    {promo.timer && (
-                      <Card.Text className={styles.promoTimer}>
-                        {promo.timer}
-                      </Card.Text>
-                    )}
-                    {promo.stock && (
-                      <Card.Text className={styles.promoStock}>
-                        {promo.stock}
-                      </Card.Text>
-                    )}
-                    <Button href={promo.cta_url} className={styles.promoCta}>
-                      <FaShoppingCart className={styles.ctaIcon} />{" "}
-                      {promo.cta_text}
-                    </Button>
-                  </Card.Body>
-                </Card>
-              </motion.div>
-            ))}
-          </motion.div>
-        </Col>
+        <QuickLinks
+          quickLinks={quickLinks}
+          activeLink={activeLink}
+          handleLinkClick={handleLinkClick}
+        />
+        <BannerCarousel banners={banners} />
+        <PromoPanel promotions={promotions} />
       </Row>
-
-      {/* Mobile Layout */}
       <div className={`${styles.mobileLayout} d-md-none`}>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          <Slider {...bannerSliderSettings}>
-            {banners.map((banner) => (
-              <div key={banner.id} className={styles.bannerSlide}>
-                <img
-                  src={banner.image_url}
-                  alt={banner.title}
-                  className={styles.bannerImage}
-                  onError={(e) => {
-                    e.currentTarget.src = "https://placehold.co/1200x400";
-                  }}
-                />
-                <div className={styles.bannerContent}>
-                  <motion.h2
-                    className={styles.bannerTitle}
-                    initial={{ y: 30, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ duration: 0.5, delay: 0.3, ease: "easeOut" }}
-                  >
-                    {banner.title}
-                  </motion.h2>
-                  <motion.p
-                    className={styles.bannerDescription}
-                    initial={{ y: 30, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ duration: 0.5, delay: 0.6, ease: "easeOut" }}
-                  >
-                    {banner.description}
-                  </motion.p>
-                  <motion.div
-                    initial={{ y: 30, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ duration: 0.5, delay: 0.9, ease: "easeOut" }}
-                  >
-                    <Button href={banner.cta_url} className={styles.bannerCta}>
-                      {banner.cta_text}
-                    </Button>
-                  </motion.div>
-                </div>
-              </div>
-            ))}
-          </Slider>
-          <MidBanner />
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className={styles.quickLinks}
-        >
-          <h3 className={styles.quickLinksTitle}>Quick Links</h3>
-          {quickLinks.map((section) => (
-            <div key={section.title} className={styles.linkSection}>
-              <h4 className={styles.linkSectionTitle}>{section.title}</h4>
-              <Slider {...quickLinksSliderSettings}>
-                {section.items.map((item) => (
-                  <motion.div
-                    key={item.name}
-                    className={styles.linkItem}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <Link
-                      to={item.url}
-                      className={`${styles.linkButton} ${
-                        activeLink === item.name ? styles.active : ""
-                      }`}
-                      onClick={() => handleLinkClick(item.name)}
-                    >
-                      <FaArrowRight className={styles.linkIcon} /> {item.name}
-                    </Link>
-                  </motion.div>
-                ))}
-              </Slider>
-            </div>
-          ))}
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className={styles.promoPanel}
-        >
-          <h3 className={styles.promoPanelTitle}>Offers & Deals</h3>
-          <div className={styles.promoContainer}>
-            {promotions.slice(0, 2).map((promo) => (
-              <motion.div
-                key={promo.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-                className={styles.promoCard}
-              >
-                <Card>
-                  <Card.Img
-                    variant="top"
-                    src={promo.image_url}
-                    alt={promo.title}
-                    className={styles.promoImage}
-                    onError={(e) => {
-                      e.currentTarget.src = "https://placehold.co/400x200";
-                    }}
-                  />
-                  <Card.Body>
-                    <Card.Title className={styles.promoTitle}>
-                      <FaTag className={styles.titleIcon} /> {promo.title}
-                    </Card.Title>
-                    {promo.discount_percentage && (
-                      <Card.Text className={styles.promoDiscount}>
-                        {promo.discount_percentage}% Off
-                      </Card.Text>
-                    )}
-                    {promo.price_range && (
-                      <Card.Text className={styles.promoPrice}>
-                        {promo.price_range}
-                      </Card.Text>
-                    )}
-                    {promo.tag && (
-                      <Card.Text className={styles.promoTag}>
-                        {promo.tag}
-                      </Card.Text>
-                    )}
-                    <Card.Text className={styles.promoDescription}>
-                      {promo.description}
-                    </Card.Text>
-                    {promo.timer && (
-                      <Card.Text className={styles.promoTimer}>
-                        {promo.timer}
-                      </Card.Text>
-                    )}
-                    {promo.stock && (
-                      <Card.Text className={styles.promoStock}>
-                        {promo.stock}
-                      </Card.Text>
-                    )}
-                    <Button href={promo.cta_url} className={styles.promoCta}>
-                      <FaShoppingCart className={styles.ctaIcon} />{" "}
-                      {promo.cta_text}
-                    </Button>
-                  </Card.Body>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
+        <BannerCarousel banners={banners} />
+        <QuickLinks
+          quickLinks={quickLinks}
+          activeLink={activeLink}
+          handleLinkClick={handleLinkClick}
+        />
+        <PromoPanel promotions={promotions} />
       </div>
     </div>
   );

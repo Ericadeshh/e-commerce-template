@@ -1,0 +1,549 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Dancing+Script:wght@700&display=swap");
+
+.promoPanel {
+  padding: 0.5rem;
+  background: #ffffff;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 480px;
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+@media (max-width: 768px) {
+  .promoPanel {
+    min-height: unset;
+    max-height: 900px;
+    padding: 3rem 0.8rem;
+    margin: 0.8rem 0;
+    background: linear-gradient(135deg, #f3e8ff, #ffffff);
+    position: relative;
+    overflow: hidden;
+  }
+}
+
+.promoPanel::before {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 20, 147, 0.1);
+  width: 80px;
+  height: 80px;
+  top: 5%;
+  left: -10%;
+  z-index: -1;
+}
+
+.promoPanel::-webkit-scrollbar {
+  width: 6px;
+}
+
+.promoPanel::-webkit-scrollbar-track {
+  background: #f3e8ff;
+  border-radius: 3px;
+}
+
+.promoPanel::-webkit-scrollbar-thumb {
+  background: #9400d3;
+  border-radius: 3px;
+}
+
+.promoPanel::-webkit-scrollbar-thumb:hover {
+  background: #ff1493;
+}
+
+@supports (scrollbar-width: thin) {
+  .promoPanel {
+    scrollbar-width: thin;
+    scrollbar-color: #9400d3 #f3e8ff;
+  }
+}
+
+.promoPanelTitle {
+  font-size: clamp(0.9rem, 1.2vw, 1rem);
+  font-weight: 500;
+  color: #9400d3;
+  margin-bottom: 0.5rem;
+  text-align: left;
+}
+
+@media (max-width: 768px) {
+  .promoPanelTitle {
+    text-align: center;
+    font-size: 1rem;
+    padding: 1rem;
+    margin-bottom: 0.8rem;
+  }
+}
+
+.promoContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+@media (max-width: 768px) {
+  .promoContainer {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.5rem;
+  }
+}
+
+.promoCard {
+  background: #ffffff;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  margin-bottom: 0.3rem;
+  height: 100%;
+  overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .promoCard {
+    display: none;
+  }
+}
+
+.promoImage {
+  width: 100%;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 0.5rem 0.5rem 0 0;
+  transition: transform 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .promoImage {
+    display: none;
+  }
+}
+
+.circularCard {
+  position: relative;
+  width: clamp(230px, 65vw, 250px);
+  height: clamp(230px, 65vw, 250px);
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: 1px solid rgba(255, 20, 147, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(1rem, 4vw, 1.5rem);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  overflow: visible;
+  animation: zoom 10s ease-in-out infinite;
+}
+
+.circularCard::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.3));
+  z-index: 1;
+}
+
+@keyframes zoom {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+@media (max-width: 576px) {
+  .circularCard {
+    width: clamp(200px, 60vw, 220px);
+    height: clamp(200px, 60vw, 220px);
+    padding: clamp(0.8rem, 3vw, 1rem);
+  }
+}
+
+@media (max-width: 360px) {
+  .circularCard {
+    width: clamp(180px, 55vw, 200px);
+    height: clamp(180px, 55vw, 200px);
+  }
+}
+
+.cardImage {
+  position: absolute;
+  top: -15px;
+  left: -15px;
+  width: clamp(110px, 30vw, 120px);
+  height: clamp(110px, 30vw, 120px);
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ff1493;
+  z-index: 3;
+  transition: transform 0.2s ease-in-out;
+}
+
+@media (max-width: 576px) {
+  .cardImage {
+    width: clamp(90px, 25vw, 100px);
+    height: clamp(90px, 25vw, 100px);
+    top: -10px;
+    left: -10px;
+  }
+}
+
+@media (max-width: 360px) {
+  .cardImage {
+    width: clamp(80px, 22vw, 90px);
+    height: clamp(80px, 22vw, 90px);
+  }
+}
+
+.cardContent {
+  text-align: center;
+  padding: clamp(3.5rem, 10vw, 4rem) clamp(1rem, 3vw, 1.5rem);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.2rem, 0.8vw, 0.3rem);
+  z-index: 2;
+  width: 100%;
+}
+
+@media (max-width: 576px) {
+  .cardContent {
+    padding: clamp(2.8rem, 8vw, 3.2rem) clamp(0.8rem, 2.5vw, 1rem);
+  }
+}
+
+@media (max-width: 360px) {
+  .cardContent {
+    padding: clamp(2.5rem, 7vw, 2.8rem) clamp(0.6rem, 2vw, 0.8rem);
+  }
+}
+
+.detailCircle {
+  position: absolute;
+  bottom: -15px;
+  right: -15px;
+  width: clamp(50px, 12vw, 60px);
+  height: clamp(50px, 12vw, 60px);
+  border-radius: 50%;
+  background: rgba(161, 220, 23, 0.25);
+  border: 1px solid #a1dc17;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.15rem, 0.4vw, 0.2rem);
+  padding: clamp(0.2rem, 0.8vw, 0.3rem);
+  z-index: 3;
+  animation: rotate 8s linear infinite;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 576px) {
+  .detailCircle {
+    width: clamp(45px, 10vw, 50px);
+    height: clamp(45px, 10vw, 50px);
+    bottom: -10px;
+    right: -10px;
+  }
+}
+
+@media (max-width: 360px) {
+  .detailCircle {
+    width: clamp(40px, 9vw, 45px);
+    height: clamp(40px, 9vw, 45px);
+  }
+}
+
+.detailText {
+  font-size: clamp(0.3rem, 0.8vw, 0.4rem);
+  color: #a1dc17;
+  margin: 0;
+  line-height: 1;
+}
+
+.detailIcon {
+  font-size: clamp(0.5rem, 1.2vw, 0.6rem);
+  color: #9400d3;
+}
+
+@media (max-width: 576px) {
+  .detailText {
+    font-size: clamp(0.25rem, 0.7vw, 0.35rem);
+  }
+
+  .detailIcon {
+    font-size: clamp(0.4rem, 1vw, 0.5rem);
+  }
+}
+
+.promoTitle {
+  font-size: clamp(0.55rem, 1.6vw, 0.65rem);
+  font-weight: 600;
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  margin-bottom: 0.15rem;
+  line-height: 1.2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .promoTitle {
+    font-size: clamp(0.5rem, 1.4vw, 0.6rem);
+  }
+}
+
+.titleIcon {
+  margin-right: 0.2rem;
+  font-size: clamp(0.4rem, 1vw, 0.5rem);
+  color: #ffffff;
+}
+
+@media (max-width: 768px) {
+  .titleIcon {
+    font-size: clamp(0.35rem, 0.9vw, 0.4rem);
+  }
+}
+
+.promoDiscount {
+  font-size: clamp(0.45rem, 1.3vw, 0.55rem);
+  color: #ff69b4;
+  font-weight: 500;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+  margin-bottom: 0.15rem;
+  line-height: 1.2;
+}
+
+@media (max-width: 768px) {
+  .promoDiscount {
+    font-size: clamp(0.4rem, 1.1vw, 0.5rem);
+  }
+}
+
+.promoPrice {
+  font-size: clamp(0.45rem, 1.3vw, 0.55rem);
+  color: #ff69b4;
+  font-weight: 600;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+  margin-bottom: 0.15rem;
+  line-height: 1.2;
+}
+
+@media (max-width: 768px) {
+  .promoPrice {
+    font-size: clamp(0.4rem, 1.1vw, 0.5rem);
+  }
+}
+
+.promoTag {
+  font-size: clamp(0.4rem, 1.1vw, 0.5rem);
+  color: #c6ff00;
+  font-weight: 500;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+  margin-bottom: 0.15rem;
+  line-height: 1.2;
+}
+
+@media (max-width: 768px) {
+  .promoTag {
+    font-size: clamp(0.35rem, 1vw, 0.45rem);
+  }
+}
+
+.promoDescription {
+  font-size: clamp(0.4rem, 1.1vw, 0.5rem);
+  color: #f5f5f5;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+  margin-bottom: 0.15rem;
+  line-height: 1.2;
+}
+
+@media (max-width: 768px) {
+  .promoDescription {
+    font-size: clamp(0.35rem, 1vw, 0.45rem);
+  }
+}
+
+.promoTimer,
+.promoStock {
+  font-size: clamp(0.4rem, 1.1vw, 0.5rem);
+  color: #f5f5f5;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+  margin-bottom: 0.15rem;
+  line-height: 1.2;
+}
+
+@media (max-width: 768px) {
+  .promoTimer,
+  .promoStock {
+    font-size: clamp(0.35rem, 1vw, 0.45rem);
+  }
+}
+
+.promoCta {
+  font-size: clamp(0.45rem, 1.3vw, 0.55rem);
+  padding: 0.3rem 0.6rem;
+  background: linear-gradient(45deg, #9400d3, #ff1493);
+  border: none;
+  border-radius: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease-in-out;
+}
+
+@media (max-width: 768px) {
+  .promoCta {
+    font-size: clamp(0.3rem, 0.9vw, 0.4rem);
+  }
+}
+
+.boxyCta {
+  border-radius: 0.3rem;
+  padding: clamp(0.2rem, 0.6vw, 0.25rem) clamp(0.4rem, 1.2vw, 0.5rem);
+  text-transform: uppercase;
+  font-weight: 600;
+  width: auto;
+}
+
+.promoCta:hover {
+  background: #a1dc17;
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(161, 220, 23, 0.5);
+}
+
+.ctaIcon {
+  margin-right: 0.2rem;
+  font-size: clamp(0.35rem, 1vw, 0.4rem);
+}
+
+@media (max-width: 768px) {
+  .ctaIcon {
+    margin-right: 0.15rem;
+    font-size: clamp(0.3rem, 0.8vw, 0.35rem);
+  }
+}
+
+@media (max-width: 992px) {
+  .promoPanelTitle {
+    font-size: clamp(1rem, 3vw, 1.1rem);
+  }
+
+  .promoImage {
+    height: 70px;
+  }
+
+  .promoTitle {
+    font-size: clamp(0.6rem, 1.5vw, 0.7rem);
+  }
+
+  .promoDiscount {
+    font-size: clamp(0.55rem, 1.2vw, 0.65rem);
+  }
+
+  .promoPrice {
+    font-size: clamp(0.55rem, 1.2vw, 0.65rem);
+  }
+
+  .promoTag {
+    font-size: clamp(0.5rem, 1.1vw, 0.6rem);
+  }
+
+  .promoDescription {
+    font-size: clamp(0.5rem, 1.2vw, 0.6rem);
+  }
+
+  .promoTimer,
+  .promoStock {
+    font-size: clamp(0.5rem, 1.1vw, 0.6rem);
+  }
+
+  .promoCta {
+    font-size: clamp(0.5rem, 1.2vw, 0.6rem);
+    padding: 0.2rem 0.4rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .promoPanelTitle {
+    font-size: clamp(0.9rem, 2.5vw, 1rem);
+  }
+
+  .promoTitle {
+    font-size: clamp(0.5rem, 1.2vw, 0.6rem);
+  }
+
+  .promoDiscount {
+    font-size: clamp(0.4rem, 1vw, 0.5rem);
+  }
+
+  .promoPrice {
+    font-size: clamp(0.4rem, 1vw, 0.5rem);
+  }
+
+  .promoTag {
+    font-size: clamp(0.35rem, 0.9vw, 0.45rem);
+  }
+
+  .promoDescription {
+    font-size: clamp(0.35rem, 0.9vw, 0.45rem);
+  }
+
+  .promoTimer,
+  .promoStock {
+    font-size: clamp(0.35rem, 0.9vw, 0.45rem);
+  }
+
+  .promoCta {
+    font-size: clamp(0.3rem, 0.8vw, 0.4rem);
+  }
+}
+
+@media (max-width: 360px) {
+  .promoTitle {
+    font-size: clamp(0.45rem, 1.1vw, 0.55rem);
+  }
+
+  .promoDiscount {
+    font-size: clamp(0.35rem, 0.9vw, 0.45rem);
+  }
+
+  .promoPrice {
+    font-size: clamp(0.35rem, 0.9vw, 0.45rem);
+  }
+
+  .promoTag {
+    font-size: clamp(0.3rem, 0.8vw, 0.4rem);
+  }
+
+  .promoDescription {
+    font-size: clamp(0.3rem, 0.8vw, 0.4rem);
+  }
+
+  .promoTimer,
+  .promoStock {
+    font-size: clamp(0.3rem, 0.8vw, 0.4rem);
+  }
+}

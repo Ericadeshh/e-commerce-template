@@ -5,6 +5,11 @@
   padding: 0;
   background: #f5f6f5;
   text-align: center;
+  width: 100vw;
+  max-width: 100%;
+  margin: 0;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 .sectionTitle {
@@ -21,7 +26,16 @@
   margin-bottom: 1rem;
 }
 
+.slick-list {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
 @media (max-width: 768px) {
+  .section {
+    padding: 0 0.5rem;
+  }
+
   .sectionTitle {
     font-size: 1.5rem;
     margin: 1.5rem 0;

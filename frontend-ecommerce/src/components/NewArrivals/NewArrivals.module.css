@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
 
 .newArrivals {
-  padding: 2rem 1rem;
+  padding: 5rem 1rem;
   background: #f9f9fb;
   font-family: "Poppins", sans-serif;
   margin-bottom: 3rem;
@@ -211,6 +211,7 @@
 
 @media (max-width: 768px) {
   .newArrivals {
+    width: 100%;
     padding: 1rem 0.5rem;
   }
 
