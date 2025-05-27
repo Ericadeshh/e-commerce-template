@@ -1,26 +1,28 @@
 .cardWrapper {
-  padding: 0.5rem;
+  padding: clamp(0.3rem, 1.5vw, 0.5rem);
+  width: 100%;
 }
 
 .productCard {
   border: none;
-  border-radius: 0.5rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: clamp(0.3rem, 1.5vw, 0.5rem);
+  box-shadow: 0 clamp(1px, 0.5vw, 2px) clamp(4px, 1vw, 8px) rgba(0, 0, 0, 0.1);
   background: #ffffff;
   height: 100%;
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
 .imageWrapper {
   position: relative;
   overflow: hidden;
-  border-radius: 0.5rem 0.5rem 0 0;
+  border-radius: clamp(0.3rem, 1.5vw, 0.5rem) clamp(0.3rem, 1.5vw, 0.5rem) 0 0;
 }
 
 .productImage {
   width: 100%;
-  height: 150px;
+  height: clamp(100px, 28vw, 140px);
   object-fit: cover;
   transition: transform 0.3s ease;
 }
@@ -31,44 +33,43 @@
 
 .discountBadge {
   position: absolute;
-  top: 0.5rem;
-  left: 0.5rem;
+  top: clamp(0.3rem, 1vw, 0.5rem);
+  left: clamp(0.3rem, 1vw, 0.5rem);
   background: #ff1493;
   color: #fff;
-  padding: 0.2rem 0.4rem;
-  border-radius: 0.25rem;
-  font-size: 0.7rem;
+  padding: clamp(0.1rem, 0.5vw, 0.2rem) clamp(0.2rem, 1vw, 0.4rem);
+  border-radius: clamp(0.15rem, 0.5vw, 0.25rem);
+  font-size: clamp(0.5rem, 1.6vw, 0.65rem);
   font-weight: 500;
 }
 
 .newBadge {
   position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
+  top: clamp(0.3rem, 1vw, 0.5rem);
+  right: clamp(0.3rem, 1vw, 0.5rem);
   background: #9400d3;
   color: #fff;
-  padding: 0.2rem 0.4rem;
-  border-radius: 0.25rem;
-  font-size: 0.7rem;
+  padding: clamp(0.1rem, 0.5vw, 0.2rem) clamp(0.2rem, 1vw, 0.4rem);
+  border-radius: clamp(0.15rem, 0.5vw, 0.25rem);
+  font-size: clamp(0.5rem, 1.6vw, 0.65rem);
   font-weight: 500;
 }
 
 .cardBody {
-  padding: 0.75rem;
+  padding: clamp(0.4rem, 1.8vw, 0.6rem);
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 }
 
 .categoryTag {
-  font-size: 0.7rem;
+  font-size: clamp(0.5rem, 1.6vw, 0.65rem);
   color: #dda0dd;
-
   text-transform: capitalize;
 }
 
 .productName {
-  font-size: 0.9rem;
+  font-size: clamp(0.7rem, 2vw, 0.85rem);
   font-weight: 500;
   color: #9400d3;
 }
@@ -76,35 +77,35 @@
 .priceContainer {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: clamp(0.3rem, 1vw, 0.5rem);
 }
 
 .productPrice {
-  font-size: 1rem;
+  font-size: clamp(0.8rem, 2.2vw, 0.9rem);
   font-weight: 500;
   color: #ff1493;
 }
 
 .originalPrice {
-  font-size: 0.8rem;
+  font-size: clamp(0.6rem, 1.8vw, 0.75rem);
   color: #6c757d;
   text-decoration: line-through;
 }
 
 .stockStatus {
-  font-size: 0.7rem;
+  font-size: clamp(0.5rem, 1.6vw, 0.65rem);
   color: #495057;
 }
 
 .linkGroup {
   display: flex;
-  gap: 1rem;
+  gap: clamp(0.5rem, 2vw, 1rem);
   margin-top: auto;
 }
 
 .detailLink,
 .shopLink {
-  font-size: 0.8rem;
+  font-size: clamp(0.6rem, 1.8vw, 0.75rem);
   text-decoration: none;
   transition: color 0.3s ease;
 }
@@ -121,7 +122,7 @@
   color: #ff1493;
   display: flex;
   align-items: center;
-  gap: 0.3rem;
+  gap: clamp(0.2rem, 0.8vw, 0.3rem);
 }
 
 .shopLink:hover {
@@ -129,60 +130,167 @@
 }
 
 .cartIcon {
-  font-size: 0.8rem;
+  font-size: clamp(0.6rem, 1.8vw, 0.75rem);
 }
 
-@media (max-width: 768px) {
+@media (min-width: 769px) and (max-width: 1366px) {
   .cardWrapper {
-    padding: 0.3rem;
+    padding: clamp(0.4rem, 1.2vw, 0.6rem);
   }
 
   .productCard {
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    min-width: 150px;
+    box-shadow: 0 clamp(0.8px, 0.4vw, 1.2px) clamp(2px, 0.8vw, 4px)
+      rgba(0, 0, 0, 0.1);
   }
 
   .productImage {
-    height: 150px;
+    height: clamp(100px, 20vw, 120px);
   }
 
   .cardBody {
-    padding: 0.5rem;
+    padding: clamp(0.3rem, 1.5vw, 0.5rem);
   }
 
   .categoryTag {
-    font-size: 0.65rem;
+    font-size: clamp(0.45rem, 1.4vw, 0.55rem);
   }
 
   .productName {
-    font-size: 0.65rem;
+    font-size: clamp(0.65rem, 1.8vw, 0.75rem);
   }
 
   .productPrice {
-    font-size: 0.7rem;
+    font-size: clamp(0.7rem, 2vw, 0.8rem);
   }
 
   .originalPrice {
-    font-size: 0.7rem;
+    font-size: clamp(0.55rem, 1.6vw, 0.65rem);
   }
 
   .stockStatus {
-    font-size: 0.65rem;
+    font-size: clamp(0.45rem, 1.4vw, 0.55rem);
   }
 
   .detailLink,
   .shopLink {
-    font-size: 0.7rem;
+    font-size: clamp(0.55rem, 1.6vw, 0.65rem);
   }
 
   .cartIcon {
-    font-size: 0.7rem;
+    font-size: clamp(0.55rem, 1.6vw, 0.65rem);
   }
 
   .discountBadge,
   .newBadge {
-    font-size: 0.65rem;
-    padding: 0.15rem 0.3rem;
+    font-size: clamp(0.45rem, 1.4vw, 0.55rem);
+    padding: clamp(0.08rem, 0.3vw, 0.12rem) clamp(0.12rem, 0.6vw, 0.25rem);
+  }
+}
+
+@media (max-width: 768px) {
+  .cardWrapper {
+    padding: clamp(0.2rem, 1vw, 0.3rem);
+  }
+
+  .productCard {
+    box-shadow: 0 clamp(0.5px, 0.3vw, 1px) clamp(2px, 0.8vw, 4px)
+      rgba(0, 0, 0, 0.1);
+  }
+
+  .productImage {
+    height: clamp(120px, 35vw, 160px);
+  }
+
+  .cardBody {
+    padding: clamp(0.4rem, 2vw, 0.6rem);
+  }
+
+  .categoryTag {
+    font-size: clamp(0.55rem, 1.8vw, 0.65rem);
+  }
+
+  .productName {
+    font-size: clamp(0.75rem, 2.2vw, 0.85rem);
+  }
+
+  .productPrice {
+    font-size: clamp(0.8rem, 2.4vw, 0.9rem);
+  }
+
+  .originalPrice {
+    font-size: clamp(0.65rem, 2vw, 0.75rem);
+  }
+
+  .stockStatus {
+    font-size: clamp(0.55rem, 1.8vw, 0.65rem);
+  }
+
+  .detailLink,
+  .shopLink {
+    font-size: clamp(0.65rem, 2vw, 0.75rem);
+  }
+
+  .cartIcon {
+    font-size: clamp(0.65rem, 2vw, 0.75rem);
+  }
+
+  .discountBadge,
+  .newBadge {
+    font-size: clamp(0.55rem, 1.8vw, 0.65rem);
+    padding: clamp(0.1rem, 0.4vw, 0.15rem) clamp(0.15rem, 0.6vw, 0.3rem);
+  }
+}
+
+@media (max-width: 320px) {
+  .cardWrapper {
+    padding: clamp(0.2rem, 1vw, 0.3rem);
+  }
+
+  .productCard {
+    box-shadow: 0 clamp(0.5px, 0.3vw, 1px) clamp(2px, 0.8vw, 4px)
+      rgba(0, 0, 0, 0.1);
+  }
+
+  .productImage {
+    height: clamp(140px, 45vw, 180px);
+  }
+
+  .cardBody {
+    padding: clamp(0.4rem, 2vw, 0.6rem);
+  }
+
+  .categoryTag {
+    font-size: clamp(0.6rem, 2vw, 0.7rem);
+  }
+
+  .productName {
+    font-size: clamp(0.8rem, 2.4vw, 0.9rem);
+  }
+
+  .productPrice {
+    font-size: clamp(0.85rem, 2.6vw, 1rem);
+  }
+
+  .originalPrice {
+    font-size: clamp(0.7rem, 2.2vw, 0.8rem);
+  }
+
+  .stockStatus {
+    font-size: clamp(0.6rem, 2vw, 0.7rem);
+  }
+
+  .detailLink,
+  .shopLink {
+    font-size: clamp(0.7rem, 2.2vw, 0.8rem);
+  }
+
+  .cartIcon {
+    font-size: clamp(0.7rem, 2.2vw, 0.8rem);
+  }
+
+  .discountBadge,
+  .newBadge {
+    font-size: clamp(0.6rem, 2vw, 0.7rem);
+    padding: clamp(0.1rem, 0.4vw, 0.15rem) clamp(0.15rem, 0.6vw, 0.3rem);
   }
 }

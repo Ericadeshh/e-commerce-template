@@ -30,13 +30,13 @@ interface CategoryCarouselProps {
 
 const categoryDescriptions: Record<string, string> = {
   "Men's":
-    "Discover the latest in men's fashion, from stylish jackets to timeless accessories, designed for comfort and elegance.",
+    "Discover the latest in men's fashion, from stylish jackets to timeless accessories, designed for comfort and elegance,",
   "Women's":
     "Explore our curated collection of women's apparel, featuring vibrant dresses, chic blouses, and more.",
   "Children's":
     "Find fun and durable clothing for kids, perfect for playtime and special occasions.",
   Shoes:
-    "Step up your style with our range of footwear, from casual sneakers to elegant heels.",
+    "Step up your shoes with our range of footwear, from casual sneakers to elegant heels.",
   Beddings:
     "Transform your bedroom with our cozy and luxurious bedding sets, crafted for ultimate comfort.",
 };
@@ -66,8 +66,16 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
     ),
     responsive: [
       {
+        breakpoint: 1366,
+        settings: { slidesToShow: 4, slidesToScroll: 1, arrows: true },
+      },
+      {
         breakpoint: 768,
-        settings: { slidesToShow: 2, arrows: true },
+        settings: { slidesToShow: 2, slidesToScroll: 1, arrows: true },
+      },
+      {
+        breakpoint: 320,
+        settings: { slidesToShow: 1, slidesToScroll: 1, arrows: true },
       },
     ],
   };

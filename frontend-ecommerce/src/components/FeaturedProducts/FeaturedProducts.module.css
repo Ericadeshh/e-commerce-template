@@ -8,7 +8,7 @@
   text-align: center;
   width: 100vw;
   max-width: 100%;
-  margin: 1.5rem auto;
+  margin: clamp(1rem, 2vw, 1.5rem) auto;
   box-sizing: border-box;
   overflow-x: hidden;
 }
@@ -17,13 +17,13 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 2rem 1rem 0.5rem;
+  padding: clamp(1rem, 2vw, 1.5rem) clamp(0.5rem, 1.5vw, 1rem);
   max-width: 100%;
   margin: 0 auto;
 }
 
 .sectionTitle {
-  font-size: 1.5rem;
+  font-size: clamp(1.4rem, 2.5vw, 1.5rem);
   font-weight: 500;
   color: #9400d3;
   margin: 0;
@@ -42,12 +42,12 @@
 }
 
 .viewMore {
-  font-size: 0.9rem;
+  font-size: clamp(0.8rem, 1.8vw, 0.9rem);
   color: #a1dc17;
   text-decoration: none;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: clamp(0.3rem, 1vw, 0.5rem);
   transition: color 0.3s ease;
 }
 
@@ -56,14 +56,14 @@
 }
 
 .description {
-  font-size: 0.9rem;
+  font-size: clamp(0.8rem, 1.8vw, 0.9rem);
   color: #555;
   text-align: center;
-  margin: 0 1rem 1.5rem;
+  margin: 0 clamp(0.5rem, 1.5vw, 1rem) clamp(1rem, 2vw, 1.5rem);
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: clamp(0.3rem, 1vw, 0.5rem);
   flex-wrap: wrap;
 }
 
@@ -75,7 +75,7 @@
 .starIcon,
 .gemIcon,
 .heartIcon {
-  font-size: 1rem;
+  font-size: clamp(0.9rem, 2vw, 1rem);
 }
 
 .starIcon {
@@ -92,70 +92,71 @@
 
 .error {
   color: #ff1493;
-  font-size: 0.9rem;
+  font-size: clamp(0.8rem, 1.8vw, 0.9rem);
   text-align: center;
-  margin-bottom: 1rem;
+  margin-bottom: clamp(0.5rem, 1.5vw, 1rem);
 }
 
 .productSlide {
-  padding: 0 0.25rem;
+  padding: clamp(0.2rem, 1vw, 0.3rem);
 }
 
 .productCard {
   border: none;
-  border-radius: 0.5rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: clamp(0.4rem, 1vw, 0.5rem);
+  box-shadow: 0 clamp(1px, 0.4vw, 2px) clamp(2px, 0.8vw, 4px) rgba(0, 0, 0, 0.1);
   background: #ffffff;
-  min-height: 400px;
+  min-height: clamp(340px, 90vw, 360px);
   height: 100%;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
+  width: 100%;
 }
 
 .imageWrapper {
   position: relative;
   overflow: hidden;
-  border-radius: 0.5rem 0.5rem 0 0;
+  border-radius: clamp(0.4rem, 1vw, 0.5rem) clamp(0.4rem, 1vw, 0.5rem) 0 0;
 }
 
 .productImage {
   width: 100%;
-  height: 220px;
+  height: clamp(180px, 30vw, 200px);
   object-fit: cover;
   transition: transform 0.3s ease;
 }
 
 .productSlide:hover .productImage {
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
 
 .discountBadge {
   position: absolute;
-  top: 0.5rem;
-  left: 0.5rem;
+  top: clamp(0.3rem, 1vw, 0.4rem);
+  left: clamp(0.3rem, 1vw, 0.4rem);
   background: #ff1493;
   color: #fff;
-  padding: 0.2rem 0.4rem;
-  border-radius: 0.25rem;
-  font-size: 0.7rem;
+  padding: clamp(0.1rem, 0.4vw, 0.15rem) clamp(0.2rem, 0.8vw, 0.3rem);
+  border-radius: clamp(0.15rem, 0.5vw, 0.2rem);
+  font-size: clamp(0.6rem, 1.6vw, 0.7rem);
   font-weight: 500;
 }
 
 .newBadge {
   position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
+  top: clamp(0.3rem, 1vw, 0.4rem);
+  right: clamp(0.3rem, 1vw, 0.4rem);
   background: #9400d3;
   color: #fff;
-  padding: 0.2rem 0.4rem;
-  border-radius: 0.25rem;
-  font-size: 0.7rem;
+  padding: clamp(0.1rem, 0.4vw, 0.15rem) clamp(0.2rem, 0.8vw, 0.3rem);
+  border-radius: clamp(0.15rem, 0.5vw, 0.2rem);
+  font-size: clamp(0.6rem, 1.6vw, 0.7rem);
   font-weight: 500;
 }
 
 .cardBody {
-  padding: 0.75rem;
+  padding: clamp(0.5rem, 1.5vw, 0.6rem);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -164,76 +165,80 @@
 }
 
 .categoryTag {
-  font-size: 0.7rem;
+  font-size: clamp(0.6rem, 1.4vw, 0.7rem);
   color: #dda0dd;
-  margin-bottom: 0.5rem;
+  margin-bottom: clamp(0.3rem, 1vw, 0.4rem);
   font-weight: 500;
 }
 
 .productName {
-  font-size: 0.9rem;
+  font-size: clamp(0.8rem, 1.8vw, 0.9rem);
   font-weight: 500;
   color: #9400d3;
-  margin-bottom: 0.5rem;
+  margin-bottom: clamp(0.3rem, 1vw, 0.4rem);
 }
 
 .priceStockContainer {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 0.5rem;
+  gap: clamp(0.3rem, 1vw, 0.4rem);
+  margin-bottom: clamp(0.3rem, 1vw, 0.4rem);
 }
 
 .productPrice {
-  font-size: 1rem;
+  font-size: clamp(0.9rem, 2vw, 1rem);
   font-weight: 600;
   color: #ff1493;
 }
 
 .pipe {
-  font-size: 1rem;
+  font-size: clamp(0.9rem, 2vw, 1rem);
   color: #a1dc17;
 }
 
 .stockStatus {
-  font-size: 0.7rem;
+  font-size: clamp(0.6rem, 1.4vw, 0.7rem);
   color: #495057;
 }
 
 .originalPrice {
-  font-size: 0.8rem;
+  font-size: clamp(0.7rem, 1.6vw, 0.8rem);
   color: #6c757d;
   text-decoration: line-through;
-  margin-bottom: 0.75rem;
+  margin-bottom: clamp(0.5rem, 1.5vw, 0.6rem);
 }
 
 .buttonGroup {
   display: flex;
-  gap: 0.75rem;
+  gap: clamp(0.5rem, 1.5vw, 0.6rem);
   margin-top: auto;
 }
 
 .productCta,
 .cartCta {
   flex: 1;
-  font-size: 0.85rem;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  transition: transform 0.2s ease, background-color 0.3s ease,
-    border-color 0.3s ease;
+  font-size: clamp(0.7rem, 1.6vw, 0.8rem);
+  padding: clamp(0.3rem, 1vw, 0.4rem) clamp(0.6rem, 1.5vw, 0.8rem);
+  border-radius: clamp(0.3rem, 1vw, 0.4rem);
+  transition: background-color 0.3s ease, border-color 0.3s ease,
+    transform 0.2s ease;
   white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.2rem, 0.8vw, 0.3rem);
 }
 
 .productCta:hover,
 .cartCta:hover:not(:disabled) {
-  transform: scale(1.03);
-  background-color: #a1dc17;
-  border-color: #a1dc17;
+  background-color: #a1dc17 !important;
+  border-color: #a1dc17 !important;
+  transform: scale(1.02);
 }
 
 .cartCta:disabled {
-  background: #6c757d;
-  border-color: #6c757d;
+  background: #6c757d !important;
+  border-color: #6c757d !important;
   cursor: not-allowed;
 }
 
@@ -244,31 +249,30 @@
   transform: translateY(-50%);
   background: rgba(148, 0, 211, 0.8) !important;
   color: #ffffff !important;
-  width: 2.5rem !important;
-  height: 2.5rem !important;
+  width: clamp(2rem, 4vw, 2.5rem) !important;
+  height: clamp(2rem, 4vw, 2.5rem) !important;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
   cursor: pointer;
   z-index: 10;
-  font-size: 1.2rem !important;
-  transition: all 0.3s ease;
+  font-size: clamp(1rem, 2vw, 1.2rem) !important;
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .section .prevArrow:hover,
 .section .nextArrow:hover {
   background: #a100d3 !important;
-  transform: translateY(-50%) scale(1.1) rotate(10deg);
-  box-shadow: 0 2px 8px rgba(148, 0, 211, 0.5);
+  transform: translateY(-50%) scale(1.05);
 }
 
 .section .prevArrow {
-  left: 0.5rem !important;
+  left: clamp(0.3rem, 1vw, 0.5rem) !important;
 }
 
 .section .nextArrow {
-  right: 0.5rem !important;
+  right: clamp(0.3rem, 1vw, 0.5rem) !important;
 }
 
 .slick-list {
@@ -276,22 +280,133 @@
   padding: 0 !important;
 }
 
+@media (min-width: 769px) and (max-width: 1366px) {
+  .section {
+    padding: clamp(0.5rem, 1.5vw, 0.8rem);
+  }
+
+  .header {
+    padding: clamp(1rem, 2vw, 1.2rem) clamp(0.5rem, 1.5vw, 0.8rem);
+  }
+
+  .sectionTitle {
+    font-size: clamp(1.3rem, 2.2vw, 1.4rem);
+  }
+
+  .viewMore {
+    font-size: clamp(0.8rem, 1.6vw, 0.9rem);
+  }
+
+  .description {
+    font-size: clamp(0.8rem, 1.6vw, 0.9rem);
+    margin: 0 clamp(0.5rem, 1.5vw, 0.8rem) clamp(1rem, 2vw, 1.2rem);
+  }
+
+  .highlight {
+    font-size: clamp(0.8rem, 1.6vw, 0.9rem);
+  }
+
+  .starIcon,
+  .gemIcon,
+  .heartIcon {
+    font-size: clamp(0.9rem, 1.8vw, 1rem);
+  }
+
+  .productSlide {
+    padding: clamp(0.4rem, 1.5vw, 0.6rem);
+  }
+
+  .productCard {
+    min-height: clamp(320px, 50vw, 340px);
+  }
+
+  .productImage {
+    height: clamp(160px, 25vw, 180px);
+  }
+
+  .cardBody {
+    padding: clamp(0.4rem, 1.2vw, 0.5rem);
+  }
+
+  .categoryTag {
+    font-size: clamp(0.55rem, 1.2vw, 0.65rem);
+    margin-bottom: clamp(0.2rem, 0.8vw, 0.3rem);
+  }
+
+  .productName {
+    font-size: clamp(0.75rem, 1.6vw, 0.85rem);
+    margin-bottom: clamp(0.2rem, 0.8vw, 0.3rem);
+  }
+
+  .priceStockContainer {
+    gap: clamp(0.2rem, 0.8vw, 0.3rem);
+    margin-bottom: clamp(0.2rem, 0.8vw, 0.3rem);
+  }
+
+  .productPrice {
+    font-size: clamp(0.8rem, 1.8vw, 0.9rem);
+  }
+
+  .pipe {
+    font-size: clamp(0.8rem, 1.8vw, 0.9rem);
+  }
+
+  .stockStatus {
+    font-size: clamp(0.55rem, 1.2vw, 0.65rem);
+  }
+
+  .originalPrice {
+    font-size: clamp(0.65rem, 1.4vw, 0.75rem);
+    margin-bottom: clamp(0.4rem, 1.2vw, 0.5rem);
+  }
+
+  .buttonGroup {
+    gap: clamp(0.4rem, 1.2vw, 0.5rem);
+  }
+
+  .productCta,
+  .cartCta {
+    font-size: clamp(0.65rem, 1.4vw, 0.75rem);
+    padding: clamp(0.25rem, 0.8vw, 0.3rem) clamp(0.5rem, 1.2vw, 0.6rem);
+  }
+
+  .discountBadge,
+  .newBadge {
+    font-size: clamp(0.55rem, 1.2vw, 0.65rem);
+    padding: clamp(0.08rem, 0.3vw, 0.1rem) clamp(0.15rem, 0.6vw, 0.2rem);
+  }
+
+  .section .prevArrow,
+  .section .nextArrow {
+    width: clamp(1.8rem, 3.5vw, 2rem) !important;
+    height: clamp(1.8rem, 3.5vw, 2rem) !important;
+    font-size: clamp(0.9rem, 1.8vw, 1rem) !important;
+  }
+
+  .section .prevArrow {
+    left: clamp(0.2rem, 0.8vw, 0.3rem) !important;
+  }
+
+  .section .nextArrow {
+    right: clamp(0.2rem, 0.8vw, 0.3rem) !important;
+  }
+}
+
 @media (max-width: 768px) {
   .section {
     width: 100vw;
-    padding: 0 0.5rem;
+    padding: clamp(0.3rem, 1.5vw, 0.5rem);
   }
 
   .header {
     flex-direction: column;
-    padding: 1.5rem 0.5rem 0.4rem;
+    padding: clamp(1rem, 2vw, 1.2rem) clamp(0.3rem, 1.5vw, 0.5rem);
   }
 
   .sectionTitle {
-    font-size: 1.2rem;
-
+    font-size: clamp(1.1rem, 2.2vw, 1.2rem);
     text-align: center;
-    margin-bottom: 0.5rem;
+    margin-bottom: clamp(0.3rem, 1.5vw, 0.5rem);
   }
 
   .sectionTitle::after {
@@ -300,88 +415,102 @@
   }
 
   .viewMore {
-    font-size: 0.8rem;
-    margin: 0 auto 1rem;
+    font-size: clamp(0.7rem, 1.6vw, 0.8rem);
+    margin: 0 auto clamp(0.5rem, 1.5vw, 0.8rem);
     justify-content: center;
   }
+
   .highlight {
-    font-size: 0.7rem;
+    font-size: clamp(0.65rem, 1.6vw, 0.75rem);
   }
+
   .description {
-    font-size: 0.8rem;
-    margin: 0 0.5rem 1rem;
+    font-size: clamp(0.7rem, 1.6vw, 0.8rem);
+    margin: 0 clamp(0.3rem, 1.5vw, 0.5rem) clamp(0.5rem, 1.5vw, 0.8rem);
   }
 
   .starIcon,
   .gemIcon,
   .heartIcon {
-    font-size: 0.9rem;
+    font-size: clamp(0.8rem, 1.6vw, 0.9rem);
+  }
+
+  .productSlide {
+    padding: clamp(0.3rem, 1.5vw, 0.5rem);
   }
 
   .productCard {
-    min-height: 310px;
+    min-height: clamp(300px, 80vw, 320px);
   }
 
   .productImage {
-    height: 180px;
+    height: clamp(160px, 40vw, 180px);
   }
 
   .cardBody {
-    padding: 0.5rem;
+    padding: clamp(0.3rem, 1.2vw, 0.4rem);
   }
 
   .categoryTag {
-    font-size: 0.65rem;
+    font-size: clamp(0.55rem, 1.2vw, 0.65rem);
+    margin-bottom: clamp(0.2rem, 0.8vw, 0.3rem);
   }
 
   .productName {
-    font-size: 0.8rem;
+    font-size: clamp(0.7rem, 1.6vw, 0.8rem);
+    margin-bottom: clamp(0.2rem, 0.8vw, 0.3rem);
+  }
+
+  .priceStockContainer {
+    gap: clamp(0.2rem, 0.8vw, 0.3rem);
+    margin-bottom: clamp(0.2rem, 0.8vw, 0.3rem);
   }
 
   .productPrice {
-    font-size: 0.9rem;
+    font-size: clamp(0.8rem, 1.8vw, 0.9rem);
   }
 
   .pipe {
-    font-size: 0.9rem;
+    font-size: clamp(0.8rem, 1.8vw, 0.9rem);
   }
 
   .stockStatus {
-    font-size: 0.65rem;
+    font-size: clamp(0.55rem, 1.2vw, 0.65rem);
   }
 
   .originalPrice {
-    font-size: 0.7rem;
+    font-size: clamp(0.6rem, 1.4vw, 0.7rem);
+    margin-bottom: clamp(0.3rem, 1.2vw, 0.4rem);
   }
 
   .buttonGroup {
-    gap: 0.6rem;
+    gap: clamp(0.3rem, 1.2vw, 0.4rem);
   }
 
   .productCta,
   .cartCta {
-    font-size: 0.8rem;
-    padding: 0.4rem 0.8rem;
+    font-size: clamp(0.6rem, 1.4vw, 0.7rem);
+    padding: clamp(0.2rem, 0.8vw, 0.25rem) clamp(0.4rem, 1.2vw, 0.5rem);
   }
 
   .discountBadge,
   .newBadge {
-    font-size: 0.65rem;
-    padding: 0.15rem 0.3rem;
+    font-size: clamp(0.55rem, 1.2vw, 0.65rem);
+    padding: clamp(0.08rem, 0.3vw, 0.1rem) clamp(0.15rem, 0.6vw, 0.2rem);
   }
 
   .section .prevArrow,
   .section .nextArrow {
-    width: 2rem !important;
-    height: 2rem !important;
-    font-size: 1rem !important;
+    width: clamp(1.6rem, 4vw, 1.8rem) !important;
+    height: clamp(1.6rem, 4vw, 1.8rem) !important;
+    font-size: clamp(0.8rem, 1.6vw, 0.9rem) !important;
   }
 
   .section .prevArrow {
-    left: 0.25rem !important;
+    left: clamp(0.15rem, 0.8vw, 0.2rem) !important;
   }
 
   .section .nextArrow {
-    right: 0.25rem !important;
+    right: clamp(0.15rem, 0.8vw, 0.2rem) !important;
   }
 }

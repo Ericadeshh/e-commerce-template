@@ -11,6 +11,7 @@ import {
   FaChevronLeft,
   FaChevronRight,
   FaArrowCircleRight,
+  FaShoppingCart,
 } from "react-icons/fa";
 import MenSuitPic from "../../assets/Men's blue suitjpg.jpg";
 import WomenDressPic from "../../assets/lady red suit.jpg";
@@ -186,7 +187,7 @@ export default function FeaturedProducts() {
     ),
     responsive: [
       {
-        breakpoint: 992,
+        breakpoint: 1366,
         settings: { slidesToShow: 2, arrows: true },
       },
       {
@@ -320,11 +321,12 @@ export default function FeaturedProducts() {
                       borderColor: "#9400D3",
                     }}
                     aria-label={`View details for ${product.name}`}
-                    onClick={() =>
-                      handleButtonClick("View Details", product.id)
-                    }
+                    onClick={() => handleButtonClick("Details", product.id)}
                   >
-                    View Details
+                    Details{" "}
+                    <FaArrowCircleRight
+                      style={{ width: "16px", marginLeft: "0.3rem" }}
+                    />
                   </Button>
                   <Button
                     className={styles.cartCta}
@@ -339,22 +341,9 @@ export default function FeaturedProducts() {
                     }}
                     aria-label={`Add ${product.name} to cart`}
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="white"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      style={{ marginRight: "0.5rem" }}
-                    >
-                      <circle cx="9" cy="21" r="1" />
-                      <circle cx="20" cy="21" r="1" />
-                      <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
-                    </svg>
+                    <FaShoppingCart
+                      style={{ width: "16px", marginRight: "0.5rem" }}
+                    />
                     Add to Cart
                   </Button>
                 </div>
