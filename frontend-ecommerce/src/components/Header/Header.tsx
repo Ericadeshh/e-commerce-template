@@ -196,6 +196,14 @@ export default function Header() {
                 </div>
               )}
             </div>
+            <Link
+              to="/cart"
+              className={`${styles.navLink} ${
+                location.pathname === "/cart" ? styles.active : ""
+              }`}
+            >
+              <FaShoppingCart />
+            </Link>
             <div
               className={`${styles.navLink} ${
                 activeDropdown === "help" ? styles.active : ""
@@ -231,14 +239,6 @@ export default function Header() {
                 </div>
               )}
             </div>
-            <Link
-              to="/cart"
-              className={`${styles.navLink} ${
-                location.pathname === "/cart" ? styles.active : ""
-              }`}
-            >
-              <FaShoppingCart />
-            </Link>
           </nav>
         </div>
       </header>
@@ -364,6 +364,18 @@ export default function Header() {
             )}
           </div>
           <div className={styles.mobileNavSection}>
+            <Link
+              to="/cart"
+              className={styles.mobileNavTitle}
+              onClick={() => handleMobileLinkClick("/cart")}
+            >
+              <span>
+                <FaShoppingCart /> Cart
+              </span>
+              <FaAngleRight className={styles.openIcon} />
+            </Link>
+          </div>
+          <div className={styles.mobileNavSection}>
             <button
               className={styles.mobileNavTitle}
               onClick={() => toggleMobileSection("help")}
@@ -423,18 +435,6 @@ export default function Header() {
                 </Link>
               </div>
             )}
-          </div>
-          <div className={styles.mobileNavSection}>
-            <Link
-              to="/cart"
-              className={styles.mobileNavTitle}
-              onClick={() => handleMobileLinkClick("/cart")}
-            >
-              <span>
-                <FaShoppingCart /> Cart
-              </span>
-              <FaAngleRight className={styles.openIcon} />
-            </Link>
           </div>
         </nav>
       </div>
