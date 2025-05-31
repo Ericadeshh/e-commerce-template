@@ -8,6 +8,8 @@ import SignupForm from "./components/auth/SignupForm";
 import AdminDashboard from "./components/auth/Admin/AdminDashboard/AdminDashboard";
 import UserDashboard from "./components/auth/UserDashboard";
 import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary";
+import Categories from "./pages/Categories/Categories";
+import ChatPage from "./pages/ChatPage/ChatPage";
 import styles from "./App.module.css";
 
 function App() {
@@ -30,8 +32,11 @@ function App() {
                 </ErrorBoundary>
               }
             />
+            <Route path="/categories" element={<Categories />} />
+            <Route path="/chat" element={<ChatPage />} />
             <Route path="/orders" element={<div>Orders Page (TBD)</div>} />
             <Route path="/wishlist" element={<div>Wishlist Page (TBD)</div>} />
+            <Route path="/account" element={<div>My Account Page (TBD)</div>} />
             <Route path="/help-center" element={<div>Help Center (TBD)</div>} />
             <Route path="/place-order" element={<div>Place Order (TBD)</div>} />
             <Route

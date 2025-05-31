@@ -1,0 +1,49 @@
+.customerCareContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: fixed;
+  bottom: clamp(3.5rem, 10vw, 4rem); /* Adjusted to sit above FloatingButtons */
+  right: clamp(1rem, 3vw, 1.5rem);
+  z-index: 1001; /* Above content but below FloatingButtons */
+}
+
+.customerCareButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: #fff;
+  background-color: #333;
+  border-radius: 50%;
+  width: clamp(30px, 8vw, 35px); /* Reduced size */
+  height: clamp(30px, 8vw, 35px); /* Reduced size */
+  margin-bottom: clamp(0.3rem, 1vw, 0.5rem); /* Reduced spacing */
+  transition: transform 0.3s ease, background-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.customerCareButton:hover {
+  transform: scale(1.1);
+  background-color: #9400d3;
+  box-shadow: 0 4px 12px rgba(148, 0, 211, 0.3);
+}
+
+.customerCareButton svg {
+  font-size: clamp(0.9rem, 2.5vw, 1.1rem); /* Smaller icons */
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.customerCareContainer {
+  animation: slideUp 0.3s ease-in-out;
+}

@@ -1,0 +1,4 @@
+.home {
+  padding: clamp(1rem, 3vw, 2rem);
+  padding-bottom: clamp(6.5rem, 17vw, 7.5rem); /* Space for 3 buttons */
+}

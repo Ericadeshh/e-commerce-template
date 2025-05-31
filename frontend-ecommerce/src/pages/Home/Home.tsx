@@ -3,7 +3,7 @@ import FeaturedProducts from "../../components/FeaturedProducts/FeaturedProducts
 import FeaturedCategories from "../../components/FeaturedCategory/FeaturedCategories/FeaturedCategories";
 import NewArrivals from "../../components/NewArrivals/NewArrivals";
 import FloatingButtons from "../../components/FloatingButtons/Bottom/BottomFloatingButton";
-import ScrollToTopButton from "../../components/FloatingButtons/ScrollToTop/ScrollToTop";
+import CustomerCare from "../../components/FloatingButtons/CustomerCare/CustomerCare";
 import styles from "./Home.module.css";
 
 export default function Home() {
@@ -13,8 +13,8 @@ export default function Home() {
       <FeaturedProducts />
       <NewArrivals />
       <FeaturedCategories />
+      <CustomerCare />
       <FloatingButtons />
-      <ScrollToTopButton />
     </div>
   );
 }
