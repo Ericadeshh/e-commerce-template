@@ -241,6 +241,19 @@ export default function Header() {
             </div>
           </nav>
         </div>
+        <div className={styles.secondaryNav}>
+          <Link to="/categories" className={styles.secondaryLink}>
+            Categories
+          </Link>
+          <span className={styles.separator}>|</span>
+          <Link to="/wishlist" className={styles.secondaryLink}>
+            Wishlist
+          </Link>
+          <span className={styles.separator}>|</span>
+          <Link to="/delivery" className={styles.secondaryLink}>
+            Track Order
+          </Link>
+        </div>
       </header>
 
       {/* Mobile Menu */}

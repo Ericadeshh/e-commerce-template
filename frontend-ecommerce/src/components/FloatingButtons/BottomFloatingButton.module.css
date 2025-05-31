@@ -1,0 +1,62 @@
+.floatingContainer {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #fff;
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+  padding: clamp(0.4rem, 1vw, 0.65rem) 0;
+  z-index: 1000;
+}
+
+.floatingButton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: #333;
+  font-size: clamp(0.7rem, 2vw, 0.8rem);
+  padding: clamp(0.5rem, 2vw, 0.75rem);
+  transition: transform 0.3s ease, color 0.3s ease, background-color 0.3s ease;
+}
+
+.floatingButton:hover {
+  transform: translateY(-2px);
+  color: #9400d3;
+  background-color: #f8f9fa;
+}
+
+.floatingButton svg {
+  font-size: clamp(1.2rem, 3vw, 1.5rem);
+  margin-bottom: clamp(0.2rem, 1vw, 0.3rem);
+}
+
+.floatingButton span {
+  font-size: clamp(0.7rem, 2vw, 0.8rem);
+  font-weight: 500;
+}
+
+@media (min-width: 992px) {
+  .floatingContainer {
+    display: none;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.floatingContainer {
+  animation: slideUp 0.3s ease-in-out;
+}

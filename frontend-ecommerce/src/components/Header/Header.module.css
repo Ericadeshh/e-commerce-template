@@ -124,7 +124,7 @@
 
 .searchButton {
   padding: clamp(0.4rem, 1.5vw, 0.5rem) clamp(0.8rem, 2vw, 1rem);
-  border: 1px solid #333;
+  border: none;
   border-radius: 0 20px 20px 0;
   background-color: #333;
   color: #fff;
@@ -142,7 +142,7 @@
 
 .searchButton:hover {
   background-color: #9400d3;
-  transform: translateY(-2px);
+  transform: translateY(-1px);
 }
 
 .hamburger {
@@ -410,6 +410,44 @@
   z-index: 1001;
   transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
+}
+
+.secondaryNav {
+  display: none;
+  width: 100%;
+  background-color: #000;
+  padding: clamp(0.25rem, 0.75vw, 0.5rem) 0; /* Adjust padding by -0.25 for smaller screens */
+  text-align: center;
+}
+
+@media (min-width: 992px) {
+  .secondaryNav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: clamp(0.5rem, 1vw, 0.75rem);
+  }
+}
+
+.secondaryLink {
+  color: #fff;
+  text-decoration: none;
+  font-size: clamp(
+    0.7rem,
+    1.3vw,
+    0.7rem
+  ); /* Adjust font size by -0.5 for smaller screens */
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.secondaryLink:hover {
+  color: #9400d3;
+}
+
+.separator {
+  color: #fff;
+  font-size: clamp(0.8rem, 1.5vw, 0.9rem);
 }
 
 @media (max-width: 991px) {
