@@ -396,7 +396,7 @@
   font-size: clamp(0.5rem, 1.4vw, 0.6rem);
   padding: 0.3rem 0.6rem;
   text-align: center;
-  background: linear-gradient(45deg, #9400d3, #ff1493);
+  background: linear-gradient(45deg, #37004f, #ff1493);
   border: none;
   border-radius: 1.5rem;
   display: flex;
@@ -433,5 +433,6 @@
 .ctaIcon {
   margin-right: 0.2rem;
   font-size: 0.7rem;
-  color: #c6ff00;
+  color: #ff1493;
+  transition: color 0.2s ease-in-out;
 }
