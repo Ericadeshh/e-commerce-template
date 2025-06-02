@@ -96,7 +96,7 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({
       } finally {
         setTimeout(() => {
           if (isMounted) setLoading(false);
-        }, 500);
+        }, 125);
       }
     };
     fetchRelatedProducts();

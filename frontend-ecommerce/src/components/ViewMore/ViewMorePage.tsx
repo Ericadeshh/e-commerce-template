@@ -109,72 +109,78 @@ const ViewMorePage: React.FC = () => {
       });
   }, [category, filters, sort]);
 
-  const fetchProducts = async (
-    query: string
-  ): Promise<{ products: Product[]; total: number }> => {
-    try {
-      const res = await fetch(`http://localhost:5000/api/products?${query}`);
-      if (!res.ok) throw new Error(`Failed to fetch products: ${res.status}`);
-      const data: Product[] = await res.json();
-      return {
-        products: data.map((p: Product) => ({
-          ...p,
-          image: p.image || "https://placehold.co/300x300",
-          price: parseFloat(String(p.price)),
-          stock: Number(p.stock),
-          original_price: p.original_price
-            ? parseFloat(String(p.original_price))
-            : null,
-          discount_percentage: p.discount_percentage
-            ? Number(p.discount_percentage)
-            : null,
-          brand: p.brand || "",
-        })),
-        total: data.length,
-      };
-    } catch (err) {
-      console.error("API error:", err);
-      return {
-        products: filteredStaticProducts,
-        total: filteredStaticProducts.length,
-      };
-    }
-  };
-
-  const fetchCategoryMetadata = async (
-    category: string
-  ): Promise<CategoryMetadata> => {
-    try {
-      const res = await fetch(
-        `http://localhost:5000/api/categories/${category}`
-      );
-      if (!res.ok) throw new Error(`Failed to fetch metadata: ${res.status}`);
-      const data = await res.json();
-      return {
-        name: data.name || category,
-        description: data.description || "Explore our collection.",
-        heroImage: data.heroImage || "https://placehold.co/1200x400",
-        subcategories: data.subcategories || [],
-      };
-    } catch (err) {
-      console.error("Metadata error:", err);
-      return {
-        name: category,
-        description:
-          categoryDescriptions[category] || "Explore our collection.",
-        heroImage: "https://placehold.co/1200x400",
-        subcategories: [],
-      };
-    }
-  };
-
   useEffect(() => {
     let isMounted = true;
     const loadData = async () => {
       setLoading(true);
       try {
+        // Fetch category metadata
+        const fetchCategoryMetadata = async (
+          category: string
+        ): Promise<CategoryMetadata> => {
+          try {
+            const res = await fetch(
+              `http://localhost:5000/api/categories/${category}`
+            );
+            if (!res.ok)
+              throw new Error(`Failed to fetch metadata: ${res.status}`);
+            const data = await res.json();
+            return {
+              name: data.name || category,
+              description: data.description || "Explore our collection.",
+              heroImage: data.heroImage || "https://placehold.co/1200x400",
+              subcategories: data.subcategories || [],
+            };
+          } catch (err) {
+            console.error("Metadata error:", err);
+            return {
+              name: category,
+              description:
+                categoryDescriptions[category] || "Explore our collection.",
+              heroImage: "https://placehold.co/1200x400",
+              subcategories: [],
+            };
+          }
+        };
+
         const metadataRes = await fetchCategoryMetadata(category || "");
         if (isMounted) setMetadata(metadataRes);
+
+        // Fetch products
+        const fetchProducts = async (
+          query: string
+        ): Promise<{ products: Product[]; total: number }> => {
+          try {
+            const res = await fetch(
+              `http://localhost:5000/api/products?${query}`
+            );
+            if (!res.ok)
+              throw new Error(`Failed to fetch products: ${res.status}`);
+            const data: Product[] = await res.json();
+            return {
+              products: data.map((p: Product) => ({
+                ...p,
+                image: p.image || "https://placehold.co/300x300",
+                price: parseFloat(String(p.price)),
+                stock: Number(p.stock),
+                original_price: p.original_price
+                  ? parseFloat(String(p.original_price))
+                  : null,
+                discount_percentage: p.discount_percentage
+                  ? Number(p.discount_percentage)
+                  : null,
+                brand: p.brand || "",
+              })),
+              total: data.length,
+            };
+          } catch (err) {
+            console.error("API error:", err);
+            return {
+              products: filteredStaticProducts,
+              total: filteredStaticProducts.length,
+            };
+          }
+        };
 
         const query = new URLSearchParams({
           category: category || "",
@@ -207,10 +213,10 @@ const ViewMorePage: React.FC = () => {
           setTotalPages(Math.ceil(filteredStaticProducts.length / limit));
         }
       } finally {
-        // Force loading to end after 500ms
+        // Force loading to end after 125ms
         setTimeout(() => {
           if (isMounted) setLoading(false);
-        }, 500);
+        }, 125);
       }
     };
     loadData();

@@ -22,6 +22,7 @@
 
 .viewMore {
   font-size: clamp(0.8rem, 2vw, 0.9rem);
+  font-weight: 500;
   color: #7c02a1;
   text-decoration: none;
   display: flex;
@@ -96,7 +97,7 @@
   }
 
   .productSlide {
-    padding: clamp(0.8rem, 2.5vw, 1rem);
+    padding: clamp(0.3rem, 2vw, 0.5rem);
   }
 
   .tab {
