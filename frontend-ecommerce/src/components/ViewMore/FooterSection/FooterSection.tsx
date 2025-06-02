@@ -33,6 +33,16 @@ const subcategories: Record<string, { name: string; description: string }[]> = {
     { name: "Comforters", description: "Cozy bedding for restful sleep." },
     { name: "Pillows", description: "Supportive pillows for comfort." },
   ],
+  "new-arrivals": [
+    { name: "Latest Trends", description: "Hot off the press, stylish picks." },
+    { name: "Seasonal Picks", description: "Curated for the current season." },
+    { name: "Top Rated", description: "Fan favorites you can't miss." },
+  ],
+  "featured-products": [
+    { name: "Editor’s Pick", description: "Hand-selected standout item." },
+    { name: "Best Sellers", description: "Top-performing customer favorites." },
+    { name: "Limited Edition", description: "Exclusive, limited-run items." },
+  ],
 };
 
 const featuredProducts: Record<
@@ -62,6 +72,16 @@ const featuredProducts: Record<
   beddings: {
     name: "Queen Bedding Set",
     price: 99.99,
+    image: "https://placehold.co/100x100",
+  },
+  "new-arrivals": {
+    name: "Seasonal Hoodie",
+    price: 39.99,
+    image: "https://placehold.co/100x100",
+  },
+  "featured-products": {
+    name: "Premium Leather Bag",
+    price: 129.99,
     image: "https://placehold.co/100x100",
   },
 };

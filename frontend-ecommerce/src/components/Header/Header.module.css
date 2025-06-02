@@ -131,6 +131,9 @@
   font-size: clamp(0.85rem, 2vw, 1rem);
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 @media (max-width: 991px) {
@@ -138,6 +141,10 @@
     font-size: clamp(0.85rem, 2vw, 0.95rem);
     padding: clamp(0.4rem, 1.5vw, 0.5rem) clamp(0.8rem, 2vw, 1rem);
   }
+}
+
+.searchButton svg {
+  font-size: clamp(0.85rem, 2vw, 1rem);
 }
 
 .searchButton:hover {
@@ -221,7 +228,6 @@
   min-width: 200px;
   max-width: 90vw;
   overflow: hidden;
-  animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .dropdownItem {
@@ -232,7 +238,6 @@
   text-decoration: none;
   transition: background-color 0.3s ease, padding-left 0.3s ease,
     color 0.3s ease;
-  animation: slideInItem 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .dropdownItem:hover {
@@ -255,7 +260,6 @@
   cursor: pointer;
   text-align: left;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .logoutButton:hover {
@@ -289,7 +293,6 @@
   background-color: #f8f9fa;
   font-size: 0.55rem;
   font-weight: 500;
-  animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .closeButton {
@@ -331,7 +334,6 @@
   text-align: left;
   text-decoration: none;
   transition: color 0.3s ease;
-  animation: slideInItem 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .mobileNavTitle:hover {
@@ -357,7 +359,6 @@
   display: block;
   transition: background-color 0.3s ease, color 0.3s ease,
     padding-left 0.3s ease;
-  animation: slideInItem 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .mobileNavLink:hover {
@@ -375,13 +376,11 @@
   height: 1px;
   background-color: #f5f5f5;
   opacity: 0;
-  animation: fadeInLine 0.4s ease forwards;
 }
 
 .mobileDropdown {
   padding-left: clamp(0.8rem, 2vw, 1rem);
   background-color: #f8f9fa;
-  animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 1003;
 }
 
@@ -416,7 +415,7 @@
   display: none;
   width: 100%;
   background-color: #000;
-  padding: clamp(0.25rem, 0.75vw, 0.5rem) 0; /* Adjust padding by -0.25 for smaller screens */
+  padding: clamp(0.25rem, 0.75vw, 0.5rem) 0;
   text-align: center;
 }
 
@@ -432,11 +431,7 @@
 .secondaryLink {
   color: #fff;
   text-decoration: none;
-  font-size: clamp(
-    0.7rem,
-    1.3vw,
-    0.7rem
-  ); /* Adjust font size by -0.5 for smaller screens */
+  font-size: clamp(0.7rem, 1.3vw, 0.7rem);
   font-weight: 500;
   transition: color 0.3s ease;
 }
@@ -506,53 +501,5 @@
   }
   .hamburger {
     font-size: clamp(1.2rem, 2.5vw, 1.5rem);
-  }
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes slideInItem {
-  from {
-    opacity: 0;
-    transform: translateX(-15px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes fadeInLine {
-  from {
-    opacity: 0;
-    transform: scaleX(0);
-  }
-  to {
-    opacity: 0.7;
-    transform: scaleX(1);
-  }
-}
-
-@keyframes pulse {
-  0% {
-    transform: scale(1);
-    box-shadow: 0 0 0 rgba(220, 53, 69, 0.3);
-  }
-  50% {
-    transform: scale(1.02);
-    box-shadow: 0 0 12px rgba(220, 53, 69, 0.5);
-  }
-  100% {
-    transform: scale(1);
-    box-shadow: 0 0 0 rgba(220, 53, 69, 0.3);
   }
 }

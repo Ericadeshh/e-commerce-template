@@ -69,7 +69,6 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
         <FaFilter /> Filters
       </button>
       <div className={`${styles.filterContent} ${isOpen ? styles.open : ""}`}>
-        <h3 className={styles.title}>Filters</h3>
         <motion.button
           className={styles.resetButton}
           onClick={() =>

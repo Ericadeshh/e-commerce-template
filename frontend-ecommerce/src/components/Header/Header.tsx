@@ -8,11 +8,12 @@ import {
   FaAngleRight,
   FaShopify,
   FaHome,
+  FaSearch,
 } from "react-icons/fa";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import styles from "./Header.module.css";
 
-export default function Header() {
+function Header() {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<
     "account" | "help" | null
@@ -30,8 +31,9 @@ export default function Header() {
   const isLoggedIn = !!localStorage.getItem("token");
   const role = localStorage.getItem("role");
 
+  // Memoize navigation functions to prevent unnecessary re-creation
   const toggleMobileMenu = () => {
-    setShowMobileMenu(!showMobileMenu);
+    setShowMobileMenu((prev) => !prev);
     setActiveDropdown(null);
     setHoverDropdown(null);
     setActiveMobileSection(null);
@@ -55,7 +57,7 @@ export default function Header() {
   };
 
   const toggleMobileSection = (section: "account" | "help") => {
-    setActiveMobileSection(activeMobileSection === section ? null : section);
+    setActiveMobileSection((prev) => (prev === section ? null : section));
   };
 
   const handleClickOutside = (event: MouseEvent) => {
@@ -100,7 +102,7 @@ export default function Header() {
                 className={styles.searchInput}
               />
               <button type="submit" className={styles.searchButton}>
-                Search
+                <FaSearch />
               </button>
             </form>
             <button className={styles.hamburger} onClick={toggleMobileMenu}>
@@ -119,7 +121,7 @@ export default function Header() {
               className={styles.searchInput}
             />
             <button type="submit" className={styles.searchButton}>
-              Search
+              <FaSearch />
             </button>
           </form>
 
@@ -457,3 +459,5 @@ export default function Header() {
     </>
   );
 }
+
+export default Header;

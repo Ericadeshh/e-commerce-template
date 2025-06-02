@@ -4,7 +4,7 @@
   padding: 20px;
 }
 
-.title {
+.sectionTitle {
   font-size: 24px;
   color: #9400d3; /* Purple */
   text-align: center;
@@ -30,16 +30,46 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
   padding: 10px;
+  justify-items: center; /* Center items horizontally */
 }
 
 @media (max-width: 768px) {
+  .sectionTitle {
+    font-size: 20px; /* smaller title on mobile */
+  }
+
+  .loading {
+    font-size: 14px; /* smaller loading text */
+  }
+
   .grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 1fr); /* 2 cards per row */
+    max-height: 350px; /* limit to roughly 1 row height */
+    overflow: hidden;
+    justify-items: center;
   }
 }
 
-@media (max-width: 480px) {
-  .grid {
-    grid-template-columns: 1fr;
+@media (max-width: 380px) {
+  .sectionTitle {
+    font-size: 18px; /* even smaller title on very small mobile */
   }
+
+  .loading {
+    font-size: 12px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr; /* 1 card per row */
+    max-height: 720px; /* roughly 2 rows max */
+    overflow: hidden;
+    justify-items: center;
+  }
+}
+
+/* Lavender background for the entire section */
+.section {
+  background-color: #e6e6fa; /* Lavender */
+  padding: 30px 10px;
+  border-radius: 8px;
 }

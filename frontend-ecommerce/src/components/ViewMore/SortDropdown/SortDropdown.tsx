@@ -1,7 +1,8 @@
 import { motion } from "framer-motion";
-import { FaSort } from "react-icons/fa";
+import { FaSort, FaAngleDown } from "react-icons/fa";
 import { SortOption } from "../../../types/ViewMore";
 import styles from "./SortDropdown.module.css";
+import { useState, useRef, useEffect } from "react";
 
 interface SortDropdownProps {
   sort: SortOption;
@@ -17,6 +18,28 @@ const sortOptions: SortOption[] = [
 ];
 
 const SortDropdown: React.FC<SortDropdownProps> = ({ sort, setSort }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const handleSelect = (option: SortOption) => {
+    setSort(option);
+    setIsOpen(false);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   return (
     <motion.div
       className={styles.container}
@@ -24,23 +47,30 @@ const SortDropdown: React.FC<SortDropdownProps> = ({ sort, setSort }) => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.2 }}
     >
-      <label htmlFor="sort">
+      <label className={styles.label}>
         <FaSort className={styles.sortIcon} /> Sort By:
       </label>
-      <select
-        id="sort"
-        value={sort.value}
-        onChange={(e) =>
-          setSort(sortOptions.find((opt) => opt.value === e.target.value)!)
-        }
-        className={styles.sortDrop}
-      >
-        {sortOptions.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
+      <div className={styles.dropdownWrapper} ref={dropdownRef}>
+        <button
+          className={styles.trigger}
+          onClick={() => setIsOpen((prev) => !prev)}
+        >
+          {sort.label} <FaAngleDown className={styles.arrowIcon} />
+        </button>
+        {isOpen && (
+          <div className={styles.dropdown}>
+            {sortOptions.map((option) => (
+              <div
+                key={option.value}
+                className={styles.dropdownItem}
+                onClick={() => handleSelect(option)}
+              >
+                {option.label}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </motion.div>
   );
 };

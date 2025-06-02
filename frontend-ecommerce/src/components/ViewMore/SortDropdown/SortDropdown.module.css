@@ -4,35 +4,81 @@
   margin-bottom: 12px;
 }
 
-.container label {
+.label {
   margin-right: 6px;
-  font-size: 10px;
+  font-size: 0.7rem;
   color: #9400d3;
   display: flex;
   align-items: center;
   gap: 4px;
-}
-
-.sortDrop {
-  padding: 4px;
-  border: 1px solid #ff1493;
-  border-radius: 6px;
-  background: #ffffff;
-  color: #9400d3;
-  font-size: 10px;
-  cursor: pointer;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-  transition: border-color 0.3s ease, background 0.3s ease, transform 0.2s ease;
-}
-
-.sortDrop:hover {
-  border-color: #a1dc17;
-  background: #f5f5f5;
-  transform: scale(1.02);
+  font-weight: 500;
 }
 
 .sortIcon {
-  font-size: 10px;
+  font-size: 0.7rem;
+  color: #9400d3;
+}
+
+.dropdownWrapper {
+  position: relative;
+}
+
+.trigger {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: clamp(0.4rem, 1.5vw, 0.5rem) clamp(0.8rem, 2vw, 1rem);
+  font-size: clamp(0.8rem, 2vw, 0.85rem);
+  color: #555;
+  background-color: #fff;
+  border: 1px solid #333;
+  border-radius: 60px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.trigger:hover {
+  background-color: #e6f0ff;
+  color: #9400d3;
+}
+
+.arrowIcon {
+  font-size: clamp(0.8rem, 2vw, 0.85rem);
+  color: #555;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.trigger:hover .arrowIcon {
+  color: #9400d3;
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 1001;
+  min-width: 200px;
+  max-width: 90vw;
+  overflow: hidden;
+}
+
+.dropdownItem {
+  display: block;
+  padding: clamp(0.4rem, 1.5vw, 0.5rem) clamp(0.8rem, 2vw, 1rem);
+  color: #555;
+  font-size: clamp(0.8rem, 2vw, 0.9rem);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, padding-left 0.3s ease,
+    color 0.3s ease;
+}
+
+.dropdownItem:hover {
+  background-color: #e6f0ff;
+  padding-left: clamp(1rem, 2.5vw, 1.2rem);
   color: #9400d3;
 }
 
@@ -45,16 +91,29 @@
     padding: 6px 0;
   }
 
-  .container label {
-    font-size: 8px;
-  }
-
-  .sortDrop {
-    padding: 3px;
-    font-size: 10px;
+  .label {
+    font-size: 0.6rem;
   }
 
   .sortIcon {
-    font-size: 8px;
+    font-size: 0.6rem;
+  }
+
+  .trigger {
+    font-size: clamp(0.75rem, 1.8vw, 0.8rem);
+    padding: clamp(0.3rem, 1vw, 0.4rem) clamp(0.6rem, 1.5vw, 0.8rem);
+  }
+
+  .arrowIcon {
+    font-size: clamp(0.75rem, 1.8vw, 0.8rem);
+  }
+
+  .dropdownItem {
+    font-size: clamp(0.7rem, 1.8vw, 0.8rem);
+    padding: clamp(0.3rem, 1vw, 0.4rem) clamp(0.6rem, 1.5vw, 0.8rem);
+  }
+
+  .dropdownItem:hover {
+    padding-left: clamp(0.8rem, 2vw, 1rem);
   }
 }
