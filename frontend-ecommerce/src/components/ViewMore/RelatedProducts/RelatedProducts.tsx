@@ -35,19 +35,30 @@ interface RelatedProductsProps {
 const RelatedProducts: React.FC<RelatedProductsProps> = ({ category }) => {
   const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const updateMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    updateMobile();
+    window.addEventListener("resize", updateMobile);
+    return () => window.removeEventListener("resize", updateMobile);
+  }, []);
 
   useEffect(() => {
     const fetchRelatedProducts = async () => {
       setLoading(true);
       try {
+        const limit = isMobile ? 2 : 6; // 2 for mobile, 6 for PC (sliced to 3)
         const res = await fetch(
-          `http://localhost:5000/api/products?category=${category}&limit=6`
+          `http://localhost:5000/api/products?category=${category}&limit=${limit}`
         );
         if (!res.ok)
           throw new Error(`Failed to fetch related products: ${res.status}`);
         const data: Product[] = await res.json();
         setRelatedProducts(
-          data.slice(0, 3).map((p) => ({
+          data.slice(0, isMobile ? 2 : 3).map((p) => ({
             ...p,
             image: p.image || "https://placehold.co/300x300",
             price: parseFloat(String(p.price)),
@@ -68,13 +79,13 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({ category }) => {
             (c: StaticCategory) =>
               c.name.toLowerCase() === category.toLowerCase()
           )?.products || [];
-        setRelatedProducts(staticData.slice(0, 3));
+        setRelatedProducts(staticData.slice(0, isMobile ? 2 : 3));
       } finally {
         setLoading(false);
       }
     };
     fetchRelatedProducts();
-  }, [category]);
+  }, [category, isMobile]);
 
   if (relatedProducts.length === 0 && !loading) return null;
 

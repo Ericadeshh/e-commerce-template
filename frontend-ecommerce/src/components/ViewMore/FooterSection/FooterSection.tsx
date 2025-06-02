@@ -1,23 +1,76 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { FaStar, FaArrowRight } from "react-icons/fa";
+import { FaArrowRight } from "react-icons/fa";
 import styles from "./FooterSection.module.css";
 
 interface FooterSectionProps {
   category: string;
 }
 
-const subcategories: Record<string, string[]> = {
-  mens: ["Jackets", "Shirts", "Trousers"],
-  womens: ["Dresses", "Blouses", "Skirts"],
-  childrens: ["T-Shirts", "Shorts", "Dresses"],
-  shoes: ["Running", "Casual", "Formal"],
-  beddings: ["Bed Sheets", "Comforters", "Pillows"],
+const subcategories: Record<string, { name: string; description: string }[]> = {
+  mens: [
+    { name: "Jackets", description: "Stylish outerwear for all seasons." },
+    { name: "Shirts", description: "From casual to formal, find your fit." },
+    { name: "Trousers", description: "Comfortable and versatile pants." },
+  ],
+  womens: [
+    { name: "Dresses", description: "Elegant dresses for every occasion." },
+    { name: "Blouses", description: "Chic tops to elevate your wardrobe." },
+    { name: "Skirts", description: "Trendy skirts in various styles." },
+  ],
+  childrens: [
+    { name: "T-Shirts", description: "Fun and comfy tees for kids." },
+    { name: "Shorts", description: "Perfect for playtime adventures." },
+    { name: "Dresses", description: "Cute dresses for little ones." },
+  ],
+  shoes: [
+    { name: "Running", description: "High-performance athletic shoes." },
+    { name: "Casual", description: "Everyday sneakers and flats." },
+    { name: "Formal", description: "Elegant shoes for special events." },
+  ],
+  beddings: [
+    { name: "Bed Sheets", description: "Soft and luxurious linens." },
+    { name: "Comforters", description: "Cozy bedding for restful sleep." },
+    { name: "Pillows", description: "Supportive pillows for comfort." },
+  ],
+};
+
+const featuredProducts: Record<
+  string,
+  { name: string; price: number; image: string }
+> = {
+  mens: {
+    name: "Casual Jacket",
+    price: 59.99,
+    image: "https://placehold.co/100x100",
+  },
+  womens: {
+    name: "Summer Dress",
+    price: 49.99,
+    image: "https://placehold.co/100x100",
+  },
+  childrens: {
+    name: "Kids T-Shirt",
+    price: 14.99,
+    image: "https://placehold.co/100x100",
+  },
+  shoes: {
+    name: "Running Shoes",
+    price: 79.99,
+    image: "https://placehold.co/100x100",
+  },
+  beddings: {
+    name: "Queen Bedding Set",
+    price: 99.99,
+    image: "https://placehold.co/100x100",
+  },
 };
 
 const FooterSection: React.FC<FooterSectionProps> = ({ category }) => {
   const categoryLower = category.toLowerCase();
   const categorySubcategories = subcategories[categoryLower] || [];
+  const featuredProduct =
+    featuredProducts[categoryLower] || featuredProducts.mens;
 
   return (
     <motion.div
@@ -39,33 +92,41 @@ const FooterSection: React.FC<FooterSectionProps> = ({ category }) => {
         <ul className={styles.subcategoryList}>
           {categorySubcategories.map((sub) => (
             <motion.li
-              key={sub}
+              key={sub.name}
               initial={{ x: -10, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ duration: 0.3 }}
             >
               <Link
-                to={`/products/${categoryLower}?subcategory=${sub.toLowerCase()}`}
+                to={`/products/${categoryLower}?subcategory=${sub.name.toLowerCase()}`}
                 className={styles.subcategoryLink}
               >
-                {sub} <FaArrowRight className={styles.arrowIcon} />
+                <span>{sub.name}</span>{" "}
+                <FaArrowRight className={styles.arrowIcon} />
+                <p className={styles.subcategoryDesc}>{sub.description}</p>
               </Link>
             </motion.li>
           ))}
         </ul>
       </div>
-      <div className={styles.review}>
-        <h3 className={styles.title}>Customer Favorite</h3>
-        <div className={styles.reviewContent}>
-          <div className={styles.stars}>
-            {[...Array(5)].map((_, i) => (
-              <FaStar key={i} className={styles.starIcon} />
-            ))}
-          </div>
-          <p>
-            "Absolutely love the {category} collection! High quality and
-            stylish!" - Jane D.
+      <div className={styles.featured}>
+        <h3 className={styles.title}>Featured Collection</h3>
+        <div className={styles.featuredContent}>
+          <img
+            src={featuredProduct.image}
+            alt={featuredProduct.name}
+            className={styles.featuredImage}
+          />
+          <p className={styles.featuredName}>{featuredProduct.name}</p>
+          <p className={styles.featuredPrice}>
+            ${featuredProduct.price.toFixed(2)}
           </p>
+          <Link
+            to={`/products/${categoryLower}?name=${featuredProduct.name.toLowerCase()}`}
+            className={styles.shopLink}
+          >
+            Shop Now <FaArrowRight className={styles.arrowIcon} />
+          </Link>
         </div>
       </div>
     </motion.div>

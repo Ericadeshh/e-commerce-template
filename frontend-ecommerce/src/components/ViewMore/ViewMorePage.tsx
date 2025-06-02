@@ -69,7 +69,17 @@ const ViewMorePage: React.FC = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const limit = 12;
+  const [limit, setLimit] = useState(3); // Default to PC limit
+
+  // Detect screen width to set limit (3 for PC, 2 for mobile)
+  useEffect(() => {
+    const updateLimit = () => {
+      setLimit(window.innerWidth <= 768 ? 2 : 3);
+    };
+    updateLimit();
+    window.addEventListener("resize", updateLimit);
+    return () => window.removeEventListener("resize", updateLimit);
+  }, []);
 
   const fetchProducts = async (
     query: string
@@ -90,7 +100,7 @@ const ViewMorePage: React.FC = () => {
           discount_percentage: p.discount_percentage
             ? Number(p.discount_percentage)
             : null,
-          brand: p.brand || "", // Ensure brand is defined
+          brand: p.brand || "",
         })),
         total: data.length,
       };
@@ -157,7 +167,7 @@ const ViewMorePage: React.FC = () => {
         }).toString();
 
         const fetchedProducts = await fetchProducts(query);
-        setProducts(fetchedProducts.products);
+        setProducts(fetchedProducts.products.slice(0, limit)); // Ensure only 'limit' products
         setTotalPages(Math.ceil(fetchedProducts.total / limit));
         setError(null);
       } catch (err) {
@@ -186,7 +196,7 @@ const ViewMorePage: React.FC = () => {
           )
           .sort((a: Product, b: Product) => {
             if (sort.value === "price-asc") return a.price - b.price;
-            if (sort.value === "price-desc") return b.price - a.price;
+            if (sort.value === "price-desc") return b.price - b.price;
             if (sort.value === "newest")
               return (b.is_new ? 1 : 0) - (a.is_new ? 1 : 0);
             return 0;
@@ -198,7 +208,7 @@ const ViewMorePage: React.FC = () => {
       }
     };
     loadData();
-  }, [category, filters, sort, page]);
+  }, [category, filters, sort, page, limit]);
 
   return (
     <motion.div
