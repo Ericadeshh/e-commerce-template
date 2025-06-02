@@ -1,3 +1,5 @@
+import { motion } from "framer-motion";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import styles from "./Pagination.module.css";
 
 interface PaginationProps {
@@ -15,29 +17,35 @@ const Pagination: React.FC<PaginationProps> = ({
 
   return (
     <div className={styles.container}>
-      <button
+      <motion.button
         disabled={page === 1}
         onClick={() => setPage(page - 1)}
         className={styles.button}
+        whileHover={{ scale: 1.1 }}
+        transition={{ duration: 0.2 }}
       >
-        Previous
-      </button>
+        <FaChevronLeft />
+      </motion.button>
       {pages.map((p) => (
-        <button
+        <motion.button
           key={p}
           onClick={() => setPage(p)}
           className={`${styles.button} ${p === page ? styles.active : ""}`}
+          whileHover={{ scale: 1.1 }}
+          transition={{ duration: 0.2 }}
         >
           {p}
-        </button>
+        </motion.button>
       ))}
-      <button
+      <motion.button
         disabled={page === totalPages}
         onClick={() => setPage(page + 1)}
         className={styles.button}
+        whileHover={{ scale: 1.1 }}
+        transition={{ duration: 0.2 }}
       >
-        Next
-      </button>
+        <FaChevronRight />
+      </motion.button>
     </div>
   );
 };

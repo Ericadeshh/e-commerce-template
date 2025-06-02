@@ -1,6 +1,14 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { FaFilter } from "react-icons/fa";
+import {
+  FaFilter,
+  FaTshirt,
+  FaPalette,
+  FaCubes,
+  FaShapes,
+  FaMoneyBillWave,
+  FaBox,
+} from "react-icons/fa";
 import { FilterOptions } from "../../../types/ViewMore";
 import { staticFilters } from "../../../static/filters";
 import styles from "./FilterSidebar.module.css";
@@ -42,6 +50,11 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
     setFilters({ ...filters, priceRange: newRange as [number, number] });
   };
 
+  const filterGroupVariants = {
+    hidden: { opacity: 0, y: 10 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
+  };
+
   return (
     <motion.div
       className={styles.container}
@@ -49,15 +62,17 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
       animate={{ x: 0 }}
       transition={{ duration: 0.3 }}
     >
-      <button
+      <motion.button
         className={styles.mobileToggle}
         onClick={() => setIsOpen(!isOpen)}
+        whileHover={{ scale: 1.05 }}
+        transition={{ duration: 0.2 }}
       >
         <FaFilter /> Filters
-      </button>
+      </motion.button>
       <div className={`${styles.filterContent} ${isOpen ? styles.open : ""}`}>
         <h3 className={styles.title}>Filters</h3>
-        <button
+        <motion.button
           className={styles.resetButton}
           onClick={() =>
             setFilters({
@@ -70,12 +85,21 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
               inStock: false,
             })
           }
+          whileHover={{ scale: 1.05 }}
+          transition={{ duration: 0.2 }}
         >
           Reset Filters
-        </button>
+        </motion.button>
 
-        <div className={styles.filterGroup}>
-          <h4>Size</h4>
+        <motion.div
+          className={styles.filterGroup}
+          variants={filterGroupVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          <h4>
+            <FaTshirt className={styles.icon} /> Size
+          </h4>
           {filterConfig.sizes.map((size) => (
             <label key={size} className={styles.checkbox}>
               <input
@@ -86,10 +110,17 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
               {size}
             </label>
           ))}
-        </div>
+        </motion.div>
 
-        <div className={styles.filterGroup}>
-          <h4>Color</h4>
+        <motion.div
+          className={styles.filterGroup}
+          variants={filterGroupVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          <h4>
+            <FaPalette className={styles.icon} /> Color
+          </h4>
           {filterConfig.colors.map((color) => (
             <label key={color} className={styles.checkbox}>
               <input
@@ -100,10 +131,17 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
               {color}
             </label>
           ))}
-        </div>
+        </motion.div>
 
-        <div className={styles.filterGroup}>
-          <h4>Material</h4>
+        <motion.div
+          className={styles.filterGroup}
+          variants={filterGroupVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          <h4>
+            <FaCubes className={styles.icon} /> Material
+          </h4>
           {filterConfig.materials.map((material) => (
             <label key={material} className={styles.checkbox}>
               <input
@@ -114,10 +152,17 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
               {material}
             </label>
           ))}
-        </div>
+        </motion.div>
 
-        <div className={styles.filterGroup}>
-          <h4>Style</h4>
+        <motion.div
+          className={styles.filterGroup}
+          variants={filterGroupVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          <h4>
+            <FaShapes className={styles.icon} /> Style
+          </h4>
           {filterConfig.styles.map((style) => (
             <label key={style} className={styles.checkbox}>
               <input
@@ -128,10 +173,17 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
               {style}
             </label>
           ))}
-        </div>
+        </motion.div>
 
-        <div className={styles.filterGroup}>
-          <h4>Price Range</h4>
+        <motion.div
+          className={styles.filterGroup}
+          variants={filterGroupVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          <h4>
+            <FaMoneyBillWave className={styles.icon} /> Price Range
+          </h4>
           <input
             type="range"
             min="0"
@@ -149,9 +201,14 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
           <div>
             ${filters.priceRange[0]} - ${filters.priceRange[1]}
           </div>
-        </div>
+        </motion.div>
 
-        <div className={styles.filterGroup}>
+        <motion.div
+          className={styles.filterGroup}
+          variants={filterGroupVariants}
+          initial="hidden"
+          animate="visible"
+        >
           <label className={styles.checkbox}>
             <input
               type="checkbox"
@@ -160,9 +217,9 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                 setFilters({ ...filters, inStock: !filters.inStock })
               }
             />
-            In Stock Only
+            <FaBox className={styles.icon} /> In Stock Only
           </label>
-        </div>
+        </motion.div>
       </div>
     </motion.div>
   );

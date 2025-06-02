@@ -1,32 +1,45 @@
 .container {
   display: flex;
   justify-content: center;
-  gap: 10px;
-  margin-top: 20px;
+  gap: 8px;
+  margin-top: 15px;
+  flex-wrap: wrap;
 }
 
 .button {
-  padding: 8px 12px;
-  border: 1px solid #ccc;
+  padding: 6px 10px;
+  border: 1px solid #ff1493;
   border-radius: 4px;
-  background: white;
+  background: #ffffff;
   cursor: pointer;
+  font-size: 14px;
+  color: #9400d3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.3s ease, color 0.3s ease;
+}
+
+.button:hover:not(:disabled) {
+  border-color: #a1dc17;
+  color: #a1dc17;
 }
 
 .button:disabled {
-  background: #f0f0f0;
+  background: #ffffff;
+  border-color: #ccc;
+  color: #6c757d;
   cursor: not-allowed;
 }
 
 .active {
-  background: #007bff;
-  color: white;
-  border-color: #007bff;
+  border-color: #a1dc17;
+  color: #a1dc17;
 }
 
 @media (max-width: 768px) {
   .button {
-    padding: 6px 10px;
-    font-size: 14px;
+    padding: 4px 6px;
+    font-size: 10px;
   }
 }

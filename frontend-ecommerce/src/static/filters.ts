@@ -1,53 +1,45 @@
-export const staticFilters: Record<
-  string,
-  {
+export const staticFilters: {
+  [key: string]: {
     sizes: string[];
     colors: string[];
     materials: string[];
     styles: string[];
-    brands: string[];
-  }
-> = {
+  };
+} = {
   mens: {
-    sizes: ["XS", "S", "M", "L", "XL", "XXL"],
-    colors: ["Black", "White", "Blue", "Red", "Green"],
-    materials: ["Cotton", "Polyester", "Wool"],
-    styles: ["Casual", "Formal"],
-    brands: [],
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    colors: ["Blue", "Black", "White", "Red", "Green"],
+    materials: ["Cotton", "Polyester", "Wool", "Denim"],
+    styles: ["Casual", "Formal", "Athletic", "Vintage"],
   },
   womens: {
-    sizes: ["XS", "S", "M", "L", "XL", "XXL"],
-    colors: ["Black", "White", "Blue", "Red", "Green"],
-    materials: ["Cotton", "Polyester", "Wool"],
-    styles: ["Casual", "Formal"],
-    brands: [],
+    sizes: ["XS", "S", "M", "L", "XL"],
+    colors: ["Pink", "Blue", "Black", "White", "Purple"],
+    materials: ["Cotton", "Silk", "Polyester", "Linen"],
+    styles: ["Casual", "Formal", "Bohemian", "Chic"],
   },
   childrens: {
-    sizes: ["XS", "S", "M", "L"],
-    colors: ["Black", "White", "Blue", "Red", "Green"],
-    materials: ["Cotton", "Polyester"],
-    styles: ["Casual"],
-    brands: [],
+    sizes: ["2T", "3T", "4T", "5T", "6"],
+    colors: ["Red", "Blue", "Yellow", "Green", "White"],
+    materials: ["Cotton", "Polyester", "Fleece"],
+    styles: ["Playful", "Casual", "School", "Party"],
   },
   shoes: {
-    sizes: ["US 6", "US 7", "US 8", "US 9", "US 10", "US 11", "US 12"],
-    colors: ["Black", "White", "Blue", "Red"],
-    materials: ["Leather", "Canvas"],
-    styles: ["Casual", "Formal", "Athletic"],
-    brands: ["Nike", "Adidas"],
+    sizes: ["6", "7", "8", "9", "10"],
+    colors: ["Black", "White", "Red", "Blue"],
+    materials: ["Leather", "Canvas", "Synthetic"],
+    styles: ["Sneakers", "Boots", "Sandals"],
   },
   beddings: {
     sizes: ["Twin", "Full", "Queen", "King"],
-    colors: ["White", "Blue", "Green"],
-    materials: ["Cotton", "Microfiber", "Linen"],
-    styles: ["Modern", "Classic"],
-    brands: [],
+    colors: ["White", "Blue", "Grey", "Beige"],
+    materials: ["Cotton", "Microfiber", "Satin"],
+    styles: ["Modern", "Classic", "Bohemian"],
   },
   default: {
-    sizes: [],
-    colors: [],
-    materials: [],
-    styles: [],
-    brands: [],
+    sizes: ["S", "M", "L"],
+    colors: ["Black", "White", "Blue"],
+    materials: ["Cotton", "Polyester"],
+    styles: ["Casual", "Formal"],
   },
 };

@@ -1,3 +1,5 @@
+import { motion } from "framer-motion";
+import { FaSort } from "react-icons/fa";
 import { SortOption } from "../../../types/ViewMore";
 import styles from "./SortDropdown.module.css";
 
@@ -16,15 +18,22 @@ const sortOptions: SortOption[] = [
 
 const SortDropdown: React.FC<SortDropdownProps> = ({ sort, setSort }) => {
   return (
-    <div className={styles.container}>
-      <label htmlFor="sort">Sort By:</label>
+    <motion.div
+      className={styles.container}
+      initial={{ opacity: 0, y: -10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.2 }}
+    >
+      <label htmlFor="sort">
+        <FaSort className={styles.sortIcon} /> Sort By:
+      </label>
       <select
         id="sort"
         value={sort.value}
         onChange={(e) =>
           setSort(sortOptions.find((opt) => opt.value === e.target.value)!)
         }
-        className={styles.dropdown}
+        className={styles.sortDrop}
       >
         {sortOptions.map((option) => (
           <option key={option.value} value={option.value}>
@@ -32,7 +41,7 @@ const SortDropdown: React.FC<SortDropdownProps> = ({ sort, setSort }) => {
           </option>
         ))}
       </select>
-    </div>
+    </motion.div>
   );
 };
 
