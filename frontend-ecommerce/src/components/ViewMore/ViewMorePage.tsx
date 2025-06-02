@@ -1,0 +1,236 @@
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { motion } from "framer-motion";
+import HeaderSection from "./HeaderSection/HeaderSection";
+import FilterSidebar from "./FilterSidebar/FilterSidebar";
+import SortDropdown from "./SortDropdown/SortDropdown";
+import ProductGrid from "./ProductGrid/ProductGrid";
+import Pagination from "./Pagination/Pagination";
+import RelatedProducts from "./RelatedProducts/RelatedProducts";
+import FooterSection from "./FooterSection/FooterSection";
+import {
+  staticCategories,
+  categoryDescriptions,
+} from "../../static/categories";
+import {
+  FilterOptions,
+  SortOption,
+  CategoryMetadata,
+} from "../../types/ViewMore";
+import styles from "./ViewMorePage.module.css";
+
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+  image: string;
+  category: string;
+  stock: number;
+  original_price?: number | null;
+  discount_percentage?: number | null;
+  is_new?: boolean;
+  size?: string;
+  color?: string;
+  material?: string;
+  style?: string;
+  brand?: string;
+}
+
+interface StaticCategory {
+  id: string;
+  name: string;
+  products: Product[];
+}
+
+const ViewMorePage: React.FC = () => {
+  const { category } = useParams<{ category: string }>();
+  const [products, setProducts] = useState<Product[]>([]);
+  const [metadata, setMetadata] = useState<CategoryMetadata>({
+    name: category || "",
+    description:
+      categoryDescriptions[category || ""] || "Explore our collection.",
+    heroImage: "https://placehold.co/1200x400",
+    subcategories: [],
+  });
+  const [filters, setFilters] = useState<FilterOptions>({
+    sizes: [],
+    colors: [],
+    materials: [],
+    styles: [],
+    brands: [],
+    priceRange: [0, 200],
+    inStock: false,
+  });
+  const [sort, setSort] = useState<SortOption>({
+    label: "Newest First",
+    value: "newest",
+  });
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const limit = 12;
+
+  const fetchProducts = async (
+    query: string
+  ): Promise<{ products: Product[]; total: number }> => {
+    try {
+      const res = await fetch(`http://localhost:5000/api/products?${query}`);
+      if (!res.ok) throw new Error(`Failed to fetch products: ${res.status}`);
+      const data: Product[] = await res.json();
+      return {
+        products: data.map((p: Product) => ({
+          ...p,
+          image: p.image || "https://placehold.co/300x300",
+          price: parseFloat(String(p.price)),
+          stock: Number(p.stock),
+          original_price: p.original_price
+            ? parseFloat(String(p.original_price))
+            : null,
+          discount_percentage: p.discount_percentage
+            ? Number(p.discount_percentage)
+            : null,
+          brand: p.brand || "", // Ensure brand is defined
+        })),
+        total: data.length,
+      };
+    } catch (err) {
+      console.error("API error:", err);
+      const params = new URLSearchParams(query);
+      const categoryParam = params.get("category") || "";
+      const staticData =
+        staticCategories.find(
+          (c: StaticCategory) =>
+            c.name.toLowerCase() === categoryParam.toLowerCase()
+        )?.products || [];
+      return { products: staticData, total: staticData.length };
+    }
+  };
+
+  const fetchCategoryMetadata = async (
+    category: string
+  ): Promise<CategoryMetadata> => {
+    try {
+      const res = await fetch(
+        `http://localhost:5000/api/categories/${category}`
+      );
+      if (!res.ok) throw new Error(`Failed to fetch metadata: ${res.status}`);
+      const data = await res.json();
+      return {
+        name: data.name || category,
+        description: data.description || "Explore our collection.",
+        heroImage: data.heroImage || "https://placehold.co/1200x400",
+        subcategories: data.subcategories || [],
+      };
+    } catch (err) {
+      console.error("Metadata error:", err);
+      return {
+        name: category,
+        description:
+          categoryDescriptions[category] || "Explore our collection.",
+        heroImage: "https://placehold.co/1200x400",
+        subcategories: [],
+      };
+    }
+  };
+
+  useEffect(() => {
+    const loadData = async () => {
+      setLoading(true);
+      try {
+        const metadataRes = await fetchCategoryMetadata(category || "");
+        setMetadata(metadataRes);
+
+        const query = new URLSearchParams({
+          category: category || "",
+          size: filters.sizes.join(","),
+          color: filters.colors.join(","),
+          material: filters.materials.join(","),
+          style: filters.styles.join(","),
+          brand: filters.brands.join(","),
+          minPrice: filters.priceRange[0].toString(),
+          maxPrice: filters.priceRange[1].toString(),
+          inStock: filters.inStock ? "true" : "false",
+          sort: sort.value,
+          page: page.toString(),
+          limit: limit.toString(),
+        }).toString();
+
+        const fetchedProducts = await fetchProducts(query);
+        setProducts(fetchedProducts.products);
+        setTotalPages(Math.ceil(fetchedProducts.total / limit));
+        setError(null);
+      } catch (err) {
+        console.error("Error fetching data:", err);
+        setError("Failed to load products. Showing static content.");
+        const staticData =
+          staticCategories.find(
+            (c: StaticCategory) =>
+              c.name.toLowerCase() === category?.toLowerCase()
+          )?.products || [];
+        const filteredProducts = staticData
+          .filter(
+            (p: Product) =>
+              (!filters.sizes.length || filters.sizes.includes(p.size || "")) &&
+              (!filters.colors.length ||
+                filters.colors.includes(p.color || "")) &&
+              (!filters.materials.length ||
+                filters.materials.includes(p.material || "")) &&
+              (!filters.styles.length ||
+                filters.styles.includes(p.style || "")) &&
+              (!filters.brands.length ||
+                filters.brands.includes(p.brand || "")) &&
+              p.price >= filters.priceRange[0] &&
+              p.price <= filters.priceRange[1] &&
+              (!filters.inStock || p.stock > 0)
+          )
+          .sort((a: Product, b: Product) => {
+            if (sort.value === "price-asc") return a.price - b.price;
+            if (sort.value === "price-desc") return b.price - a.price;
+            if (sort.value === "newest")
+              return (b.is_new ? 1 : 0) - (a.is_new ? 1 : 0);
+            return 0;
+          });
+        setProducts(filteredProducts.slice((page - 1) * limit, page * limit));
+        setTotalPages(Math.ceil(filteredProducts.length / limit));
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadData();
+  }, [category, filters, sort, page]);
+
+  return (
+    <motion.div
+      className={styles.container}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
+      <HeaderSection metadata={metadata} />
+      {error && <div className={styles.error}>{error}</div>}
+      <div className={styles.mainContent}>
+        <FilterSidebar
+          filters={filters}
+          setFilters={setFilters}
+          category={category || ""}
+        />
+        <div className={styles.gridContainer}>
+          <SortDropdown sort={sort} setSort={setSort} />
+          {loading ? (
+            <div className={styles.loading}>Loading...</div>
+          ) : products.length === 0 ? (
+            <div className={styles.empty}>No products found.</div>
+          ) : (
+            <ProductGrid products={products} />
+          )}
+          <Pagination page={page} totalPages={totalPages} setPage={setPage} />
+        </div>
+      </div>
+      <RelatedProducts category={category || ""} />
+      <FooterSection category={category || ""} />
+    </motion.div>
+  );
+};
+
+export default ViewMorePage;

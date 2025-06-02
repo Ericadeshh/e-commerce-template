@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -84,12 +85,12 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
     <div className={styles.carouselContainer}>
       <div className={styles.tab}>
         <h3 className={styles.categoryTitle}>{category}</h3>
-        <a
-          href={`/products?category=${category.toLowerCase()}`}
+        <Link
+          to={`/products/${category.toLowerCase()}`}
           className={styles.viewMore}
         >
           View More <FaArrowRight />
-        </a>
+        </Link>
       </div>
       <motion.div
         className={styles.description}

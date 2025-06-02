@@ -1,0 +1,40 @@
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.error {
+  color: red;
+  text-align: center;
+  margin: 20px 0;
+}
+
+.mainContent {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.gridContainer {
+  flex: 1;
+  max-width: calc(100% - 270px); /* Account for 250px sidebar + 20px gap */
+}
+
+.loading,
+.empty {
+  text-align: center;
+  padding: 50px;
+  font-size: 18px;
+  color: #800080; /* Purple */
+}
+
+@media (max-width: 768px) {
+  .mainContent {
+    flex-direction: column;
+  }
+
+  .gridContainer {
+    max-width: 100%;
+  }
+}

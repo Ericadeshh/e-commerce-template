@@ -10,6 +10,7 @@ import UserDashboard from "./components/auth/UserDashboard";
 import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary";
 import Categories from "./pages/Categories/Categories";
 import ChatPage from "./pages/ChatPage/ChatPage";
+import ViewMorePage from "./components/ViewMore/ViewMorePage";
 import styles from "./App.module.css";
 
 function App() {
@@ -49,6 +50,14 @@ function App() {
               element={<div>Returns & Refunds (TBD)</div>}
             />
             <Route path="/warranty" element={<div>Warranty (TBD)</div>} />
+            <Route
+              path="/products/:category"
+              element={
+                <ErrorBoundary>
+                  <ViewMorePage />
+                </ErrorBoundary>
+              }
+            />
           </Routes>
         </main>
         <Footer />
