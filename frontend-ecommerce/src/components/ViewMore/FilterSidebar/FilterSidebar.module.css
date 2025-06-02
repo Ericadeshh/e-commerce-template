@@ -1,77 +1,89 @@
 .container {
   width: 230px;
-  background: #fb3a9a18;
-  padding: 10px;
-  border-radius: 8px;
+  background: #ff69b4;
+  padding: 8px;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .mobileToggle {
   display: none;
-  background: #007bff;
   background: #9400d3;
   color: white;
   border: none;
-  padding: 8px;
-  border-radius: 4px;
+  padding: 6px;
+  border-radius: 6px;
   cursor: pointer;
-  width: 100%;
-  margin-bottom: 8px;
-  font-size: 12px;
+  width: 90%;
+  margin: 0 auto 8px;
+  font-size: 10px;
   display: flex;
   align-items: center;
   gap: 5px;
+  transition: background 0.3s ease;
+}
+
+.mobileToggle:hover {
+  background: #a1dc17;
 }
 
 .filterContent {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 8px;
 }
 
 .title {
-  font-size: 16px;
-  margin-bottom: 10px;
+  font-size: 14px;
+  margin-bottom: 8px;
   color: #9400d3;
   width: 100%;
+  font-weight: 600;
 }
 
 .resetButton {
-  background: #9400d3;
+  background: #ff1493;
   color: white;
   border: none;
-  padding: 6px;
-  border-radius: 4px;
+  padding: 5px;
+  border-radius: 6px;
   cursor: pointer;
-  width: 100%;
-  margin-bottom: 10px;
-  font-size: 12px;
+  width: 90%;
+  margin: 0 auto 8px;
+  font-size: 10px;
+  transition: background 0.3s ease;
+}
+
+.resetButton:hover {
+  background: #a1dc17;
 }
 
 .filterGroup {
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   flex: 1 1 100px;
   min-width: 100px;
 }
 
 .filterGroup h4 {
-  font-size: 14px;
-  margin-bottom: 8px;
+  font-size: 12px;
+  margin-bottom: 6px;
   color: #9400d3;
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 4px;
+  font-weight: 500;
 }
 
 .checkbox {
   display: flex;
   align-items: center;
-  margin-bottom: 5px;
-  font-size: 12px;
+  margin-bottom: 4px;
+  font-size: 10px;
   color: #495057;
 }
 
 .checkbox input {
-  margin-right: 5px;
+  margin-right: 4px;
 }
 
 .checkbox input:checked {
@@ -83,7 +95,7 @@ input[type="range"] {
 }
 
 .icon {
-  font-size: 14px;
+  font-size: 12px;
   color: #9400d3;
 }
 
@@ -91,6 +103,7 @@ input[type="range"] {
   .container {
     width: 100%;
     background: #ffffff;
+    padding: 6px;
   }
 
   .mobileToggle {
@@ -99,16 +112,29 @@ input[type="range"] {
 
   .filterContent {
     display: none;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .filterContent.open {
+    display: flex;
+  }
+
+  .filterGroup {
+    flex: 1 1 45%;
+    min-width: 45%;
+  }
+}
+
+@media (max-width: 360px) {
+  .filterContent.open {
     flex-wrap: nowrap;
     flex-direction: column;
   }
 
-  .filterContent.open {
-    display: block;
-  }
-
   .filterGroup {
-    flex: 1 1 auto;
-    min-width: auto;
+    flex: none;
+    width: 100%;
+    min-width: 100%;
   }
 }
