@@ -42,6 +42,12 @@ export const staticFilters: {
     materials: ["Cotton", "Polyester", "Leather", "Microfiber"],
     styles: ["Casual", "Formal", "Bohemian", "Modern"],
   },
+  "featured-products": {
+    sizes: ["S", "M", "L", "XL"],
+    colors: ["Black", "White", "Navy", "Olive", "Gray"],
+    materials: ["Cotton", "Wool", "Silk", "Leather"],
+    styles: ["Formal", "Trendy", "Minimal", "Classic"],
+  },
   default: {
     sizes: ["S", "M", "L"],
     colors: ["Black", "White", "Blue"],

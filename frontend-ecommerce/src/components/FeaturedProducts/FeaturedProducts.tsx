@@ -4,6 +4,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import {
   FaStar,
   FaGem,
@@ -47,9 +48,9 @@ const fetchWithRetry = async (
     } catch (err) {
       if (i < retries - 1) {
         await new Promise((resolve) => setTimeout(resolve, delay));
-        continue;
+      } else {
+        throw err;
       }
-      throw err;
     }
   }
   throw new Error("Max retries reached");
@@ -59,7 +60,7 @@ export default function FeaturedProducts() {
   const defaultProducts = useMemo<Product[]>(
     () => [
       {
-        id: 1,
+        id: 116,
         name: "Men's Blue Suit",
         price: 99.99,
         original_price: 129.99,
@@ -69,7 +70,7 @@ export default function FeaturedProducts() {
         image: MenSuitPic,
       },
       {
-        id: 2,
+        id: 117,
         name: "Women's Red Dress",
         price: 59.99,
         original_price: 69.99,
@@ -79,7 +80,7 @@ export default function FeaturedProducts() {
         image: WomenDressPic,
       },
       {
-        id: 3,
+        id: 118,
         name: "Kids' Pants",
         price: 19.99,
         original_price: 22.99,
@@ -89,7 +90,7 @@ export default function FeaturedProducts() {
         image: kidPantsPic,
       },
       {
-        id: 4,
+        id: 119,
         name: "Kids' Matching Set",
         price: 29.99,
         original_price: null,
@@ -100,7 +101,7 @@ export default function FeaturedProducts() {
         is_new: true,
       },
       {
-        id: 5,
+        id: 120,
         name: "Men's Ombre Shirt",
         price: 39.99,
         original_price: 49.99,
@@ -110,7 +111,7 @@ export default function FeaturedProducts() {
         image: MenOmbrePic,
       },
       {
-        id: 6,
+        id: 121,
         name: "Nice Blanket",
         price: 44.99,
         original_price: 59.99,
@@ -217,15 +218,15 @@ export default function FeaturedProducts() {
         >
           Featured Products
         </motion.h2>
-        <motion.a
-          href="/products"
-          className={styles.viewMore}
+        <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.3, delay: 0.1 }}
         >
-          View More <FaArrowCircleRight />
-        </motion.a>
+          <Link to="/products/featured-products" className={styles.viewMore}>
+            View More <FaArrowCircleRight />
+          </Link>
+        </motion.div>
       </div>
       <motion.div
         className={styles.description}

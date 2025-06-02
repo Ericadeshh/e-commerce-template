@@ -57,10 +57,15 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({
       try {
         const limit = isMobile ? 2 : 6;
         const effectiveCategory =
-          category.toLowerCase() === "new-arrivals" ? "" : category;
+          category.toLowerCase() === "new-arrivals" ||
+          category.toLowerCase() === "featured-products"
+            ? ""
+            : category;
         const apiUrl =
           category.toLowerCase() === "new-arrivals"
             ? `http://localhost:5000/api/products?new=true&limit=${limit}`
+            : category.toLowerCase() === "featured-products"
+            ? `http://localhost:5000/api/products?featured=true&limit=${limit}`
             : `http://localhost:5000/api/products?category=${effectiveCategory}&limit=${limit}`;
         const res = await fetch(apiUrl);
         if (!res.ok)
@@ -72,10 +77,10 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({
             filteredData.slice(0, isMobile ? 2 : 3).map((p) => ({
               ...p,
               image: p.image || "https://placehold.co/300x300",
-              price: parseFloat(String(p.price)),
+              price: parseFloat(p.price.toString()),
               stock: Number(p.stock),
               original_price: p.original_price
-                ? parseFloat(String(p.original_price))
+                ? parseFloat(p.original_price.toString())
                 : null,
               discount_percentage: p.discount_percentage
                 ? Number(p.discount_percentage)
@@ -86,53 +91,70 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({
         }
       } catch (err) {
         console.error("Related products error:", err);
-        const effectiveStaticCategory =
-          category.toLowerCase() === "new-arrivals" ? "New Arrivals" : category;
+        // Fallback to static data
+        const effectiveCategoryName =
+          category.toLowerCase() === "new-arrivals"
+            ? "New Arrivals"
+            : category.toLowerCase() === "featured-products"
+            ? "Featured Products"
+            : category;
         const staticData =
-          staticCategories.find(
-            (c: StaticCategory) => c.name === effectiveStaticCategory
-          )?.products || [];
-        const filteredStaticData = staticData.filter(
-          (p) => !excludeIds.includes(p.id)
-        );
+          staticCategories
+            .find((c: StaticCategory) => c.name === effectiveCategoryName)
+            ?.products.filter((p: Product) => !excludeIds.includes(p.id))
+            .slice(0, isMobile ? 2 : 3) || [];
         if (isMounted) {
-          setRelatedProducts(filteredStaticData.slice(0, isMobile ? 2 : 3));
+          setRelatedProducts(staticData);
         }
       } finally {
-        setTimeout(() => {
-          if (isMounted) setLoading(false);
-        }, 125);
+        if (isMounted) setLoading(false);
       }
     };
     fetchRelatedProducts();
     return () => {
       isMounted = false;
     };
-  }, [category, isMobile, excludeIds]);
+  }, [category, excludeIds, isMobile]);
 
   if (relatedProducts.length === 0 && !loading) return null;
 
   return (
-    <motion.div
-      className={styles.container}
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
+    <motion.section
+      className={styles.section}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <h2 className={styles.title}>
-        <FaStar className={styles.starIcon} /> Related Products{" "}
-        <FaStar className={styles.starIcon} />
-      </h2>
+      <motion.h2
+        className={styles.sectionTitle}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        You May Also Like
+        <motion.span
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 0.3, delay: 0.2 }}
+        >
+          <FaStar className={styles.starIcon} />
+        </motion.span>
+      </motion.h2>
       {loading ? (
-        <div className={styles.loading}>Loading related products...</div>
+        <div className={styles.loading}>Loading...</div>
       ) : (
-        <div className={styles.grid}>
+        <motion.div
+          className={styles.grid}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
           {relatedProducts.map((product) => (
             <CategoryCard key={product.id} product={product} />
           ))}
-        </div>
+        </motion.div>
       )}
-    </motion.div>
+    </motion.section>
   );
 };
 

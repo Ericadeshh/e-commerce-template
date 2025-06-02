@@ -13,6 +13,7 @@ interface Product {
   original_price?: number | null;
   discount_percentage?: number | null;
   is_new?: boolean;
+  brand?: string;
 }
 
 interface CategoryCardProps {

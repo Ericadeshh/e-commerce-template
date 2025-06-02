@@ -84,7 +84,11 @@ const ViewMorePage: React.FC = () => {
   // Memoize static data filtering to reduce processing time
   const filteredStaticProducts = useMemo(() => {
     const effectiveCategory =
-      category?.toLowerCase() === "new-arrivals" ? "New Arrivals" : category;
+      category?.toLowerCase() === "new-arrivals"
+        ? "New Arrivals"
+        : category?.toLowerCase() === "featured-products"
+        ? "Featured Products"
+        : category;
     const staticData =
       staticCategories.find((c: StaticCategory) => c.name === effectiveCategory)
         ?.products || [];
@@ -155,6 +159,8 @@ const ViewMorePage: React.FC = () => {
             const apiUrl =
               category?.toLowerCase() === "new-arrivals"
                 ? `http://localhost:5000/api/products?new=true&${query}`
+                : category?.toLowerCase() === "featured-products"
+                ? `http://localhost:5000/api/products?featured=true&${query}`
                 : `http://localhost:5000/api/products?${query}`;
             const res = await fetch(apiUrl);
             if (!res.ok)
@@ -164,15 +170,14 @@ const ViewMorePage: React.FC = () => {
               products: data.map((p: Product) => ({
                 ...p,
                 image: p.image || "https://placehold.co/300x300",
-                price: parseFloat(String(p.price)),
+                price: parseFloat(p.price.toString()),
                 stock: Number(p.stock),
                 original_price: p.original_price
-                  ? parseFloat(String(p.original_price))
+                  ? parseFloat(p.original_price.toString())
                   : null,
                 discount_percentage: p.discount_percentage
                   ? Number(p.discount_percentage)
                   : null,
-                brand: p.brand || "",
               })),
               total: data.length,
             };
@@ -187,7 +192,10 @@ const ViewMorePage: React.FC = () => {
 
         const query = new URLSearchParams({
           category:
-            category?.toLowerCase() === "new-arrivals" ? "" : category || "",
+            category?.toLowerCase() === "new-arrivals" ||
+            category?.toLowerCase() === "featured-products"
+              ? ""
+              : category || "",
           size: filters.sizes.join(","),
           color: filters.colors.join(","),
           material: filters.materials.join(","),
@@ -210,14 +218,13 @@ const ViewMorePage: React.FC = () => {
       } catch (err) {
         console.error("Error fetching data:", err);
         if (isMounted) {
-          setError("Failed to load products. Showing static content.");
+          setError("Failed to load products. Showing demo content.");
           setProducts(
             filteredStaticProducts.slice((page - 1) * limit, page * limit)
           );
           setTotalPages(Math.ceil(filteredStaticProducts.length / limit));
         }
       } finally {
-        // Force loading to end after 125ms
         setTimeout(() => {
           if (isMounted) setLoading(false);
         }, 125);
