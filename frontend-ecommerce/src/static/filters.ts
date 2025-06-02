@@ -36,6 +36,12 @@ export const staticFilters: {
     materials: ["Cotton", "Microfiber", "Satin"],
     styles: ["Modern", "Classic", "Bohemian"],
   },
+  "new-arrivals": {
+    sizes: ["XS", "S", "M", "L", "XL", "2T", "3T", "6", "7", "Twin", "Queen"],
+    colors: ["Blue", "Black", "White", "Red", "Pink", "Yellow"],
+    materials: ["Cotton", "Polyester", "Leather", "Microfiber"],
+    styles: ["Casual", "Formal", "Bohemian", "Modern"],
+  },
   default: {
     sizes: ["S", "M", "L"],
     colors: ["Black", "White", "Blue"],

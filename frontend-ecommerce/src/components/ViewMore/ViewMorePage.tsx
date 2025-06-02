@@ -83,10 +83,11 @@ const ViewMorePage: React.FC = () => {
 
   // Memoize static data filtering to reduce processing time
   const filteredStaticProducts = useMemo(() => {
+    const effectiveCategory =
+      category?.toLowerCase() === "new-arrivals" ? "New Arrivals" : category;
     const staticData =
-      staticCategories.find(
-        (c: StaticCategory) => c.name.toLowerCase() === category?.toLowerCase()
-      )?.products || [];
+      staticCategories.find((c: StaticCategory) => c.name === effectiveCategory)
+        ?.products || [];
     return staticData
       .filter(
         (p: Product) =>
@@ -151,9 +152,11 @@ const ViewMorePage: React.FC = () => {
           query: string
         ): Promise<{ products: Product[]; total: number }> => {
           try {
-            const res = await fetch(
-              `http://localhost:5000/api/products?${query}`
-            );
+            const apiUrl =
+              category?.toLowerCase() === "new-arrivals"
+                ? `http://localhost:5000/api/products?new=true&${query}`
+                : `http://localhost:5000/api/products?${query}`;
+            const res = await fetch(apiUrl);
             if (!res.ok)
               throw new Error(`Failed to fetch products: ${res.status}`);
             const data: Product[] = await res.json();
@@ -183,7 +186,8 @@ const ViewMorePage: React.FC = () => {
         };
 
         const query = new URLSearchParams({
-          category: category || "",
+          category:
+            category?.toLowerCase() === "new-arrivals" ? "" : category || "",
           size: filters.sizes.join(","),
           color: filters.colors.join(","),
           material: filters.materials.join(","),

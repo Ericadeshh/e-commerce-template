@@ -141,7 +141,7 @@ export default function NewArrivals() {
     <section className={styles.newArrivals}>
       <div className={styles.header}>
         <h2 className={styles.sectionTitle}>New Arrivals</h2>
-        <Link to="/products?category=new-arrivals" className={styles.viewMore}>
+        <Link to="/products/new-arrivals" className={styles.viewMore}>
           View More
         </Link>
       </div>

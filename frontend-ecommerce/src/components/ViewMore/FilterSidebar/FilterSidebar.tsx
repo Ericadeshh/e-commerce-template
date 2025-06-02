@@ -62,14 +62,12 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
       animate={{ x: 0 }}
       transition={{ duration: 0.3 }}
     >
-      <motion.button
+      <button
         className={styles.mobileToggle}
         onClick={() => setIsOpen(!isOpen)}
-        whileHover={{ scale: 1.05 }}
-        transition={{ duration: 0.2 }}
       >
         <FaFilter /> Filters
-      </motion.button>
+      </button>
       <div className={`${styles.filterContent} ${isOpen ? styles.open : ""}`}>
         <h3 className={styles.title}>Filters</h3>
         <motion.button

@@ -1,3 +1,11 @@
+export type Category =
+  | "mens"
+  | "womens"
+  | "childrens"
+  | "shoes"
+  | "beddings"
+  | "new-arrivals";
+
 export interface FilterOptions {
   sizes: string[];
   colors: string[];

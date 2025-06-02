@@ -56,9 +56,13 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({
       setLoading(true);
       try {
         const limit = isMobile ? 2 : 6;
-        const res = await fetch(
-          `http://localhost:5000/api/products?category=${category}&limit=${limit}`
-        );
+        const effectiveCategory =
+          category.toLowerCase() === "new-arrivals" ? "" : category;
+        const apiUrl =
+          category.toLowerCase() === "new-arrivals"
+            ? `http://localhost:5000/api/products?new=true&limit=${limit}`
+            : `http://localhost:5000/api/products?category=${effectiveCategory}&limit=${limit}`;
+        const res = await fetch(apiUrl);
         if (!res.ok)
           throw new Error(`Failed to fetch related products: ${res.status}`);
         const data: Product[] = await res.json();
@@ -82,10 +86,11 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({
         }
       } catch (err) {
         console.error("Related products error:", err);
+        const effectiveStaticCategory =
+          category.toLowerCase() === "new-arrivals" ? "New Arrivals" : category;
         const staticData =
           staticCategories.find(
-            (c: StaticCategory) =>
-              c.name.toLowerCase() === category.toLowerCase()
+            (c: StaticCategory) => c.name === effectiveStaticCategory
           )?.products || [];
         const filteredStaticData = staticData.filter(
           (p) => !excludeIds.includes(p.id)
