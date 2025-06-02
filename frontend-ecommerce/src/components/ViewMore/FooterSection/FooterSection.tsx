@@ -67,7 +67,7 @@ const featuredProducts: Record<
 };
 
 const FooterSection: React.FC<FooterSectionProps> = ({ category }) => {
-  const categoryLower = category.toLowerCase();
+  const categoryLower = category.toLowerCase().replace("'s", "s"); // Normalize: Men's -> mens
   const categorySubcategories = subcategories[categoryLower] || [];
   const featuredProduct =
     featuredProducts[categoryLower] || featuredProducts.mens;

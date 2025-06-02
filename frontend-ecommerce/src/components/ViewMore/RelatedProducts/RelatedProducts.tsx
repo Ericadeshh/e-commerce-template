@@ -30,9 +30,13 @@ interface StaticCategory {
 
 interface RelatedProductsProps {
   category: string;
+  excludeIds: number[];
 }
 
-const RelatedProducts: React.FC<RelatedProductsProps> = ({ category }) => {
+const RelatedProducts: React.FC<RelatedProductsProps> = ({
+  category,
+  excludeIds,
+}) => {
   const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
@@ -47,31 +51,35 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({ category }) => {
   }, []);
 
   useEffect(() => {
+    let isMounted = true;
     const fetchRelatedProducts = async () => {
       setLoading(true);
       try {
-        const limit = isMobile ? 2 : 6; // 2 for mobile, 6 for PC (sliced to 3)
+        const limit = isMobile ? 2 : 6;
         const res = await fetch(
           `http://localhost:5000/api/products?category=${category}&limit=${limit}`
         );
         if (!res.ok)
           throw new Error(`Failed to fetch related products: ${res.status}`);
         const data: Product[] = await res.json();
-        setRelatedProducts(
-          data.slice(0, isMobile ? 2 : 3).map((p) => ({
-            ...p,
-            image: p.image || "https://placehold.co/300x300",
-            price: parseFloat(String(p.price)),
-            stock: Number(p.stock),
-            original_price: p.original_price
-              ? parseFloat(String(p.original_price))
-              : null,
-            discount_percentage: p.discount_percentage
-              ? Number(p.discount_percentage)
-              : null,
-            brand: p.brand || "",
-          }))
-        );
+        const filteredData = data.filter((p) => !excludeIds.includes(p.id));
+        if (isMounted) {
+          setRelatedProducts(
+            filteredData.slice(0, isMobile ? 2 : 3).map((p) => ({
+              ...p,
+              image: p.image || "https://placehold.co/300x300",
+              price: parseFloat(String(p.price)),
+              stock: Number(p.stock),
+              original_price: p.original_price
+                ? parseFloat(String(p.original_price))
+                : null,
+              discount_percentage: p.discount_percentage
+                ? Number(p.discount_percentage)
+                : null,
+              brand: p.brand || "",
+            }))
+          );
+        }
       } catch (err) {
         console.error("Related products error:", err);
         const staticData =
@@ -79,13 +87,23 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({ category }) => {
             (c: StaticCategory) =>
               c.name.toLowerCase() === category.toLowerCase()
           )?.products || [];
-        setRelatedProducts(staticData.slice(0, isMobile ? 2 : 3));
+        const filteredStaticData = staticData.filter(
+          (p) => !excludeIds.includes(p.id)
+        );
+        if (isMounted) {
+          setRelatedProducts(filteredStaticData.slice(0, isMobile ? 2 : 3));
+        }
       } finally {
-        setLoading(false);
+        setTimeout(() => {
+          if (isMounted) setLoading(false);
+        }, 500);
       }
     };
     fetchRelatedProducts();
-  }, [category, isMobile]);
+    return () => {
+      isMounted = false;
+    };
+  }, [category, isMobile, excludeIds]);
 
   if (relatedProducts.length === 0 && !loading) return null;
 

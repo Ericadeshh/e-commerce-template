@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import HeaderSection from "./HeaderSection/HeaderSection";
@@ -81,6 +81,34 @@ const ViewMorePage: React.FC = () => {
     return () => window.removeEventListener("resize", updateLimit);
   }, []);
 
+  // Memoize static data filtering to reduce processing time
+  const filteredStaticProducts = useMemo(() => {
+    const staticData =
+      staticCategories.find(
+        (c: StaticCategory) => c.name.toLowerCase() === category?.toLowerCase()
+      )?.products || [];
+    return staticData
+      .filter(
+        (p: Product) =>
+          (!filters.sizes.length || filters.sizes.includes(p.size || "")) &&
+          (!filters.colors.length || filters.colors.includes(p.color || "")) &&
+          (!filters.materials.length ||
+            filters.materials.includes(p.material || "")) &&
+          (!filters.styles.length || filters.styles.includes(p.style || "")) &&
+          (!filters.brands.length || filters.brands.includes(p.brand || "")) &&
+          p.price >= filters.priceRange[0] &&
+          p.price <= filters.priceRange[1] &&
+          (!filters.inStock || p.stock > 0)
+      )
+      .sort((a: Product, b: Product) => {
+        if (sort.value === "price-asc") return a.price - b.price;
+        if (sort.value === "price-desc") return b.price - a.price;
+        if (sort.value === "newest")
+          return (b.is_new ? 1 : 0) - (a.is_new ? 1 : 0);
+        return 0;
+      });
+  }, [category, filters, sort]);
+
   const fetchProducts = async (
     query: string
   ): Promise<{ products: Product[]; total: number }> => {
@@ -106,14 +134,10 @@ const ViewMorePage: React.FC = () => {
       };
     } catch (err) {
       console.error("API error:", err);
-      const params = new URLSearchParams(query);
-      const categoryParam = params.get("category") || "";
-      const staticData =
-        staticCategories.find(
-          (c: StaticCategory) =>
-            c.name.toLowerCase() === categoryParam.toLowerCase()
-        )?.products || [];
-      return { products: staticData, total: staticData.length };
+      return {
+        products: filteredStaticProducts,
+        total: filteredStaticProducts.length,
+      };
     }
   };
 
@@ -145,11 +169,12 @@ const ViewMorePage: React.FC = () => {
   };
 
   useEffect(() => {
+    let isMounted = true;
     const loadData = async () => {
       setLoading(true);
       try {
         const metadataRes = await fetchCategoryMetadata(category || "");
-        setMetadata(metadataRes);
+        if (isMounted) setMetadata(metadataRes);
 
         const query = new URLSearchParams({
           category: category || "",
@@ -167,48 +192,35 @@ const ViewMorePage: React.FC = () => {
         }).toString();
 
         const fetchedProducts = await fetchProducts(query);
-        setProducts(fetchedProducts.products.slice(0, limit)); // Ensure only 'limit' products
-        setTotalPages(Math.ceil(fetchedProducts.total / limit));
-        setError(null);
+        if (isMounted) {
+          setProducts(fetchedProducts.products.slice(0, limit));
+          setTotalPages(Math.ceil(fetchedProducts.total / limit));
+          setError(null);
+        }
       } catch (err) {
         console.error("Error fetching data:", err);
-        setError("Failed to load products. Showing static content.");
-        const staticData =
-          staticCategories.find(
-            (c: StaticCategory) =>
-              c.name.toLowerCase() === category?.toLowerCase()
-          )?.products || [];
-        const filteredProducts = staticData
-          .filter(
-            (p: Product) =>
-              (!filters.sizes.length || filters.sizes.includes(p.size || "")) &&
-              (!filters.colors.length ||
-                filters.colors.includes(p.color || "")) &&
-              (!filters.materials.length ||
-                filters.materials.includes(p.material || "")) &&
-              (!filters.styles.length ||
-                filters.styles.includes(p.style || "")) &&
-              (!filters.brands.length ||
-                filters.brands.includes(p.brand || "")) &&
-              p.price >= filters.priceRange[0] &&
-              p.price <= filters.priceRange[1] &&
-              (!filters.inStock || p.stock > 0)
-          )
-          .sort((a: Product, b: Product) => {
-            if (sort.value === "price-asc") return a.price - b.price;
-            if (sort.value === "price-desc") return b.price - b.price;
-            if (sort.value === "newest")
-              return (b.is_new ? 1 : 0) - (a.is_new ? 1 : 0);
-            return 0;
-          });
-        setProducts(filteredProducts.slice((page - 1) * limit, page * limit));
-        setTotalPages(Math.ceil(filteredProducts.length / limit));
+        if (isMounted) {
+          setError("Failed to load products. Showing static content.");
+          setProducts(
+            filteredStaticProducts.slice((page - 1) * limit, page * limit)
+          );
+          setTotalPages(Math.ceil(filteredStaticProducts.length / limit));
+        }
       } finally {
-        setLoading(false);
+        // Force loading to end after 500ms
+        setTimeout(() => {
+          if (isMounted) setLoading(false);
+        }, 500);
       }
     };
     loadData();
-  }, [category, filters, sort, page, limit]);
+    return () => {
+      isMounted = false;
+    };
+  }, [category, filters, sort, page, limit, filteredStaticProducts]);
+
+  // Get current product IDs for RelatedProducts to avoid duplicates
+  const productIds = products.map((p) => p.id);
 
   return (
     <motion.div
@@ -237,7 +249,7 @@ const ViewMorePage: React.FC = () => {
           <Pagination page={page} totalPages={totalPages} setPage={setPage} />
         </div>
       </div>
-      <RelatedProducts category={category || ""} />
+      <RelatedProducts category={category || ""} excludeIds={productIds} />
       <FooterSection category={category || ""} />
     </motion.div>
   );
