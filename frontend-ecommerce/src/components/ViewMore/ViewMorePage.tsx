@@ -48,7 +48,8 @@ const ViewMorePage: React.FC = () => {
   const [metadata, setMetadata] = useState<CategoryMetadata>({
     name: category || "",
     description:
-      categoryDescriptions[category || ""] || "Explore our collection.",
+      categoryDescriptions[category?.toLowerCase() || ""] ||
+      "Explore our collection.",
     heroImage: "https://placehold.co/1200x400",
     subcategories: [],
   });
@@ -69,9 +70,9 @@ const ViewMorePage: React.FC = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [limit, setLimit] = useState(3); // Default to PC limit
+  const [limit, setLimit] = useState(3);
+  const [isServerOnline, setIsServerOnline] = useState<boolean>(false);
 
-  // Detect screen width to set limit (3 for PC, 2 for mobile)
   useEffect(() => {
     const updateLimit = () => {
       setLimit(window.innerWidth <= 768 ? 2 : 3);
@@ -81,14 +82,22 @@ const ViewMorePage: React.FC = () => {
     return () => window.removeEventListener("resize", updateLimit);
   }, []);
 
-  // Memoize static data filtering to reduce processing time
+  const normalizeCategory = (cat: string | undefined): string => {
+    if (!cat) return "Men's"; // Default fallback
+    const lowerCat = cat.toLowerCase();
+    return (
+      staticCategories.find((c) => c.name.toLowerCase() === lowerCat)?.name ||
+      "Men's"
+    );
+  };
+
   const filteredStaticProducts = useMemo(() => {
     const effectiveCategory =
       category?.toLowerCase() === "new-arrivals"
         ? "New Arrivals"
         : category?.toLowerCase() === "featured-products"
         ? "Featured Products"
-        : category;
+        : normalizeCategory(category);
     const staticData =
       staticCategories.find((c: StaticCategory) => c.name === effectiveCategory)
         ?.products || [];
@@ -119,7 +128,6 @@ const ViewMorePage: React.FC = () => {
     const loadData = async () => {
       setLoading(true);
       try {
-        // Fetch category metadata
         const fetchCategoryMetadata = async (
           category: string
         ): Promise<CategoryMetadata> => {
@@ -132,26 +140,29 @@ const ViewMorePage: React.FC = () => {
             const data = await res.json();
             return {
               name: data.name || category,
-              description: data.description || "Explore our collection.",
+              description:
+                data.description ||
+                categoryDescriptions[category.toLowerCase()] ||
+                "Explore our collection.",
               heroImage: data.heroImage || "https://placehold.co/1200x400",
               subcategories: data.subcategories || [],
             };
           } catch (err) {
             console.error("Metadata error:", err);
             return {
-              name: category,
+              name: normalizeCategory(category),
               description:
-                categoryDescriptions[category] || "Explore our collection.",
+                categoryDescriptions[category.toLowerCase()] ||
+                "Explore our collection.",
               heroImage: "https://placehold.co/1200x400",
               subcategories: [],
             };
           }
         };
 
-        const metadataRes = await fetchCategoryMetadata(category || "");
+        const metadataRes = await fetchCategoryMetadata(category || "mens");
         if (isMounted) setMetadata(metadataRes);
 
-        // Fetch products
         const fetchProducts = async (
           query: string
         ): Promise<{ products: Product[]; total: number }> => {
@@ -169,7 +180,11 @@ const ViewMorePage: React.FC = () => {
             return {
               products: data.map((p: Product) => ({
                 ...p,
-                image: p.image || "https://placehold.co/300x300",
+                image:
+                  typeof p.image === "string"
+                    ? p.image
+                    : filteredStaticProducts[0]?.image ||
+                      "https://placehold.co/300x300",
                 price: parseFloat(p.price.toString()),
                 stock: Number(p.stock),
                 original_price: p.original_price
@@ -195,7 +210,7 @@ const ViewMorePage: React.FC = () => {
             category?.toLowerCase() === "new-arrivals" ||
             category?.toLowerCase() === "featured-products"
               ? ""
-              : category || "",
+              : category?.toLowerCase() || "",
           size: filters.sizes.join(","),
           color: filters.colors.join(","),
           material: filters.materials.join(","),
@@ -214,15 +229,17 @@ const ViewMorePage: React.FC = () => {
           setProducts(fetchedProducts.products.slice(0, limit));
           setTotalPages(Math.ceil(fetchedProducts.total / limit));
           setError(null);
+          setIsServerOnline(true);
         }
       } catch (err) {
         console.error("Error fetching data:", err);
         if (isMounted) {
-          setError("Failed to load products. Showing demo content.");
+          setError("Failed to load products. Showing static content.");
           setProducts(
             filteredStaticProducts.slice((page - 1) * limit, page * limit)
           );
           setTotalPages(Math.ceil(filteredStaticProducts.length / limit));
+          setIsServerOnline(false);
         }
       } finally {
         setTimeout(() => {
@@ -236,7 +253,6 @@ const ViewMorePage: React.FC = () => {
     };
   }, [category, filters, sort, page, limit, filteredStaticProducts]);
 
-  // Get current product IDs for RelatedProducts to avoid duplicates
   const productIds = products.map((p) => p.id);
 
   return (
@@ -247,7 +263,7 @@ const ViewMorePage: React.FC = () => {
       transition={{ duration: 0.5 }}
     >
       <HeaderSection metadata={metadata} />
-      {error && <div className={styles.error}>{error}</div>}
+      {error && !isServerOnline && <div className={styles.error}>{error}</div>}
       <div className={styles.mainContent}>
         <FilterSidebar
           filters={filters}

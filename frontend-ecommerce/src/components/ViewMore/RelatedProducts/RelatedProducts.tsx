@@ -50,6 +50,14 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({
     return () => window.removeEventListener("resize", updateMobile);
   }, []);
 
+  const normalizeCategory = (cat: string): string => {
+    const lowerCat = cat.toLowerCase();
+    return (
+      staticCategories.find((c) => c.name.toLowerCase() === lowerCat)?.name ||
+      "Men's"
+    );
+  };
+
   useEffect(() => {
     let isMounted = true;
     const fetchRelatedProducts = async () => {
@@ -57,10 +65,11 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({
       try {
         const limit = isMobile ? 2 : 6;
         const effectiveCategory =
-          category.toLowerCase() === "new-arrivals" ||
-          category.toLowerCase() === "featured-products"
+          category.toLowerCase() === "new-arrivals"
             ? ""
-            : category;
+            : category.toLowerCase() === "featured-products"
+            ? ""
+            : category.toLowerCase();
         const apiUrl =
           category.toLowerCase() === "new-arrivals"
             ? `http://localhost:5000/api/products?new=true&limit=${limit}`
@@ -76,7 +85,11 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({
           setRelatedProducts(
             filteredData.slice(0, isMobile ? 2 : 3).map((p) => ({
               ...p,
-              image: p.image || "https://placehold.co/300x300",
+              image:
+                typeof p.image === "string"
+                  ? p.image
+                  : staticCategories[0].products[0].image ||
+                    "https://placehold.co/300x300",
               price: parseFloat(p.price.toString()),
               stock: Number(p.stock),
               original_price: p.original_price
@@ -91,13 +104,12 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({
         }
       } catch (err) {
         console.error("Related products error:", err);
-        // Fallback to static data
         const effectiveCategoryName =
           category.toLowerCase() === "new-arrivals"
             ? "New Arrivals"
             : category.toLowerCase() === "featured-products"
             ? "Featured Products"
-            : category;
+            : normalizeCategory(category);
         const staticData =
           staticCategories
             .find((c: StaticCategory) => c.name === effectiveCategoryName)
@@ -150,7 +162,16 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({
           transition={{ duration: 0.5 }}
         >
           {relatedProducts.map((product) => (
-            <CategoryCard key={product.id} product={product} />
+            <CategoryCard
+              key={product.id}
+              product={{
+                ...product,
+                image:
+                  typeof product.image === "string"
+                    ? product.image
+                    : product.image,
+              }}
+            />
           ))}
         </motion.div>
       )}
