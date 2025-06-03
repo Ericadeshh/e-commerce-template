@@ -1,6 +1,52 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import CategoryCarousel from "../CategoryCarousel/CategoryCarousel";
+
+//import Mens Static Images
+import MensJacket from "../../../assets/mensjacket.jpg";
+import MenSneakers from "../../../assets/men'ssneakers.jpg";
+import MensShirt from "../../../assets/men'sshirt.jpg";
+import MensJeans from "../../../assets/men'sjeans.jpg";
+import MensCap from "../../../assets/men'scap.jpg";
+import MensBelt from "../../../assets/men'sbelt.jpg";
+import MensWatch from "../../../assets/men's watch.jpg";
+
+//import Womens Static Images
+import WomensSummerDress from "../../../assets/Women'sSummerDress.jpg";
+import WomensHeels from "../../../assets/women'sheels.jpg";
+import WomensBlouse from "../../../assets/womensblouse.jpg";
+import WomensSkirt from "../../../assets/womensskirt.jpg";
+import WomensScarf from "../../../assets/women'sscarf.jpg";
+import WomensBag from "../../../assets/birkin.jpg";
+import WomensSunglasses from "../../../assets/women'ssunglasses.jpg";
+
+//import Childrens Static Images
+import kidstshirt from "../../../assets/kidstshirt.jpg";
+import kidsSneakers from "../../../assets/kidssneakers.jpg";
+import kidsJacket from "../../../assets/kidsjacket.jpg";
+import kidsShorts from "../../../assets/kidsshorts.jpg";
+import kidsCap from "../../../assets/kidscap.jpg";
+import kidsBackpack from "../../../assets/kidsbackpack.jpg";
+import kidsSocks from "../../../assets/kidssocks.jpg";
+
+//import Shoes Static Images
+import runningshoes from "../../../assets/runningshoes.jpg";
+import casualSneakers from "../../../assets/casualsneakers.avif";
+import sandals from "../../../assets/sandals.avif";
+import boots from "../../../assets/boots.avif";
+import slippers from "../../../assets/slippers.jpg";
+import formalShoes from "../../../assets/formalshoes.avif";
+import highHeels from "../../../assets/highheels.jpg";
+
+//import Beddings Static Images
+import cottonDuvet from "../../../assets/cottonduvet.jpg";
+import pillowSet from "../../../assets/pillowset.jpg";
+import bedSheet from "../../../assets/bedsheet.jpg";
+import comforter from "../../../assets/comforter.jpg";
+import mattressCover from "../../../assets/matresscover.jpg";
+import blanket from "../../../assets/blanket.jpg";
+import cushionSet from "../../../assets/cushionset.jpg";
+
 import styles from "./FeaturedCategories.module.css";
 
 interface Product {
@@ -28,7 +74,7 @@ const staticCategories: Category[] = [
         id: 1,
         name: "Men's Jacket",
         price: 89.99,
-        image: "https://placehold.co/300x300",
+        image: MensJacket,
         category: "mens",
         stock: 10,
         discount_percentage: 20,
@@ -38,7 +84,7 @@ const staticCategories: Category[] = [
         id: 2,
         name: "Men's Sneakers",
         price: 79.99,
-        image: "https://placehold.co/300x300",
+        image: MenSneakers,
         category: "mens",
         stock: 15,
         is_new: true,
@@ -47,7 +93,7 @@ const staticCategories: Category[] = [
         id: 3,
         name: "Men's Shirt",
         price: 49.99,
-        image: "https://placehold.co/300x300",
+        image: MensShirt,
         category: "mens",
         stock: 20,
       },
@@ -55,7 +101,7 @@ const staticCategories: Category[] = [
         id: 4,
         name: "Men's Jeans",
         price: 59.99,
-        image: "https://placehold.co/300x300",
+        image: MensJeans,
         category: "mens",
         stock: 12,
       },
@@ -63,7 +109,7 @@ const staticCategories: Category[] = [
         id: 5,
         name: "Men's Cap",
         price: 29.99,
-        image: "https://placehold.co/300x300",
+        image: MensCap,
         category: "mens",
         stock: 18,
       },
@@ -71,7 +117,7 @@ const staticCategories: Category[] = [
         id: 6,
         name: "Men's Belt",
         price: 39.99,
-        image: "https://placehold.co/300x300",
+        image: MensBelt,
         category: "mens",
         stock: 25,
       },
@@ -79,7 +125,7 @@ const staticCategories: Category[] = [
         id: 7,
         name: "Men's Watch",
         price: 99.99,
-        image: "https://placehold.co/300x300",
+        image: MensWatch,
         category: "mens",
         stock: 8,
       },
@@ -92,7 +138,7 @@ const staticCategories: Category[] = [
         id: 8,
         name: "Summer Dress",
         price: 49.99,
-        image: "https://placehold.co/300x300",
+        image: WomensSummerDress,
         category: "womens",
         stock: 20,
         discount_percentage: 15,
@@ -102,7 +148,7 @@ const staticCategories: Category[] = [
         id: 9,
         name: "Women's Heels",
         price: 69.99,
-        image: "https://placehold.co/300x300",
+        image: WomensHeels,
         category: "womens",
         stock: 10,
       },
@@ -110,7 +156,7 @@ const staticCategories: Category[] = [
         id: 10,
         name: "Women's Blouse",
         price: 39.99,
-        image: "https://placehold.co/300x300",
+        image: WomensBlouse,
         category: "womens",
         stock: 15,
         is_new: true,
@@ -119,7 +165,7 @@ const staticCategories: Category[] = [
         id: 11,
         name: "Women's Skirt",
         price: 44.99,
-        image: "https://placehold.co/300x300",
+        image: WomensSkirt,
         category: "womens",
         stock: 12,
       },
@@ -127,7 +173,7 @@ const staticCategories: Category[] = [
         id: 12,
         name: "Women's Scarf",
         price: 29.99,
-        image: "https://placehold.co/300x300",
+        image: WomensScarf,
         category: "womens",
         stock: 18,
       },
@@ -135,7 +181,7 @@ const staticCategories: Category[] = [
         id: 13,
         name: "Women's Bag",
         price: 79.99,
-        image: "https://placehold.co/300x300",
+        image: WomensBag,
         category: "womens",
         stock: 9,
       },
@@ -143,7 +189,7 @@ const staticCategories: Category[] = [
         id: 14,
         name: "Women's Sunglasses",
         price: 59.99,
-        image: "https://placehold.co/300x300",
+        image: WomensSunglasses,
         category: "womens",
         stock: 11,
       },
@@ -156,7 +202,7 @@ const staticCategories: Category[] = [
         id: 15,
         name: "Kids T-Shirt",
         price: 19.99,
-        image: "https://placehold.co/300x300",
+        image: kidstshirt,
         category: "childrens",
         stock: 30,
       },
@@ -164,7 +210,7 @@ const staticCategories: Category[] = [
         id: 16,
         name: "Kids Sneakers",
         price: 39.99,
-        image: "https://placehold.co/300x300",
+        image: kidsSneakers,
         category: "childrens",
         stock: 20,
         discount_percentage: 10,
@@ -174,7 +220,7 @@ const staticCategories: Category[] = [
         id: 17,
         name: "Kids Jacket",
         price: 49.99,
-        image: "https://placehold.co/300x300",
+        image: kidsJacket,
         category: "childrens",
         stock: 15,
       },
@@ -182,7 +228,7 @@ const staticCategories: Category[] = [
         id: 18,
         name: "Kids Shorts",
         price: 24.99,
-        image: "https://placehold.co/300x300",
+        image: kidsShorts,
         category: "childrens",
         stock: 18,
         is_new: true,
@@ -191,7 +237,7 @@ const staticCategories: Category[] = [
         id: 19,
         name: "Kids Cap",
         price: 14.99,
-        image: "https://placehold.co/300x300",
+        image: kidsCap,
         category: "childrens",
         stock: 25,
       },
@@ -199,7 +245,7 @@ const staticCategories: Category[] = [
         id: 20,
         name: "Kids Backpack",
         price: 29.99,
-        image: "https://placehold.co/300x300",
+        image: kidsBackpack,
         category: "childrens",
         stock: 12,
       },
@@ -207,7 +253,7 @@ const staticCategories: Category[] = [
         id: 21,
         name: "Kids Socks",
         price: 9.99,
-        image: "https://placehold.co/300x300",
+        image: kidsSocks,
         category: "childrens",
         stock: 30,
       },
@@ -220,7 +266,7 @@ const staticCategories: Category[] = [
         id: 22,
         name: "Running Shoes",
         price: 79.99,
-        image: "https://placehold.co/300x300",
+        image: runningshoes,
         category: "shoes",
         stock: 15,
       },
@@ -228,7 +274,7 @@ const staticCategories: Category[] = [
         id: 23,
         name: "Casual Sneakers",
         price: 59.99,
-        image: "https://placehold.co/300x300",
+        image: casualSneakers,
         category: "shoes",
         stock: 20,
       },
@@ -236,7 +282,7 @@ const staticCategories: Category[] = [
         id: 24,
         name: "Formal Shoes",
         price: 89.99,
-        image: "https://placehold.co/300x300",
+        image: formalShoes,
         category: "shoes",
         stock: 10,
         discount_percentage: 25,
@@ -246,7 +292,7 @@ const staticCategories: Category[] = [
         id: 25,
         name: "Sandals",
         price: 39.99,
-        image: "https://placehold.co/300x300",
+        image: sandals,
         category: "shoes",
         stock: 18,
       },
@@ -254,7 +300,7 @@ const staticCategories: Category[] = [
         id: 26,
         name: "Boots",
         price: 99.99,
-        image: "https://placehold.co/300x300",
+        image: boots,
         category: "shoes",
         stock: 12,
       },
@@ -262,7 +308,7 @@ const staticCategories: Category[] = [
         id: 27,
         name: "Slippers",
         price: 29.99,
-        image: "https://placehold.co/300x300",
+        image: slippers,
         category: "shoes",
         stock: 25,
         is_new: true,
@@ -271,7 +317,7 @@ const staticCategories: Category[] = [
         id: 28,
         name: "High Heels",
         price: 69.99,
-        image: "https://placehold.co/300x300",
+        image: highHeels,
         category: "shoes",
         stock: 8,
       },
@@ -284,7 +330,7 @@ const staticCategories: Category[] = [
         id: 29,
         name: "Cotton Duvet",
         price: 99.99,
-        image: "https://placehold.co/300x300",
+        image: cottonDuvet,
         category: "beddings",
         stock: 10,
       },
@@ -292,7 +338,7 @@ const staticCategories: Category[] = [
         id: 30,
         name: "Pillow Set",
         price: 49.99,
-        image: "https://placehold.co/300x300",
+        image: pillowSet,
         category: "beddings",
         stock: 15,
       },
@@ -300,7 +346,7 @@ const staticCategories: Category[] = [
         id: 31,
         name: "Bed Sheet",
         price: 59.99,
-        image: "https://placehold.co/300x300",
+        image: bedSheet,
         category: "beddings",
         stock: 12,
         discount_percentage: 15,
@@ -310,7 +356,7 @@ const staticCategories: Category[] = [
         id: 32,
         name: "Comforter",
         price: 79.99,
-        image: "https://placehold.co/300x300",
+        image: comforter,
         category: "beddings",
         stock: 8,
       },
@@ -318,7 +364,7 @@ const staticCategories: Category[] = [
         id: 33,
         name: "Mattress Cover",
         price: 39.99,
-        image: "https://placehold.co/300x300",
+        image: mattressCover,
         category: "beddings",
         stock: 20,
       },
@@ -326,7 +372,7 @@ const staticCategories: Category[] = [
         id: 34,
         name: "Blanket",
         price: 69.99,
-        image: "https://placehold.co/300x300",
+        image: blanket,
         category: "beddings",
         stock: 10,
         is_new: true,
@@ -335,7 +381,7 @@ const staticCategories: Category[] = [
         id: 35,
         name: "Cushion Set",
         price: 29.99,
-        image: "https://placehold.co/300x300",
+        image: cushionSet,
         category: "beddings",
         stock: 18,
       },
