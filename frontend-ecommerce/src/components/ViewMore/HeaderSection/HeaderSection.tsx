@@ -20,9 +20,6 @@ const HeaderSection: React.FC<HeaderSectionProps> = ({ metadata }) => {
   return (
     <motion.div
       className={styles.container}
-      style={{
-        backgroundImage: `url(${metadata.heroImage})`, // Set background image for mobile
-      }}
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
