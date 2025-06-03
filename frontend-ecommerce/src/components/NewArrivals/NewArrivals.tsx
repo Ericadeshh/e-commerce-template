@@ -4,6 +4,13 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+
+// Import static images
+import MensPremiumSuit from "../../assets/Men'sPremiumSuit.jpg";
+import WomensSummerDress from "../../assets/Women'sSummerDress.jpg";
+import kidsmatchingSet from "../../assets/KidsMatchingSet.jpg";
+import luxuryBeddingSet from "../../assets/LuxuryBeddingSet.jpg";
+
 import styles from "./NewArrivals.module.css";
 
 interface Product {
@@ -25,7 +32,7 @@ const staticProducts: Product[] = [
     id: 1,
     name: "Men's Premium Suit",
     price: 199.99,
-    image: "https://placehold.co/160x160?text=Men%27s+Suit",
+    image: MensPremiumSuit,
     arrival_date: "May 20, 2025",
     shipping_info: "Free Shipping",
     category: "mens",
@@ -36,7 +43,7 @@ const staticProducts: Product[] = [
     id: 2,
     name: "Women's Summer Dress",
     price: 89.99,
-    image: "https://placehold.co/160x160?text=Summer+Dress",
+    image: WomensSummerDress,
     arrival_date: "May 21, 2025",
     shipping_info: "Ships in 2 days",
     category: "womens",
@@ -47,7 +54,7 @@ const staticProducts: Product[] = [
     id: 3,
     name: "Kids' Matching Set",
     price: 49.99,
-    image: "https://placehold.co/160x160?text=Kids%27+Set",
+    image: kidsmatchingSet,
     arrival_date: "May 22, 2025",
     shipping_info: "Free Shipping",
     category: "childrens",
@@ -58,7 +65,7 @@ const staticProducts: Product[] = [
     id: 4,
     name: "Luxury Bedding Set",
     price: 129.99,
-    image: "https://placehold.co/160x160?text=Bedding+Set",
+    image: luxuryBeddingSet,
     arrival_date: "May 23, 2025",
     shipping_info: "Ships in 3 days",
     category: "beddings",
@@ -89,7 +96,7 @@ export default function NewArrivals() {
         const data: Product[] = await response.json();
         const formattedData = data.map((product) => ({
           ...product,
-          image: product.image || "https://placehold.co/160x160?text=Product",
+          image: product.image || staticProducts[0].image, // Fallback to static image
           price: parseFloat(String(product.price)),
           original_price: product.original_price
             ? parseFloat(String(product.original_price))
@@ -101,14 +108,12 @@ export default function NewArrivals() {
           arrival_date: product.arrival_date || "May 23, 2025",
           shipping_info: product.shipping_info || "Free Shipping",
         }));
-        setNewArrivals(
-          formattedData.length > 0 ? formattedData : staticProducts
-        );
+        setNewArrivals(formattedData);
         setIsServerOnline(true);
         setError(null);
       } catch (err) {
         console.error("Error fetching new arrivals:", err);
-        setError("Failed to load new arrivals. Showing placeholder content.");
+        setError("Failed to load new arrivals. Showing static content.");
         setNewArrivals(staticProducts);
         setIsServerOnline(false);
       }
@@ -159,12 +164,11 @@ export default function NewArrivals() {
               {item.is_new && <span className={styles.newSticker}>NEW</span>}
               <div className={styles.imageCircle}>
                 <img
-                  src={item.image}
+                  src={typeof item.image === "string" ? item.image : item.image}
                   alt={item.name}
                   className={styles.productImage}
                   onError={(e) => {
-                    e.currentTarget.src =
-                      "https://placehold.co/160x160?text=Product";
+                    e.currentTarget.src = staticProducts[0].image; // Fallback to first static image
                   }}
                 />
               </div>
