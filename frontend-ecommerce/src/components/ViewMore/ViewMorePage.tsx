@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { FaHome, FaChevronRight } from "react-icons/fa";
 import HeaderSection from "./HeaderSection/HeaderSection";
 import FilterSidebar from "./FilterSidebar/FilterSidebar";
 import SortDropdown from "./SortDropdown/SortDropdown";
@@ -18,6 +19,13 @@ import {
   CategoryMetadata,
 } from "../../types/ViewMore";
 import styles from "./ViewMorePage.module.css";
+import MensJacket from "../../assets/mensjacket.jpg";
+import WomensSummerDress from "../../assets/Women'sSummerDress.jpg";
+import kidstshirt from "../../assets/kidstshirt.jpg";
+import runningshoes from "../../assets/runningshoes.jpg";
+import cottonDuvet from "../../assets/cottonduvet.jpg";
+import MenSuitPic from "../../assets/Men's blue suitjpg.jpg";
+import WomenDressPic from "../../assets/lady red suit.jpg";
 
 interface Product {
   id: number;
@@ -44,13 +52,51 @@ interface StaticCategory {
 
 const ViewMorePage: React.FC = () => {
   const { category } = useParams<{ category: string }>();
+
+  const normalizeCategory = (cat: string | undefined): string => {
+    if (!cat) return "Men's";
+    const lowerCat = cat.toLowerCase().replace(/['-]/g, ""); // Handle both apostrophes and hyphens
+    const mappings: { [key: string]: string } = {
+      newarrivals: "New Arrivals",
+      featuredproducts: "Featured Products",
+      childrens: "Children's",
+      mens: "Men's",
+      womens: "Women's",
+      shoes: "Shoes",
+      beddings: "Beddings",
+    };
+    return mappings[lowerCat] || "Men's";
+  };
+
+  const getCategoryBanner = (cat: string | undefined): string => {
+    const lowerCat = cat?.toLowerCase().replace(/['-]/g, ""); // Handle both apostrophes and hyphens
+    switch (lowerCat) {
+      case "mens":
+        return MenSuitPic;
+      case "womens":
+        return WomensSummerDress;
+      case "childrens":
+        return kidstshirt;
+      case "shoes":
+        return runningshoes;
+      case "beddings":
+        return cottonDuvet;
+      case "newarrivals":
+        return MensJacket;
+      case "featuredproducts":
+        return WomenDressPic;
+      default:
+        return "https://placehold.co/1200x400";
+    }
+  };
+
   const [products, setProducts] = useState<Product[]>([]);
   const [metadata, setMetadata] = useState<CategoryMetadata>({
-    name: category || "",
+    name: normalizeCategory(category),
     description:
       categoryDescriptions[category?.toLowerCase() || ""] ||
       "Explore our collection.",
-    heroImage: "https://placehold.co/1200x400",
+    heroImage: getCategoryBanner(category),
     subcategories: [],
   });
   const [filters, setFilters] = useState<FilterOptions>({
@@ -82,20 +128,11 @@ const ViewMorePage: React.FC = () => {
     return () => window.removeEventListener("resize", updateLimit);
   }, []);
 
-  const normalizeCategory = (cat: string | undefined): string => {
-    if (!cat) return "Men's"; // Default fallback
-    const lowerCat = cat.toLowerCase();
-    return (
-      staticCategories.find((c) => c.name.toLowerCase() === lowerCat)?.name ||
-      "Men's"
-    );
-  };
-
   const filteredStaticProducts = useMemo(() => {
     const effectiveCategory =
-      category?.toLowerCase() === "new-arrivals"
+      category?.toLowerCase().replace(/['-]/g, "") === "newarrivals"
         ? "New Arrivals"
-        : category?.toLowerCase() === "featured-products"
+        : category?.toLowerCase().replace(/['-]/g, "") === "featuredproducts"
         ? "Featured Products"
         : normalizeCategory(category);
     const staticData =
@@ -116,7 +153,7 @@ const ViewMorePage: React.FC = () => {
       )
       .sort((a: Product, b: Product) => {
         if (sort.value === "price-asc") return a.price - b.price;
-        if (sort.value === "price-desc") return b.price - a.price;
+        if (sort.value === "price-desc") return b.price - b.price;
         if (sort.value === "newest")
           return (b.is_new ? 1 : 0) - (a.is_new ? 1 : 0);
         return 0;
@@ -139,12 +176,12 @@ const ViewMorePage: React.FC = () => {
               throw new Error(`Failed to fetch metadata: ${res.status}`);
             const data = await res.json();
             return {
-              name: data.name || category,
+              name: data.name || normalizeCategory(category),
               description:
                 data.description ||
                 categoryDescriptions[category.toLowerCase()] ||
                 "Explore our collection.",
-              heroImage: data.heroImage || "https://placehold.co/1200x400",
+              heroImage: data.heroImage || getCategoryBanner(category),
               subcategories: data.subcategories || [],
             };
           } catch (err) {
@@ -154,7 +191,7 @@ const ViewMorePage: React.FC = () => {
               description:
                 categoryDescriptions[category.toLowerCase()] ||
                 "Explore our collection.",
-              heroImage: "https://placehold.co/1200x400",
+              heroImage: getCategoryBanner(category),
               subcategories: [],
             };
           }
@@ -168,9 +205,10 @@ const ViewMorePage: React.FC = () => {
         ): Promise<{ products: Product[]; total: number }> => {
           try {
             const apiUrl =
-              category?.toLowerCase() === "new-arrivals"
+              category?.toLowerCase().replace(/['-]/g, "") === "newarrivals"
                 ? `http://localhost:5000/api/products?new=true&${query}`
-                : category?.toLowerCase() === "featured-products"
+                : category?.toLowerCase().replace(/['-]/g, "") ===
+                  "featuredproducts"
                 ? `http://localhost:5000/api/products?featured=true&${query}`
                 : `http://localhost:5000/api/products?${query}`;
             const res = await fetch(apiUrl);
@@ -207,8 +245,8 @@ const ViewMorePage: React.FC = () => {
 
         const query = new URLSearchParams({
           category:
-            category?.toLowerCase() === "new-arrivals" ||
-            category?.toLowerCase() === "featured-products"
+            category?.toLowerCase().replace(/['-]/g, "") === "newarrivals" ||
+            category?.toLowerCase().replace(/['-]/g, "") === "featuredproducts"
               ? ""
               : category?.toLowerCase() || "",
           size: filters.sizes.join(","),
@@ -262,6 +300,13 @@ const ViewMorePage: React.FC = () => {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
+      <nav className={styles.breadcrumb}>
+        <Link to="/" className={styles.breadcrumbLink}>
+          <FaHome className={styles.breadcrumbIcon} /> Home
+        </Link>
+        <FaChevronRight className={styles.breadcrumbSeparator} />
+        <span className={styles.breadcrumbCurrent}>{metadata.name}</span>
+      </nav>
       <HeaderSection metadata={metadata} />
       {error && !isServerOnline && <div className={styles.error}>{error}</div>}
       <div className={styles.mainContent}>

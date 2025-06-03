@@ -1,7 +1,7 @@
 .container {
   max-width: 1400px;
   margin: 40px auto;
-  padding: 20px;
+  padding: 5px;
 }
 
 .sectionTitle {
@@ -27,32 +27,48 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr); /* 4 cards per row for PC */
   gap: 20px;
-  padding: 10px;
+  padding: 0px;
   justify-items: center; /* Center items horizontally */
 }
 
+.section {
+  background-color: #e6e6fa; /* Lavender */
+  padding: 30px 10px;
+  border-radius: 8px;
+}
+
+/* Tablets/iPads (e.g., 1024px and below) */
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr); /* 3 cards per row */
+    justify-items: center;
+  }
+}
+
+/* Mobile and smaller tablets (e.g., 768px and below) */
 @media (max-width: 768px) {
   .sectionTitle {
-    font-size: 20px; /* smaller title on mobile */
+    font-size: 20px; /* Smaller title on mobile */
   }
 
   .loading {
-    font-size: 14px; /* smaller loading text */
+    font-size: 14px; /* Smaller loading text */
   }
 
   .grid {
     grid-template-columns: repeat(2, 1fr); /* 2 cards per row */
-    max-height: 350px; /* limit to roughly 1 row height */
+    max-height: 350px; /* Limit to roughly 1 row height */
     overflow: hidden;
     justify-items: center;
   }
 }
 
+/* Very small mobile screens (e.g., 380px and below) */
 @media (max-width: 380px) {
   .sectionTitle {
-    font-size: 18px; /* even smaller title on very small mobile */
+    font-size: 18px; /* Even smaller title on very small mobile */
   }
 
   .loading {
@@ -61,15 +77,8 @@
 
   .grid {
     grid-template-columns: 1fr; /* 1 card per row */
-    max-height: 720px; /* roughly 2 rows max */
+    max-height: 720px; /* Roughly 2 rows max */
     overflow: hidden;
     justify-items: center;
   }
-}
-
-/* Lavender background for the entire section */
-.section {
-  background-color: #e6e6fa; /* Lavender */
-  padding: 30px 10px;
-  border-radius: 8px;
 }

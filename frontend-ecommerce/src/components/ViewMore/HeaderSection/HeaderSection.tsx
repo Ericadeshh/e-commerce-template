@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FaSearch } from "react-icons/fa";
 import { CategoryMetadata } from "../../../types/ViewMore";
@@ -21,13 +20,13 @@ const HeaderSection: React.FC<HeaderSectionProps> = ({ metadata }) => {
   return (
     <motion.div
       className={styles.container}
+      style={{
+        backgroundImage: `url(${metadata.heroImage})`, // Set background image for mobile
+      }}
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
     >
-      <div className={styles.breadcrumbs}>
-        <Link to="/">Home</Link> {">"} <span>{metadata.name}</span>
-      </div>
       <div className={styles.contentWrapper}>
         <motion.img
           src={metadata.heroImage}

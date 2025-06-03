@@ -63,7 +63,7 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({
     const fetchRelatedProducts = async () => {
       setLoading(true);
       try {
-        const limit = isMobile ? 2 : 6;
+        const limit = isMobile ? 2 : 4; // 4 for PC, 2 for mobile
         const effectiveCategory =
           category.toLowerCase() === "new-arrivals"
             ? ""
@@ -83,7 +83,7 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({
         const filteredData = data.filter((p) => !excludeIds.includes(p.id));
         if (isMounted) {
           setRelatedProducts(
-            filteredData.slice(0, isMobile ? 2 : 3).map((p) => ({
+            filteredData.slice(0, isMobile ? 2 : 4).map((p) => ({
               ...p,
               image:
                 typeof p.image === "string"
@@ -114,7 +114,7 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({
           staticCategories
             .find((c: StaticCategory) => c.name === effectiveCategoryName)
             ?.products.filter((p: Product) => !excludeIds.includes(p.id))
-            .slice(0, isMobile ? 2 : 3) || [];
+            .slice(0, isMobile ? 2 : 4) || [];
         if (isMounted) {
           setRelatedProducts(staticData);
         }
@@ -137,44 +137,46 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <motion.h2
-        className={styles.sectionTitle}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
-      >
-        You May Also Like
-        <motion.span
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 0.3, delay: 0.2 }}
-        >
-          <FaStar className={styles.starIcon} />
-        </motion.span>
-      </motion.h2>
-      {loading ? (
-        <div className={styles.loading}>Loading...</div>
-      ) : (
-        <motion.div
-          className={styles.grid}
+      <div className={styles.container}>
+        <motion.h2
+          className={styles.sectionTitle}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          {relatedProducts.map((product) => (
-            <CategoryCard
-              key={product.id}
-              product={{
-                ...product,
-                image:
-                  typeof product.image === "string"
-                    ? product.image
-                    : product.image,
-              }}
-            />
-          ))}
-        </motion.div>
-      )}
+          You May Also Like
+          <motion.span
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 0.3, delay: 0.2 }}
+          >
+            <FaStar className={styles.starIcon} />
+          </motion.span>
+        </motion.h2>
+        {loading ? (
+          <div className={styles.loading}>Loading...</div>
+        ) : (
+          <motion.div
+            className={styles.grid}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            {relatedProducts.map((product) => (
+              <CategoryCard
+                key={product.id}
+                product={{
+                  ...product,
+                  image:
+                    typeof product.image === "string"
+                      ? product.image
+                      : product.image,
+                }}
+              />
+            ))}
+          </motion.div>
+        )}
+      </div>
     </motion.section>
   );
 };

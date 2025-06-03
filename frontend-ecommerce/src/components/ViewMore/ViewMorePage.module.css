@@ -1,6 +1,6 @@
 .container {
   max-width: 1400px;
-  margin: 0 auto;
+  margin: 20px auto 0; /* Reduced top margin for PC */
   padding: clamp(1rem, 2vw, 1.5rem);
 }
 
@@ -26,12 +26,66 @@
   color: #dc3545;
 }
 
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 16px 0;
+  font-size: 14px;
+  color: #6a0dad; /* Deeper purple for modern look */
+}
+
+.breadcrumbLink {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #6a0dad;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.breadcrumbLink:hover {
+  color: #d81b60; /* Richer pink for hover */
+}
+
+.breadcrumbIcon {
+  font-size: 16px;
+}
+
+.breadcrumbSeparator {
+  color: #6a0dad;
+  font-size: 12px;
+}
+
+.breadcrumbCurrent {
+  color: #6a0dad;
+  font-weight: 500;
+}
+
 @media (max-width: 768px) {
+  .container {
+    margin-top: 40px; /* Adjusted top margin for mobile */
+    padding: 0.5rem;
+  }
+
   .mainContent {
     flex-direction: column;
   }
 
   .gridContainer {
     max-width: 100%;
+  }
+
+  .breadcrumb {
+    font-size: 12px;
+    margin: 12px 0;
+  }
+
+  .breadcrumbIcon {
+    font-size: 14px;
+  }
+
+  .breadcrumbSeparator {
+    font-size: 10px;
   }
 }
