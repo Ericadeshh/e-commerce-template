@@ -115,59 +115,78 @@
   color: #fff;
 }
 
-/* Mobile styles */
 @media (max-width: 768px) {
   .container {
-    background: none;
-    padding-bottom: 0;
+    height: 300px;
     position: relative;
     margin-bottom: 0.5rem;
   }
 
   .container::after {
-    content: none;
-  }
-
-  .heroImage {
-    display: block;
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    height: auto;
-    max-height: 200px;
-    object-fit: cover;
-    border-radius: 12px;
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
-    margin-bottom: 0.8rem;
+    height: 100%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+    z-index: 1;
   }
 
   .contentWrapper {
     flex-direction: column;
     align-items: center;
+    gap: 0.5rem;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     padding: 0.5rem;
   }
 
+  /* SHOW image for mobile and adjust styling */
+  .heroImage {
+    display: block; /* Override previous 'none' */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  /* Remove pseudo-element on mobile */
+  .heroImage::after {
+    display: none;
+  }
   .textContent {
     width: 100%;
     text-align: center;
     z-index: 2;
-    color: #333;
+    color: #fff;
   }
 
   .title {
-    font-size: clamp(1rem, 4vw, 1.25rem);
+    padding-top: 5rem;
+    font-size: clamp(1.1rem, 2.2vw, 1.2rem);
+    font-weight: 600;
     text-align: center;
     margin-bottom: 0.3rem;
-    color: #9400d3;
+    color: #fff;
   }
 
   .description {
     font-size: 0.875rem;
-    color: #555;
+    color: #ddd;
   }
 
   .searchBar {
     margin: 0 auto;
     max-width: 100%;
-    background: #fff;
+    background: rgba(255, 255, 255, 0.9);
   }
 
   .searchButton {
@@ -175,7 +194,6 @@
   }
 }
 
-/* Tablet styles */
 @media (min-width: 769px) and (max-width: 1024px) {
   .heroImage {
     max-height: 400px;
