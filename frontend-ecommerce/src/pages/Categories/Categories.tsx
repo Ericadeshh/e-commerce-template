@@ -13,6 +13,26 @@ import {
   FaStar,
 } from "react-icons/fa";
 import { GiConverseShoe } from "react-icons/gi";
+
+// Import static images
+import MensJacket from "../../assets/mensjacket.jpg";
+import MenSneakers from "../../assets/men'ssneakers.jpg";
+import MensShirt from "../../assets/men'sshirt.jpg";
+import MensWatch from "../../assets/men's watch.jpg";
+
+import WomensSummerDress from "../../assets/Women'sSummerDress.jpg";
+import WomensHeels from "../../assets/women'sheels.jpg";
+import WomensBlouse from "../../assets/womensblouse.jpg";
+import WomensBag from "../../assets/birkin.jpg";
+
+import kidstshirt from "../../assets/kidstshirt.jpg";
+
+import runningshoes from "../../assets/runningshoes.jpg";
+import casualSneakers from "../../assets/casualsneakers.avif";
+
+import cottonDuvet from "../../assets/cottonduvet.jpg";
+import pillowSet from "../../assets/pillowset.jpg";
+
 import styles from "./Categories.module.css";
 
 interface CategoryItem {
@@ -49,147 +69,95 @@ const categoriesData: CategorySection[] = [
     items: [
       {
         id: "1",
-        name: "Elegant Evening Dress",
+        name: "Men's Jacket",
+        description: "Stylish denim with distressed detailing.",
+        image: MensJacket,
+        price: "$79.99",
+        url: "/products/mens",
+      },
+      {
+        id: "2",
+        name: "Women's Dress",
         description: "Sleek, floor-length gown with intricate beadwork.",
-        image: "https://via.placeholder.com/150?text=Dress",
+        image: WomensSummerDress,
         price: "$149.99",
         url: "/products/womens",
         discount: 15,
       },
       {
-        id: "2",
-        name: "Casual Denim Jacket",
-        description: "Stylish denim with distressed detailing.",
-        image: "https://via.placeholder.com/150?text=Jacket",
-        price: "$79.99",
-        url: "/products/mens",
-      },
-      {
         id: "3",
-        name: "Floral Maxi Skirt",
-        description: "Flowy skirt with vibrant floral patterns.",
-        image: "https://via.placeholder.com/150?text=Skirt",
-        price: "$59.99",
-        url: "/products/womens",
+        name: "Kids T-Shirt",
+        description: "Comfortable cotton t-shirt for kids.",
+        image: kidstshirt,
+        price: "$19.99",
+        url: "/products/childrens",
         isNew: true,
       },
       {
-        id: "16",
-        name: "Kids Sneakers",
-        description: "Durable sneakers for active kids.",
-        image: "https://via.placeholder.com/150?text=Sneakers",
-        price: "$39.99",
-        url: "/products/childrens",
-      },
-      {
-        id: "17",
+        id: "4",
         name: "Men's Shirt",
         description: "Classic button-up shirt for all occasions.",
-        image: "https://via.placeholder.com/150?text=Shirt",
+        image: MensShirt,
         price: "$49.99",
         url: "/products/mens",
+      },
+      {
+        id: "5",
+        name: "Women's Blouse",
+        description: "Elegant blouse for formal occasions.",
+        image: WomensBlouse,
+        price: "$59.99",
+        url: "/products/womens",
       },
     ],
     viewAllUrl: "/products/clothing",
   },
   {
     title: "Brands",
-    description:
-      "Shop premium collections from top fashion brands like Gucci, Nike, and Zara.",
+    description: "Shop premium collections from top fashion brands.",
     icon: <FaTags />,
     items: [
       {
-        id: "4",
-        name: "Gucci Silk Scarf",
-        description: "Luxurious silk scarf with signature Gucci print.",
-        image: "https://via.placeholder.com/150?text=Gucci",
-        price: "$199.99",
-        url: "/products/brands",
-        isNew: true,
-      },
-      {
-        id: "5",
-        name: "Nike Athletic Wear",
-        description: "Breathable, high-performance sportswear.",
-        image: "https://via.placeholder.com/150?text=Nike",
+        id: "6",
+        name: "Men's Sneakers",
+        description: "Comfortable sneakers for everyday wear.",
+        image: MenSneakers,
         price: "$89.99",
         url: "/products/brands",
       },
       {
-        id: "6",
-        name: "Zara Trench Coat",
-        description: "Classic beige trench with modern cut.",
-        image: "https://via.placeholder.com/150?text=Zara",
-        price: "$129.99",
-        url: "/products/brands",
-        discount: 10,
-      },
-      {
-        id: "18",
-        name: "Adidas Sneakers",
-        description: "Comfortable sneakers for everyday wear.",
-        image: "https://via.placeholder.com/150?text=Adidas",
+        id: "7",
+        name: "Women's Heels",
+        description: "Elegant heels for special occasions.",
+        image: WomensHeels,
         price: "$79.99",
         url: "/products/brands",
-      },
-      {
-        id: "19",
-        name: "Prada Handbag",
-        description: "Elegant leather handbag for sophistication.",
-        image: "https://via.placeholder.com/150?text=Prada",
-        price: "$299.99",
-        url: "/products/brands",
+        isNew: true,
       },
     ],
     viewAllUrl: "/products/brands",
   },
   {
     title: "Shoes",
-    description:
-      "Step into style with our diverse range of footwear for all lifestyles.",
+    description: "Step into style with our diverse range of footwear.",
     icon: <GiConverseShoe />,
     items: [
       {
-        id: "7",
-        name: "Leather Ankle Boots",
-        description: "Premium leather boots with sturdy soles.",
-        image: "https://via.placeholder.com/150?text=Boots",
+        id: "8",
+        name: "Running Shoes",
+        description: "Lightweight shoes for athletes.",
+        image: runningshoes,
         price: "$99.99",
         url: "/products/shoes",
       },
       {
-        id: "8",
-        name: "Running Sneakers",
-        description: "Lightweight sneakers for ultimate comfort.",
-        image: "https://via.placeholder.com/150?text=Sneakers",
+        id: "9",
+        name: "Casual Sneakers",
+        description: "Comfortable sneakers for daily wear.",
+        image: casualSneakers,
         price: "$69.99",
         url: "/products/shoes",
-        isNew: true,
-      },
-      {
-        id: "9",
-        name: "High Heels",
-        description: "Elegant stilettos for formal occasions.",
-        image: "https://via.placeholder.com/150?text=Heels",
-        price: "$89.99",
-        url: "/products/shoes",
-      },
-      {
-        id: "20",
-        name: "Casual Sandals",
-        description: "Breathable sandals for summer outings.",
-        image: "https://via.placeholder.com/150?text=Sandals",
-        price: "$39.99",
-        url: "/products/shoes",
-        discount: 20,
-      },
-      {
-        id: "21",
-        name: "Formal Shoes",
-        description: "Polished shoes for professional settings.",
-        image: "https://via.placeholder.com/150?text=Formal",
-        price: "$79.99",
-        url: "/products/shoes",
+        discount: 10,
       },
     ],
     viewAllUrl: "/products/shoes",
@@ -202,45 +170,20 @@ const categoriesData: CategorySection[] = [
     items: [
       {
         id: "10",
-        name: "Cotton Duvet Set",
-        description: "Soft, breathable cotton duvet with pillowcases.",
-        image: "https://via.placeholder.com/150?text=Duvet",
+        name: "Cotton Duvet",
+        description: "Soft and breathable duvet set.",
+        image: cottonDuvet,
         price: "$119.99",
         url: "/products/beddings",
       },
       {
         id: "11",
-        name: "Satin Bedsheet Set",
-        description: "Luxurious satin sheets for a premium feel.",
-        image: "https://via.placeholder.com/150?text=Bedsheet",
-        price: "$79.99",
-        url: "/products/beddings",
-        isNew: true,
-      },
-      {
-        id: "12",
-        name: "Quilted Comforter",
-        description: "Warm, cozy comforter for all seasons.",
-        image: "https://via.placeholder.com/150?text=Comforter",
-        price: "$99.99",
-        url: "/products/beddings",
-      },
-      {
-        id: "22",
         name: "Pillow Set",
-        description: "Soft pillows for ultimate comfort.",
-        image: "https://via.placeholder.com/150?text=Pillows",
+        description: "Comfortable pillows for better sleep.",
+        image: pillowSet,
         price: "$49.99",
         url: "/products/beddings",
-        discount: 10,
-      },
-      {
-        id: "23",
-        name: "Mattress Cover",
-        description: "Protective cover for your mattress.",
-        image: "https://via.placeholder.com/150?text=Cover",
-        price: "$39.99",
-        url: "/products/beddings",
+        isNew: true,
       },
     ],
     viewAllUrl: "/products/beddings",
@@ -252,46 +195,21 @@ const categoriesData: CategorySection[] = [
     icon: <FaHeart />,
     items: [
       {
-        id: "13",
-        name: "Leather Handbag",
-        description: "Chic handbag with multiple compartments.",
-        image: "https://via.placeholder.com/150?text=Handbag",
-        price: "$149.99",
-        url: "/products/accessories",
-        discount: 15,
-      },
-      {
-        id: "14",
-        name: "Sunglasses",
-        description: "Stylish UV-protective sunglasses.",
-        image: "https://via.placeholder.com/150?text=Sunglasses",
-        price: "$49.99",
-        url: "/products/accessories",
-      },
-      {
-        id: "15",
-        name: "Gold Necklace",
-        description: "Elegant gold necklace with pendant.",
-        image: "https://via.placeholder.com/150?text=Necklace",
+        id: "12",
+        name: "Men's Watch",
+        description: "Elegant timepiece for formal occasions.",
+        image: MensWatch,
         price: "$199.99",
         url: "/products/accessories",
-        isNew: true,
       },
       {
-        id: "24",
-        name: "Wristwatch",
-        description: "Sleek watch for timeless style.",
-        image: "https://via.placeholder.com/150?text=Watch",
-        price: "$129.99",
+        id: "13",
+        name: "Women's Bag",
+        description: "Stylish handbag for everyday use.",
+        image: WomensBag,
+        price: "$149.99",
         url: "/products/accessories",
-      },
-      {
-        id: "25",
-        name: "Belt",
-        description: "Classic leather belt for any outfit.",
-        image: "https://via.placeholder.com/150?text=Belt",
-        price: "$39.99",
-        url: "/products/accessories",
+        discount: 20,
       },
     ],
     viewAllUrl: "/products/accessories",
@@ -308,7 +226,6 @@ export default function Categories() {
 
   return (
     <div className={styles.categoriesContainer}>
-      {/* Hero Section */}
       <motion.section
         className={styles.heroSection}
         initial={{ opacity: 0, y: -50 }}
@@ -324,7 +241,6 @@ export default function Categories() {
         </Link>
       </motion.section>
 
-      {/* Featured Categories */}
       <motion.section
         className={styles.featuredSection}
         initial={{ opacity: 0, y: 50 }}
@@ -342,14 +258,11 @@ export default function Categories() {
             <motion.div
               key={cat.name}
               className={styles.featuredCard}
-              whileHover={{
-                scale: 1.02,
-                boxShadow: "0 8px 16px rgba(0, 0, 0, 0.2)",
-              }}
-              transition={{ duration: 0.3 }}
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.2 }}
             >
               <Link to={cat.url} className={styles.featuredLink}>
-                {cat.icon}
+                <div className={styles.featuredIcon}>{cat.icon}</div>
                 <h3 className={styles.featuredTitle}>{cat.name}</h3>
               </Link>
             </motion.div>
@@ -357,7 +270,6 @@ export default function Categories() {
         </div>
       </motion.section>
 
-      {/* All Categories */}
       <motion.section
         className={styles.allCategoriesSection}
         initial={{ opacity: 0, y: 50 }}
@@ -367,20 +279,20 @@ export default function Categories() {
         <h2 className={styles.sectionTitle}>ALL CATEGORIES</h2>
         <div className={styles.categoryTabs}>
           {categoriesData.map((section) => (
-            <motion.div
+            <motion.button
               key={section.title}
               className={`${styles.categoryTab} ${
                 selectedCategory === section.title ? styles.activeTab : ""
               }`}
               onClick={() => selectCategory(section.title)}
-              whileHover={{ backgroundColor: "#e6f0ff" }}
-              transition={{ duration: 0.3 }}
+              whileTap={{ scale: 0.08 }}
+              transition={{ duration: 0.2 }}
             >
               <div className={styles.tabContent}>
                 {section.icon}
                 <span>{section.title}</span>
               </div>
-            </motion.div>
+            </motion.button>
           ))}
         </div>
         <AnimatePresence>
@@ -417,7 +329,6 @@ export default function Categories() {
                         key={item.id}
                         className={styles.itemCard}
                         whileHover={{
-                          scale: 1.02,
                           boxShadow: "0 8px 16px rgba(0, 0, 0, 0.2)",
                         }}
                         transition={{ duration: 0.3 }}
@@ -463,7 +374,6 @@ export default function Categories() {
         </AnimatePresence>
       </motion.section>
 
-      {/* Promotional and Explore Section */}
       <div className={styles.promoExploreContainer}>
         <motion.section
           className={styles.promoSection}
@@ -475,7 +385,7 @@ export default function Categories() {
           <div className={styles.promoGrid}>
             <motion.div
               className={styles.promoCard}
-              whileHover={{ scale: 1.02 }}
+              whileHover={{ y: -5 }}
               transition={{ duration: 0.3 }}
             >
               <FaTags className={styles.promoIcon} />
@@ -489,7 +399,7 @@ export default function Categories() {
             </motion.div>
             <motion.div
               className={styles.promoCard}
-              whileHover={{ scale: 1.02 }}
+              whileHover={{ y: -5 }}
               transition={{ duration: 0.3 }}
             >
               <FaStar className={styles.promoIcon} />
