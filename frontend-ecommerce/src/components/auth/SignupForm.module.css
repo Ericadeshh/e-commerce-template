@@ -3,11 +3,7 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  /* Light magenta to soft purple gradient */
   background: linear-gradient(135deg, #ffd6e8 0%, #e6d0fa 100%);
-  /* Alternative options */
-  /* background: linear-gradient(135deg, #f9c1d9 0%, #e4e7eb 100%); */
-  /* background: linear-gradient(135deg, #e6d0fa 0%, #e0f0ff 100%); */
   padding: clamp(0.5rem, 2vw, 1rem);
 }
 
@@ -151,14 +147,26 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (min-width: 1024px) {
   .authCard {
-    padding: clamp(1rem, 2.5vw, 1.5rem);
-    max-width: clamp(280px, 80vw, 360px);
+    max-width: clamp(600px, 60vw, 800px);
+    padding: clamp(1.5rem, 2.5vw, 2rem);
+  }
+
+  .authForm {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: clamp(0.5rem, 1.5vw, 1rem);
+  }
+
+  .submitButton {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: clamp(200px, 20vw, 300px);
   }
 
   .title {
-    font-size: clamp(1.2rem, 2.8vw, 1.5rem);
+    font-size: clamp(1.3rem, 2.5vw, 1.6rem);
   }
 
   .alert {
@@ -188,39 +196,126 @@
   }
 }
 
-@media (max-width: 320px) {
+@media (max-width: 1023px) {
   .authCard {
-    padding: clamp(0.75rem, 2vw, 1rem);
-    max-width: clamp(260px, 90vw, 320px);
+    padding: clamp(1rem, 2vw, 1.25rem);
+    max-width: clamp(280px, 80vw, 360px);
+  }
+
+  .authForm {
+    gap: clamp(0.5rem, 1.5vw, 0.75rem);
   }
 
   .title {
-    font-size: clamp(1.1rem, 2.6vw, 1.3rem);
+    font-size: clamp(1.1rem, 2.6vw, 1.4rem);
+    margin-bottom: clamp(0.75rem, 1.5vw, 1rem);
   }
 
   .alert {
-    font-size: clamp(0.6rem, 1.4vw, 0.7rem);
+    font-size: clamp(0.6rem, 1.4vw, 0.75rem);
+    margin-bottom: clamp(0.4rem, 1vw, 0.75rem);
+    padding: clamp(0.4rem, 1vw, 0.6rem);
+  }
+
+  .formGroup {
+    margin-bottom: clamp(0.4rem, 1vw, 0.6rem);
   }
 
   .formGroup label {
-    font-size: clamp(0.7rem, 1.4vw, 0.8rem);
+    font-size: clamp(0.7rem, 1.4vw, 0.85rem);
+    margin-bottom: clamp(0.2rem, 0.6vw, 0.4rem);
   }
 
   .icon {
-    font-size: clamp(0.7rem, 1.4vw, 0.8rem);
+    font-size: clamp(0.7rem, 1.4vw, 0.85rem);
   }
 
   .input {
-    font-size: clamp(0.7rem, 1.4vw, 0.8rem);
-    padding: clamp(0.3rem, 1vw, 0.5rem);
+    font-size: clamp(0.7rem, 1.4vw, 0.85rem);
+    padding: clamp(0.35rem, 1vw, 0.5rem);
   }
 
   .submitButton {
-    font-size: clamp(0.7rem, 1.4vw, 0.8rem);
-    padding: clamp(0.3rem, 1vw, 0.5rem);
+    font-size: clamp(0.75rem, 1.5vw, 0.9rem);
+    padding: clamp(0.35rem, 1vw, 0.5rem);
+    margin-top: clamp(0.4rem, 1vw, 0.75rem);
   }
 
   .buttonIcon {
-    font-size: clamp(0.7rem, 1.4vw, 0.8rem);
+    font-size: clamp(0.7rem, 1.4vw, 0.85rem);
+  }
+}
+
+@media (max-width: 768px) {
+  .authCard {
+    padding: clamp(0.75rem, 1.8vw, 1rem);
+    max-width: clamp(260px, 80vw, 340px);
+  }
+
+  .title {
+    font-size: clamp(1rem, 2.4vw, 1.3rem);
+  }
+
+  .alert {
+    font-size: clamp(0.55rem, 1.3vw, 0.7rem);
+  }
+
+  .formGroup label {
+    font-size: clamp(0.65rem, 1.3vw, 0.8rem);
+  }
+
+  .icon {
+    font-size: clamp(0.65rem, 1.3vw, 0.8rem);
+  }
+
+  .input {
+    font-size: clamp(0.65rem, 1.3vw, 0.8rem);
+    padding: clamp(0.3rem, 0.9vw, 0.45rem);
+  }
+
+  .submitButton {
+    font-size: clamp(0.7rem, 1.4vw, 0.85rem);
+    padding: clamp(0.3rem, 0.9vw, 0.45rem);
+  }
+
+  .buttonIcon {
+    font-size: clamp(0.65rem, 1.3vw, 0.8rem);
+  }
+}
+
+@media (max-width: 320px) {
+  .authCard {
+    padding: clamp(0.5rem, 1.5vw, 0.75rem);
+    max-width: clamp(240px, 90vw, 300px);
+  }
+
+  .title {
+    font-size: clamp(0.9rem, 2.2vw, 1.2rem);
+  }
+
+  .alert {
+    font-size: clamp(0.5rem, 1.2vw, 0.65rem);
+  }
+
+  .formGroup label {
+    font-size: clamp(0.6rem, 1.2vw, 0.75rem);
+  }
+
+  .icon {
+    font-size: clamp(0.6rem, 1.2vw, 0.75rem);
+  }
+
+  .input {
+    font-size: clamp(0.6rem, 1.2vw, 0.75rem);
+    padding: clamp(0.25rem, 0.8vw, 0.4rem);
+  }
+
+  .submitButton {
+    font-size: clamp(0.65rem, 1.3vw, 0.8rem);
+    padding: clamp(0.25rem, 0.8vw, 0.4rem);
+  }
+
+  .buttonIcon {
+    font-size: clamp(0.6rem, 1.2vw, 0.75rem);
   }
 }

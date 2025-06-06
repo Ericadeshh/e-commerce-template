@@ -83,6 +83,10 @@ function Header() {
     <>
       <header className={styles.header}>
         <div className={styles.secondaryNav}>
+          <Link to="/" className={styles.secondaryLink}>
+            Home
+          </Link>
+          <span className={styles.separator}>|</span>
           <Link to="/categories" className={styles.secondaryLink}>
             Categories
           </Link>
@@ -234,19 +238,34 @@ function Header() {
                   <Link to="/help-center" className={styles.dropdownItem}>
                     Help Center
                   </Link>
-                  <Link to="/place-order" className={styles.dropdownItem}>
+                  <Link
+                    to="/help-center#place-order"
+                    className={styles.dropdownItem}
+                  >
                     Place Your Order
                   </Link>
-                  <Link to="/payment-options" className={styles.dropdownItem}>
+                  <Link
+                    to="/help-center#payment-options"
+                    className={styles.dropdownItem}
+                  >
                     Payment Options
                   </Link>
-                  <Link to="/track-order" className={styles.dropdownItem}>
+                  <Link
+                    to="/help-center#track-order"
+                    className={styles.dropdownItem}
+                  >
                     Delivery Timelines & Track Your Order
                   </Link>
-                  <Link to="/returns" className={styles.dropdownItem}>
+                  <Link
+                    to="/help-center#returns"
+                    className={styles.dropdownItem}
+                  >
                     Returns & Refunds
                   </Link>
-                  <Link to="/warranty" className={styles.dropdownItem}>
+                  <Link
+                    to="/help-center#warranty"
+                    className={styles.dropdownItem}
+                  >
                     Warranty
                   </Link>
                 </div>
@@ -405,37 +424,43 @@ function Header() {
                   Help Center
                 </Link>
                 <Link
-                  to="/place-order"
+                  to="/help-center#place-order"
                   className={styles.mobileNavLink}
-                  onClick={() => handleMobileLinkClick("/place-order")}
+                  onClick={() =>
+                    handleMobileLinkClick("/help-center#place-order")
+                  }
                 >
                   Place Your Order
                 </Link>
                 <Link
-                  to="/payment-options"
+                  to="/help-center#payment-options"
                   className={styles.mobileNavLink}
-                  onClick={() => handleMobileLinkClick("/payment-options")}
+                  onClick={() =>
+                    handleMobileLinkClick("/help-center#payment-options")
+                  }
                 >
                   Payment Options
                 </Link>
                 <Link
-                  to="/track-order"
+                  to="/help-center#track-order"
                   className={styles.mobileNavLink}
-                  onClick={() => handleMobileLinkClick("/track-order")}
+                  onClick={() =>
+                    handleMobileLinkClick("/help-center#track-order")
+                  }
                 >
                   Delivery Timelines & Track Your Order
                 </Link>
                 <Link
-                  to="/returns"
+                  to="/help-center#returns"
                   className={styles.mobileNavLink}
-                  onClick={() => handleMobileLinkClick("/returns")}
+                  onClick={() => handleMobileLinkClick("/help-center#returns")}
                 >
                   Returns & Refunds
                 </Link>
                 <Link
-                  to="/warranty"
+                  to="/help-center#warranty"
                   className={styles.mobileNavLink}
-                  onClick={() => handleMobileLinkClick("/warranty")}
+                  onClick={() => handleMobileLinkClick("/help-center#warranty")}
                 >
                   Warranty
                 </Link>

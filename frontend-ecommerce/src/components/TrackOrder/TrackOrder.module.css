@@ -1,6 +1,6 @@
 .trackOrderContainer {
   max-width: 1200px;
-  margin: 5rem auto;
+  margin: 2rem auto;
   padding: clamp(1rem, 3vw, 2rem);
   background-color: #fff;
   border-radius: 12px;
@@ -8,9 +8,9 @@
 }
 
 .title {
-  font-size: clamp(1.5rem, 3vw, 2rem);
-  font-weight: 600;
-  color: #333;
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: #9400d3;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -23,10 +23,10 @@
 }
 
 .description {
-  font-size: clamp(0.9rem, 1.6vw, 1rem);
-  color: #555;
+  font-size: 0.9rem;
+  color: #777;
   margin-bottom: 1.5rem;
-  text-align: center;
+  text-align: left;
   max-width: 800px;
   margin-left: auto;
   margin-right: auto;
@@ -88,7 +88,7 @@
 
 .trackButton {
   padding: clamp(0.5rem, 1.5vw, 0.75rem) clamp(1rem, 2vw, 1.25rem);
-  border: none;
+  border: 1px solid #9400d3;
   border-radius: 0 20px 20px 0;
   background-color: #9400d3;
   color: #fff;
@@ -253,14 +253,14 @@
   transform: scale(1.05);
 }
 
-@media (max-width: 576px) {
+@media (max-width: 768px) {
   .trackOrderContainer {
     margin: 4rem 1rem;
     padding: 1rem;
   }
 
   .title {
-    font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+    font-size: 1.1rem;
   }
 
   .description {

@@ -13,6 +13,7 @@ import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary";
 import Categories from "./pages/Categories/Categories";
 import ChatPage from "./pages/ChatPage/ChatPage";
 import ViewMorePage from "./components/ViewMore/ViewMorePage";
+import Help from "./components/Help/Help";
 import styles from "./App.module.css";
 
 function App() {
@@ -50,7 +51,14 @@ function App() {
               element={<Wishlist show={false} onHide={() => {}} />}
             />
             <Route path="/account" element={<div>My Account Page (TBD)</div>} />
-            <Route path="/help-center" element={<div>Help Center (TBD)</div>} />
+            <Route
+              path="/help-center"
+              element={
+                <ErrorBoundary>
+                  <Help />
+                </ErrorBoundary>
+              }
+            />
             <Route path="/place-order" element={<div>Place Order (TBD)</div>} />
             <Route
               path="/payment-options"
