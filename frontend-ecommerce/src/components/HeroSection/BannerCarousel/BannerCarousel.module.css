@@ -7,6 +7,7 @@
   height: 100%;
   min-height: 480px;
   max-height: 600px;
+  width: 64%;
   position: relative;
 }
 
@@ -27,15 +28,15 @@
 .bannerImage {
   width: 100%;
   max-width: 100%;
-  max-height: 400px;
+  height: 480px;
   object-fit: cover;
-  border-radius: 0.5rem;
+
   filter: brightness(0.7) contrast(1.1);
 }
 
 @media (max-width: 768px) {
   .bannerImage {
-    max-height: 200px;
+    height: 600px;
     border-radius: 0;
   }
 }

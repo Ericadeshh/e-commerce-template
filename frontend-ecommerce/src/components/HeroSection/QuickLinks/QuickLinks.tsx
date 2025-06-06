@@ -1,9 +1,23 @@
 import { Col } from "react-bootstrap";
 import Slider from "react-slick";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
-import { FaArrowRight } from "react-icons/fa";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  FaArrowRight,
+  FaLink,
+  FaMale,
+  FaFemale,
+  FaChild,
+  FaShoePrints,
+  FaBed,
+  FaStar,
+  FaGem,
+  FaPlus,
+} from "react-icons/fa";
+import { LuBaby } from "react-icons/lu";
+
 import styles from "./QuickLinks.module.css";
+import { useState, useEffect, useRef } from "react";
 
 interface QuickLinkItem {
   name: string;
@@ -45,11 +59,74 @@ const quickLinksSliderSettings = {
   ],
 };
 
+// Map section titles to their respective icons
+const sectionIcons: Record<string, React.ReactElement> = {
+  "Men's": <FaMale className={styles.sectionIcon} />,
+  "Women's": <FaFemale className={styles.sectionIcon} />,
+  "Children's": <FaChild className={styles.sectionIcon} />,
+  Shoes: <FaShoePrints className={styles.sectionIcon} />,
+  Beddings: <FaBed className={styles.sectionIcon} />,
+  "New Arrivals": <FaStar className={styles.sectionIcon} />,
+  "Featured Products": <FaGem className={styles.sectionIcon} />,
+};
+
 const QuickLinks: React.FC<QuickLinksProps> = ({
   quickLinks,
   activeLink,
   handleLinkClick,
 }) => {
+  const [showOverlay, setShowOverlay] = useState(true);
+  const quickLinksRef = useRef<HTMLDivElement>(null);
+
+  // Intersection Observer to detect when QuickLinks is out of view
+  useEffect(() => {
+    const currentRef = quickLinksRef.current; // Copy ref to variable
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) {
+          setShowOverlay(true);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (currentRef) {
+      observer.observe(currentRef);
+    }
+
+    return () => {
+      if (currentRef) {
+        observer.unobserve(currentRef);
+      }
+    };
+  }, []);
+
+  const handleShowMore = () => {
+    setShowOverlay(false);
+  };
+
+  // Overlay animation variants
+  const overlayVariants = {
+    hidden: {
+      opacity: 0,
+      x: "-100%",
+      transition: { duration: 0.5, ease: "easeInOut" },
+    },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: { duration: 0.5, ease: "easeInOut" },
+    },
+  };
+
+  // Icon animation for Show More button
+  const iconVariants = {
+    animate: {
+      rotate: [0, 360],
+      transition: { repeat: Infinity, duration: 2, ease: "linear" },
+    },
+  };
+
   return (
     <>
       <Col md={3} className={`${styles.quickLinks} d-none d-md-flex`}>
@@ -58,10 +135,14 @@ const QuickLinks: React.FC<QuickLinksProps> = ({
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          <h3 className={styles.quickLinksTitle}>Quick Links</h3>
+          <h3 className={styles.quickLinksTitle}>
+            <FaLink className={styles.titleIcon} /> Quick Links
+          </h3>
           {quickLinks.map((section) => (
             <div key={section.title} className={styles.linkSection}>
-              <h4 className={styles.linkSectionTitle}>{section.title}</h4>
+              <h4 className={styles.linkSectionTitle}>
+                {sectionIcons[section.title] || null} {section.title}
+              </h4>
               <ul className={styles.linkList}>
                 {section.items.map((item) => (
                   <motion.li
@@ -80,10 +161,13 @@ const QuickLinks: React.FC<QuickLinksProps> = ({
         </motion.div>
       </Col>
       <motion.div
+        ref={quickLinksRef}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.2 }}
-        className={`${styles.quickLinks} d-md-none`}
+        className={`${styles.quickLinks} d-md-none ${
+          showOverlay ? styles.reducedHeight : ""
+        }`}
       >
         <h3 className={styles.quickLinksTitle}>Quick Links</h3>
         {quickLinks.map((section) => (
@@ -112,6 +196,43 @@ const QuickLinks: React.FC<QuickLinksProps> = ({
             </Slider>
           </div>
         ))}
+        <AnimatePresence>
+          {showOverlay && (
+            <motion.div
+              className={styles.overlay}
+              variants={overlayVariants}
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
+            >
+              <span className={styles.badgeTitle}>
+                QUICK LINKS <FaLink />
+              </span>
+              <div className={styles.badgesContainer}>
+                <span className={styles.badge}>
+                  Women's <FaFemale />
+                </span>
+                <span className={styles.badge}>
+                  Children's <LuBaby />
+                </span>
+              </div>
+              <p className={styles.overlayText}>
+                Explore our curated collections
+              </p>
+              <motion.button
+                className={styles.showMoreButton}
+                onClick={handleShowMore}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <motion.span variants={iconVariants} animate="animate">
+                  <FaPlus className={styles.showMoreIcon} />
+                </motion.span>
+                Show More
+              </motion.button>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.div>
     </>
   );

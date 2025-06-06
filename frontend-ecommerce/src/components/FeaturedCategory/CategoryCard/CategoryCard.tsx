@@ -18,11 +18,13 @@ interface Product {
 
 interface CategoryCardProps {
   product: Product;
+  id?: string; // Added optional id prop
 }
 
-const CategoryCard: React.FC<CategoryCardProps> = ({ product }) => {
+const CategoryCard: React.FC<CategoryCardProps> = ({ product, id }) => {
   return (
     <motion.div
+      id={id} // Apply id to root element for hash navigation
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}

@@ -81,6 +81,11 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
     ],
   };
 
+  // Generate ID from product name: lowercase, replace spaces with hyphens
+  const generateProductId = (name: string) => {
+    return name.toLowerCase().replace(/['\s]/g, "-");
+  };
+
   return (
     <div className={styles.carouselContainer}>
       <div className={styles.tab}>
@@ -105,8 +110,15 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
       </motion.div>
       <Slider {...sliderSettings}>
         {products.map((product) => (
-          <div key={product.id} className={styles.productSlide}>
-            <CategoryCard product={product} />
+          <div
+            key={product.id}
+            className={styles.productSlide}
+            id={generateProductId(product.name)}
+          >
+            <CategoryCard
+              product={product}
+              id={generateProductId(product.name)}
+            />
           </div>
         ))}
       </Slider>

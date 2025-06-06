@@ -47,7 +47,7 @@ export default function HeroSection() {
       description: "Elevate your style with our premium suits!",
       image_url: MenSuitPic,
       cta_text: "Shop Men's",
-      cta_url: "/products?category=mens",
+      cta_url: "/products/mens", // Updated to match ViewMorePage.tsx route
     },
     {
       id: 2,
@@ -55,7 +55,7 @@ export default function HeroSection() {
       description: "Vibrant styles for women!",
       image_url: BeachShirtPic,
       cta_text: "Discover Women's",
-      cta_url: "/products?category=womens",
+      cta_url: "/products/womens", // Updated to match ViewMorePage.tsx route
     },
     {
       id: 3,
@@ -63,7 +63,7 @@ export default function HeroSection() {
       description: "Adorable outfits for your little ones!",
       image_url: kidMatchPic,
       cta_text: "Shop by Category",
-      cta_url: "/products?category=childrens",
+      cta_url: "/products/childrens", // Updated to match ViewMorePage.tsx route
     },
     {
       id: 4,
@@ -112,7 +112,7 @@ export default function HeroSection() {
       description: "15% off children's pants and sets",
       image_url: kidPantsPic,
       cta_text: "Shop Kids Sale",
-      cta_url: "/products?category=childrens",
+      cta_url: "/products/childrens",
       is_active: true,
       discount_percentage: 15,
       start_date: null,
@@ -162,55 +162,61 @@ export default function HeroSection() {
 
   const quickLinks = [
     {
-      title: "Clothing",
+      title: "Men's",
       items: [
-        { name: "Women's", url: "/products?category=womens" },
-        { name: "Men's", url: "/products?category=mens" },
-        { name: "Children's", url: "/products?category=childrens" },
-        {
-          name: "Girls'",
-          url: "/products?category=childrens&subcategory=girls",
-        },
-        { name: "Boys'", url: "/products?category=childrens&subcategory=boys" },
+        { name: "Jackets", url: "/products/mens#mens-jacket" },
+        { name: "Sneakers", url: "/products/mens#mens-sneakers" },
+        { name: "Shirts", url: "/products/mens#mens-shirt" },
       ],
     },
     {
-      title: "Footwear",
+      title: "Women's",
       items: [
-        {
-          name: "Sneakers",
-          url: "/products?category=shoes&subcategory=sneakers",
-        },
-        { name: "Boots", url: "/products?category=shoes&subcategory=boots" },
-        {
-          name: "Sandals",
-          url: "/products?category=shoes&subcategory=sandals",
-        },
-        { name: "Formal", url: "/products?category=shoes&subcategory=formal" },
+        { name: "Dresses", url: "/products/womens#summer-dress" },
+        { name: "Heels", url: "/products/womens#womens-heels" },
+        { name: "Bags", url: "/products/womens#womens-bag" },
+      ],
+    },
+    {
+      title: "Children's",
+      items: [
+        { name: "T-Shirts", url: "/products/childrens#kids-t-shirt" },
+        { name: "Sneakers", url: "/products/childrens#kids-sneakers" },
+        { name: "Backpacks", url: "/products/childrens#kids-backpack" },
+      ],
+    },
+    {
+      title: "Shoes",
+      items: [
+        { name: "Running Shoes", url: "/products/shoes#running-shoes" },
+        { name: "Casual Sneakers", url: "/products/shoes#casual-sneakers" },
+        { name: "Boots", url: "/products/shoes#boots" },
       ],
     },
     {
       title: "Beddings",
       items: [
+        { name: "Duvets", url: "/products/beddings#cotton-duvet" },
+        { name: "Pillows", url: "/products/beddings#pillow-set" },
+        { name: "Blankets", url: "/products/beddings#blanket" },
+      ],
+    },
+    {
+      title: "New Arrivals",
+      items: [
+        { name: "Men's Sneakers", url: "/products/newarrivals#mens-sneakers" },
+        { name: "Women's Blouse", url: "/products/newarrivals#womens-blouse" },
+        { name: "Kids Shorts", url: "/products/newarrivals#kids-shorts" },
+      ],
+    },
+    {
+      title: "Featured Products",
+      items: [
+        { name: "Men's Jacket", url: "/products/featuredproducts#mens-jacket" },
+        { name: "Women's Bag", url: "/products/featuredproducts#womens-bag" },
         {
-          name: "Pillows",
-          url: "/products?category=beddings&subcategory=pillows",
-        },
-        {
-          name: "Mattresses",
-          url: "/products?category=beddings&subcategory=mattresses",
-        },
-        {
-          name: "Covers",
-          url: "/products?category=beddings&subcategory=covers",
-        },
-        {
-          name: "Blankets",
-          url: "/products?category=beddings&subcategory=blankets",
-        },
-        {
-          name: "Curtains",
-          url: "/products?category=beddings&subcategory=curtains",
+          name: "Running Shoes",
+          url: "/products/featuredproducts#running-shoes",
         },
       ],
     },
