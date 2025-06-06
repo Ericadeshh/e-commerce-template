@@ -6,7 +6,7 @@ import {
   FaQuestionCircle,
   FaShoppingCart,
   FaAngleRight,
-  FaShopify,
+  FaTshirt,
   FaHome,
   FaSearch,
 } from "react-icons/fa";
@@ -31,7 +31,6 @@ function Header() {
   const isLoggedIn = !!localStorage.getItem("token");
   const role = localStorage.getItem("role");
 
-  // Memoize navigation functions to prevent unnecessary re-creation
   const toggleMobileMenu = () => {
     setShowMobileMenu((prev) => !prev);
     setActiveDropdown(null);
@@ -86,7 +85,7 @@ function Header() {
         <div className={styles.container}>
           {/* Logo and Brand */}
           <Link to="/" className={styles.brand}>
-            <FaShopify className={styles.brandIcon} />
+            <FaTshirt className={styles.brandIcon} />
             MILLIWIN BOUTIQUE
           </Link>
 
@@ -96,14 +95,19 @@ function Header() {
               className={styles.searchForm}
               onSubmit={(e) => e.preventDefault()}
             >
-              <input
-                type="search"
-                placeholder="Search products, brands, categories..."
-                className={styles.searchInput}
-              />
-              <button type="submit" className={styles.searchButton}>
-                <FaSearch />
-              </button>
+              <div className={styles.searchInputWrapper}>
+                <input
+                  type="search"
+                  placeholder="Search products, brands, categories..."
+                  className={styles.searchInput}
+                />
+                <label className={styles.searchLabel}>
+                  Search products, brands, categories...
+                </label>
+                <button type="submit" className={styles.searchButton}>
+                  <FaSearch className={styles.searchIcon} />
+                </button>
+              </div>
             </form>
             <button className={styles.hamburger} onClick={toggleMobileMenu}>
               <FaBars />
@@ -115,14 +119,19 @@ function Header() {
             className={`${styles.searchForm} ${styles.desktopSearch}`}
             onSubmit={(e) => e.preventDefault()}
           >
-            <input
-              type="search"
-              placeholder="Search products, brands, categories..."
-              className={styles.searchInput}
-            />
-            <button type="submit" className={styles.searchButton}>
-              <FaSearch />
-            </button>
+            <div className={styles.searchInputWrapper}>
+              <input
+                type="search"
+                placeholder="Search products, brands, categories..."
+                className={styles.searchInput}
+              />
+              <label className={styles.searchLabel}>
+                Search products, brands, categories...
+              </label>
+              <button type="submit" className={styles.searchButton}>
+                <FaSearch className={styles.searchIcon} />
+              </button>
+            </div>
           </form>
 
           {/* Desktop Navigation */}
@@ -163,8 +172,8 @@ function Header() {
                       >
                         Dashboard
                       </Link>
-                      <Link to="/orders" className={styles.dropdownItem}>
-                        Orders
+                      <Link to="/track-order" className={styles.dropdownItem}>
+                        Track Order
                       </Link>
                       <Link to="/wishlist" className={styles.dropdownItem}>
                         Wishlist
@@ -184,11 +193,8 @@ function Header() {
                       <Link to="/signup" className={styles.dropdownItem}>
                         Signup
                       </Link>
-                      <Link to="/account" className={styles.dropdownItem}>
-                        My Account
-                      </Link>
-                      <Link to="/orders" className={styles.dropdownItem}>
-                        Orders
+                      <Link to="/track-order" className={styles.dropdownItem}>
+                        Track Order
                       </Link>
                       <Link to="/wishlist" className={styles.dropdownItem}>
                         Wishlist
@@ -229,7 +235,7 @@ function Header() {
                   <Link to="/payment-options" className={styles.dropdownItem}>
                     Payment Options
                   </Link>
-                  <Link to="/delivery" className={styles.dropdownItem}>
+                  <Link to="/track-order" className={styles.dropdownItem}>
                     Delivery Timelines & Track Your Order
                   </Link>
                   <Link to="/returns" className={styles.dropdownItem}>
@@ -252,7 +258,7 @@ function Header() {
             Wishlist
           </Link>
           <span className={styles.separator}>|</span>
-          <Link to="/delivery" className={styles.secondaryLink}>
+          <Link to="/track-order" className={styles.secondaryLink}>
             Track Order
           </Link>
         </div>
@@ -316,18 +322,18 @@ function Header() {
                       Dashboard
                     </Link>
                     <Link
-                      to="/orders"
+                      to="/track-order"
                       className={styles.mobileNavLink}
-                      onClick={() => handleMobileLinkClick("/orders")}
+                      onClick={() => handleMobileLinkClick("/track-order")}
                     >
-                      Orders
+                      Track Order
                     </Link>
                     <Link
                       to="/wishlist"
                       className={styles.mobileNavLink}
                       onClick={() => handleMobileLinkClick("/wishlist")}
                     >
-                      Wishlist
+                      Wishlist ed Order
                     </Link>
                     <button
                       onClick={handleLogout}
@@ -353,18 +359,11 @@ function Header() {
                       Signup
                     </Link>
                     <Link
-                      to="/account"
+                      to="/track-order"
                       className={styles.mobileNavLink}
-                      onClick={() => handleMobileLinkClick("/account")}
+                      onClick={() => handleMobileLinkClick("/track-order")}
                     >
-                      My Account
-                    </Link>
-                    <Link
-                      to="/orders"
-                      className={styles.mobileNavLink}
-                      onClick={() => handleMobileLinkClick("/orders")}
-                    >
-                      Orders
+                      Track Order
                     </Link>
                     <Link
                       to="/wishlist"
@@ -428,9 +427,9 @@ function Header() {
                   Payment Options
                 </Link>
                 <Link
-                  to="/delivery"
+                  to="/track-order"
                   className={styles.mobileNavLink}
-                  onClick={() => handleMobileLinkClick("/delivery")}
+                  onClick={() => handleMobileLinkClick("/track-order")}
                 >
                   Delivery Timelines & Track Your Order
                 </Link>

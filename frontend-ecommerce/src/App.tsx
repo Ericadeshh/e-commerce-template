@@ -3,6 +3,7 @@ import Header from "./components/Header/Header";
 import Home from "./pages/Home/Home";
 import Cart from "./components/Cart/Cart";
 import Wishlist from "./components/Wishlist/Wishlist";
+import TrackOrder from "./components/TrackOrder/TrackOrder";
 import Footer from "./components/Footer/Footer";
 import LoginForm from "./components/auth/LoginForm";
 import SignupForm from "./components/auth/SignupForm";
@@ -36,7 +37,14 @@ function App() {
             />
             <Route path="/categories" element={<Categories />} />
             <Route path="/chat" element={<ChatPage />} />
-            <Route path="/orders" element={<div>Orders Page (TBD)</div>} />
+            <Route
+              path="/track-order"
+              element={
+                <ErrorBoundary>
+                  <TrackOrder />
+                </ErrorBoundary>
+              }
+            />
             <Route
               path="/wishlist"
               element={<Wishlist show={false} onHide={() => {}} />}
