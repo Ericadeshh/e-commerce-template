@@ -8,10 +8,12 @@ import {
   FaCalendarAlt,
   FaEnvelope,
   FaExclamationTriangle,
+  FaHistory,
+  FaFileDownload,
+  FaUndo,
 } from "react-icons/fa";
 import styles from "./TrackOrder.module.css";
 
-// Define the interface for order details
 interface OrderDetails {
   id: string;
   status: "Ordered" | "Shipped" | "Delivered";
@@ -33,7 +35,6 @@ function TrackOrder() {
       setError("Please enter a valid Order ID");
       return;
     }
-    // Mock order data for demonstration
     setOrderDetails({
       id: orderId,
       status: "Shipped",
@@ -67,6 +68,13 @@ function TrackOrder() {
       <h1 className={styles.title}>
         <FaBox className={styles.titleIcon} /> Track Your Order
       </h1>
+      <p className={styles.description}>
+        Stay updated on your order's journey with our tracking system. Simply
+        enter your Order ID below to view real-time updates on your order
+        status, from placement to delivery. Track your package's progress, check
+        estimated delivery dates, and access detailed order information all in
+        one place.
+      </p>
       <form className={styles.trackForm} onSubmit={handleTrackOrder}>
         <div className={styles.inputWrapper}>
           <input
@@ -174,10 +182,21 @@ function TrackOrder() {
           </div>
 
           <div className={styles.supportSection}>
-            <p>Need assistance?</p>
-            <button className={styles.supportButton}>
-              <FaEnvelope /> Contact Support
-            </button>
+            <p>Need assistance or more details?</p>
+            <div className={styles.buttonGroup}>
+              <button className={styles.supportButton}>
+                <FaEnvelope /> Contact Support
+              </button>
+              <button className={styles.supportButton}>
+                <FaHistory /> View Order History
+              </button>
+              <button className={styles.supportButton}>
+                <FaFileDownload /> Download Invoice
+              </button>
+              <button className={styles.supportButton}>
+                <FaUndo /> Request Return
+              </button>
+            </div>
           </div>
         </div>
       )}
