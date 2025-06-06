@@ -3,7 +3,7 @@
 .section {
   font-family: "Poppins", sans-serif;
   padding: 0 clamp(0.5rem, 2vw, 1rem);
-  background: #f5f6f5;
+  background: linear-gradient(135deg, #e6d0fa 0%, #f9c1d9 100%);
   text-align: center;
   width: 100%;
   max-width: 100%;

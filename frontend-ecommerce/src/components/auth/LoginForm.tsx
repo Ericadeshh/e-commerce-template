@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { FaEnvelope, FaLock, FaSignInAlt } from "react-icons/fa";
 import styles from "./LoginForm.module.css";
 
 export default function LoginForm() {
@@ -32,7 +33,6 @@ export default function LoginForm() {
       console.log(`Login successful, role: ${data.role}`);
       setSuccess("Login successful, redirecting...");
 
-      // Ensure navigation based on role
       const destination =
         data.role === "admin" ? "/admin/dashboard" : "/user/dashboard";
       console.log(`Navigating to: ${destination}`);
@@ -50,53 +50,59 @@ export default function LoginForm() {
   };
 
   return (
-    <div className={styles.loginContainer}>
-      <h2 className={styles.title}>Welcome Back</h2>
-      {error && (
-        <Alert variant="danger" className={styles.alert}>
-          {error}
-        </Alert>
-      )}
-      {success && (
-        <Alert variant="success" className={styles.alert}>
-          {success}
-        </Alert>
-      )}
-      <Form onSubmit={handleSubmit} className={styles.loginForm}>
-        <Form.Group
-          className={styles.formGroup}
-          controlId="formEmail"
-          style={{ "--index": 1 } as React.CSSProperties}
-        >
-          <Form.Label>Email Address</Form.Label>
-          <Form.Control
-            type="email"
-            placeholder="Enter email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className={styles.input}
-          />
-        </Form.Group>
-        <Form.Group
-          className={styles.formGroup}
-          controlId="formPassword"
-          style={{ "--index": 2 } as React.CSSProperties}
-        >
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            type="password"
-            placeholder="Enter password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            className={styles.input}
-          />
-        </Form.Group>
-        <Button type="submit" className={styles.submitButton}>
-          Login
-        </Button>
-      </Form>
+    <div className={styles.authContainer}>
+      <div className={styles.authCard}>
+        <h2 className={styles.title}>Welcome Back</h2>
+        {error && (
+          <Alert variant="danger" className={styles.alert}>
+            {error}
+          </Alert>
+        )}
+        {success && (
+          <Alert variant="success" className={styles.alert}>
+            {success}
+          </Alert>
+        )}
+        <Form onSubmit={handleSubmit} className={styles.authForm}>
+          <Form.Group
+            className={styles.formGroup}
+            controlId="formEmail"
+            style={{ "--index": 1 } as React.CSSProperties}
+          >
+            <Form.Label>
+              <FaEnvelope className={styles.icon} /> Email Address
+            </Form.Label>
+            <Form.Control
+              type="email"
+              placeholder="Enter email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className={styles.input}
+            />
+          </Form.Group>
+          <Form.Group
+            className={styles.formGroup}
+            controlId="formPassword"
+            style={{ "--index": 2 } as React.CSSProperties}
+          >
+            <Form.Label>
+              <FaLock className={styles.icon} /> Password
+            </Form.Label>
+            <Form.Control
+              type="password"
+              placeholder="Enter password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className={styles.input}
+            />
+          </Form.Group>
+          <Button type="submit" className={styles.submitButton}>
+            <FaSignInAlt className={styles.buttonIcon} /> Login
+          </Button>
+        </Form>
+      </div>
     </div>
   );
 }

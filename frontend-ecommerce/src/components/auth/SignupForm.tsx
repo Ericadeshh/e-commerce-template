@@ -1,7 +1,14 @@
 import { useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import styles from "./LoginForm.module.css";
+import {
+  FaUser,
+  FaEnvelope,
+  FaPhone,
+  FaLock,
+  FaUserPlus,
+} from "react-icons/fa";
+import styles from "./SignupForm.module.css";
 
 export default function SignupForm() {
   const [firstName, setFirstName] = useState("");
@@ -55,97 +62,109 @@ export default function SignupForm() {
   };
 
   return (
-    <div className={styles.loginContainer}>
-      <h2 className={styles.title}>Create Account</h2>
-      {error && (
-        <Alert variant="danger" className={styles.alert}>
-          {error}
-        </Alert>
-      )}
-      {success && (
-        <Alert variant="success" className={styles.alert}>
-          {success}
-        </Alert>
-      )}
-      <Form onSubmit={handleSubmit} className={styles.loginForm}>
-        <Form.Group
-          className={styles.formGroup}
-          controlId="formFirstName"
-          style={{ "--index": 1 } as React.CSSProperties}
-        >
-          <Form.Label>First Name</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Enter first name"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            required
-            className={styles.input}
-          />
-        </Form.Group>
-        <Form.Group
-          className={styles.formGroup}
-          controlId="formLastName"
-          style={{ "--index": 2 } as React.CSSProperties}
-        >
-          <Form.Label>Last Name (Optional)</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Enter last name"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-            className={styles.input}
-          />
-        </Form.Group>
-        <Form.Group
-          className={styles.formGroup}
-          controlId="formEmail"
-          style={{ "--index": 3 } as React.CSSProperties}
-        >
-          <Form.Label>Email Address</Form.Label>
-          <Form.Control
-            type="email"
-            placeholder="Enter email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className={styles.input}
-          />
-        </Form.Group>
-        <Form.Group
-          className={styles.formGroup}
-          controlId="formPhoneNumber"
-          style={{ "--index": 4 } as React.CSSProperties}
-        >
-          <Form.Label>Phone Number</Form.Label>
-          <Form.Control
-            type="tel"
-            placeholder="Enter phone number"
-            value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
-            required
-            className={styles.input}
-          />
-        </Form.Group>
-        <Form.Group
-          className={styles.formGroup}
-          controlId="formPassword"
-          style={{ "--index": 5 } as React.CSSProperties}
-        >
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            type="password"
-            placeholder="Enter password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            className={styles.input}
-          />
-        </Form.Group>
-        <Button type="submit" className={styles.submitButton}>
-          Sign Up
-        </Button>
-      </Form>
+    <div className={styles.authContainer}>
+      <div className={styles.authCard}>
+        <h2 className={styles.title}>Create Account</h2>
+        {error && (
+          <Alert variant="danger" className={styles.alert}>
+            {error}
+          </Alert>
+        )}
+        {success && (
+          <Alert variant="success" className={styles.alert}>
+            {success}
+          </Alert>
+        )}
+        <Form onSubmit={handleSubmit} className={styles.authForm}>
+          <Form.Group
+            className={styles.formGroup}
+            controlId="formFirstName"
+            style={{ "--index": 1 } as React.CSSProperties}
+          >
+            <Form.Label>
+              <FaUser className={styles.icon} /> First Name
+            </Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter first name"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              required
+              className={styles.input}
+            />
+          </Form.Group>
+          <Form.Group
+            className={styles.formGroup}
+            controlId="formLastName"
+            style={{ "--index": 2 } as React.CSSProperties}
+          >
+            <Form.Label>
+              <FaUser className={styles.icon} /> Last Name (Optional)
+            </Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter last name"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              className={styles.input}
+            />
+          </Form.Group>
+          <Form.Group
+            className={styles.formGroup}
+            controlId="formEmail"
+            style={{ "--index": 3 } as React.CSSProperties}
+          >
+            <Form.Label>
+              <FaEnvelope className={styles.icon} /> Email Address
+            </Form.Label>
+            <Form.Control
+              type="email"
+              placeholder="Enter email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className={styles.input}
+            />
+          </Form.Group>
+          <Form.Group
+            className={styles.formGroup}
+            controlId="formPhoneNumber"
+            style={{ "--index": 4 } as React.CSSProperties}
+          >
+            <Form.Label>
+              <FaPhone className={styles.icon} /> Phone Number
+            </Form.Label>
+            <Form.Control
+              type="tel"
+              placeholder="Enter phone number"
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+              required
+              className={styles.input}
+            />
+          </Form.Group>
+          <Form.Group
+            className={styles.formGroup}
+            controlId="formPassword"
+            style={{ "--index": 5 } as React.CSSProperties}
+          >
+            <Form.Label>
+              <FaLock className={styles.icon} /> Password
+            </Form.Label>
+            <Form.Control
+              type="password"
+              placeholder="Enter password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className={styles.input}
+            />
+          </Form.Group>
+          <Button type="submit" className={styles.submitButton}>
+            <FaUserPlus className={styles.buttonIcon} /> Sign Up
+          </Button>
+        </Form>
+      </div>
     </div>
   );
 }

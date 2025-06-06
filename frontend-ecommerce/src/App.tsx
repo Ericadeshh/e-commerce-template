@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./components/Header/Header";
 import Home from "./pages/Home/Home";
 import Cart from "./components/Cart/Cart";
+import Wishlist from "./components/Wishlist/Wishlist";
 import Footer from "./components/Footer/Footer";
 import LoginForm from "./components/auth/LoginForm";
 import SignupForm from "./components/auth/SignupForm";
@@ -36,7 +37,10 @@ function App() {
             <Route path="/categories" element={<Categories />} />
             <Route path="/chat" element={<ChatPage />} />
             <Route path="/orders" element={<div>Orders Page (TBD)</div>} />
-            <Route path="/wishlist" element={<div>Wishlist Page (TBD)</div>} />
+            <Route
+              path="/wishlist"
+              element={<Wishlist show={false} onHide={() => {}} />}
+            />
             <Route path="/account" element={<div>My Account Page (TBD)</div>} />
             <Route path="/help-center" element={<div>Help Center (TBD)</div>} />
             <Route path="/place-order" element={<div>Place Order (TBD)</div>} />
