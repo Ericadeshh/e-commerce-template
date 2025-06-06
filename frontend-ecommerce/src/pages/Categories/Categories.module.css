@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
 .categoriesContainer {
   width: 100%;
   padding: 0 clamp(0.5rem, 2vw, 1rem);
@@ -5,12 +7,34 @@
 }
 
 .heroSection {
-  background: linear-gradient(135deg, #9400d3, #ff1493);
+  background-image: url("../../assets/birkin.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   color: #fff;
   padding: clamp(2rem, 5vw, 3rem);
   border-radius: 12px;
   text-align: center;
   margin-bottom: clamp(1.5rem, 4vw, 2rem);
+  position: relative;
+}
+
+.heroSection::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4); /* Overlay to ensure text readability */
+  z-index: 1;
+}
+
+.heroTitle,
+.heroSubtitle,
+.heroButton {
+  position: relative;
+  z-index: 2;
 }
 
 .heroTitle {
@@ -76,7 +100,10 @@
   box-shadow: none;
   text-align: center;
   min-width: 120px;
-  @media (max-width: 768px) {
+}
+
+@media (max-width: 768px) {
+  .featuredCard {
     min-width: 80px;
   }
 }
@@ -203,8 +230,11 @@
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 1.5rem;
   margin: 2rem auto;
-  @media (max-width: 768px) {
-    grid-template-columns: repeat(2, 1fr); /* Change to 2 items per row */
+}
+
+@media (max-width: 768px) {
+  .itemsGrid {
+    grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
   }
 }
@@ -323,8 +353,10 @@
 
 .promoExploreContainer {
   display: flex;
+}
 
-  @media (max-width: 768px) {
+@media (max-width: 768px) {
+  .promoExploreContainer {
     flex-direction: column;
     align-items: center;
   }
@@ -352,8 +384,10 @@
   padding: 1rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
+}
 
-  @media (max-width: 768px) {
+@media (max-width: 768px) {
+  .promoCard {
     max-width: 80px;
     width: 100%;
   }
@@ -363,8 +397,10 @@
   font-size: 1.5rem;
   color: #9400d3;
   margin-bottom: 1rem;
+}
 
-  @media (max-width: 768px) {
+@media (max-width: 768px) {
+  .promoIcon {
     font-size: 1rem;
   }
 }
@@ -374,8 +410,10 @@
   color: #333;
   margin-bottom: 0.8rem;
   font-weight: 600;
+}
 
-  @media (max-width: 768px) {
+@media (max-width: 768px) {
+  .promoTitle {
     font-size: 0.8rem;
   }
 }
@@ -385,8 +423,10 @@
   color: #666;
   margin-bottom: 1.5rem;
   line-height: 1.6;
+}
 
-  @media (max-width: 768px) {
+@media (max-width: 768px) {
+  .promoText {
     font-size: 0.7rem;
   }
 }
@@ -401,8 +441,10 @@
   text-decoration: none;
   transition: background-color 0.3s ease;
   font-weight: 500;
+}
 
-  @media (max-width: 768px) {
+@media (max-width: 768px) {
+  .promoButton {
     font-size: 0.7rem;
   }
 }
@@ -480,7 +522,7 @@
   }
 
   .itemsGrid {
-    grid-template-columns: repeat(2, 1fr); /* Change to 2 items per row */
+    grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
   }
 
