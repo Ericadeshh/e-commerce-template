@@ -6,7 +6,7 @@ import {
   FaQuestionCircle,
   FaShoppingCart,
   FaAngleRight,
-  FaTshirt,
+  FaShopify,
   FaHome,
   FaSearch,
 } from "react-icons/fa";
@@ -82,10 +82,23 @@ function Header() {
   return (
     <>
       <header className={styles.header}>
+        <div className={styles.secondaryNav}>
+          <Link to="/categories" className={styles.secondaryLink}>
+            Categories
+          </Link>
+          <span className={styles.separator}>|</span>
+          <Link to="/wishlist" className={styles.secondaryLink}>
+            Wishlist
+          </Link>
+          <span className={styles.separator}>|</span>
+          <Link to="/track-order" className={styles.secondaryLink}>
+            Track Order
+          </Link>
+        </div>
         <div className={styles.container}>
           {/* Logo and Brand */}
           <Link to="/" className={styles.brand}>
-            <FaTshirt className={styles.brandIcon} />
+            <FaShopify className={styles.brandIcon} />
             MILLIWIN BOUTIQUE
           </Link>
 
@@ -96,18 +109,14 @@ function Header() {
               onSubmit={(e) => e.preventDefault()}
             >
               <div className={styles.searchInputWrapper}>
-                <input
-                  type="search"
-                  placeholder="Search products, brands, categories..."
-                  className={styles.searchInput}
-                />
+                <input type="search" className={styles.searchInput} />
                 <label className={styles.searchLabel}>
                   Search products, brands, categories...
                 </label>
-                <button type="submit" className={styles.searchButton}>
-                  <FaSearch className={styles.searchIcon} />
-                </button>
               </div>
+              <button type="submit" className={styles.searchButton}>
+                <FaSearch className={styles.searchIcon} />
+              </button>
             </form>
             <button className={styles.hamburger} onClick={toggleMobileMenu}>
               <FaBars />
@@ -120,18 +129,14 @@ function Header() {
             onSubmit={(e) => e.preventDefault()}
           >
             <div className={styles.searchInputWrapper}>
-              <input
-                type="search"
-                placeholder="Search products, brands, categories..."
-                className={styles.searchInput}
-              />
+              <input type="search" className={styles.searchInput} />
               <label className={styles.searchLabel}>
                 Search products, brands, categories...
               </label>
-              <button type="submit" className={styles.searchButton}>
-                <FaSearch className={styles.searchIcon} />
-              </button>
             </div>
+            <button type="submit" className={styles.searchButton}>
+              <FaSearch className={styles.searchIcon} />
+            </button>
           </form>
 
           {/* Desktop Navigation */}
@@ -249,19 +254,6 @@ function Header() {
             </div>
           </nav>
         </div>
-        <div className={styles.secondaryNav}>
-          <Link to="/categories" className={styles.secondaryLink}>
-            Categories
-          </Link>
-          <span className={styles.separator}>|</span>
-          <Link to="/wishlist" className={styles.secondaryLink}>
-            Wishlist
-          </Link>
-          <span className={styles.separator}>|</span>
-          <Link to="/track-order" className={styles.secondaryLink}>
-            Track Order
-          </Link>
-        </div>
       </header>
 
       {/* Mobile Menu */}
@@ -333,7 +325,7 @@ function Header() {
                       className={styles.mobileNavLink}
                       onClick={() => handleMobileLinkClick("/wishlist")}
                     >
-                      Wishlist ed Order
+                      Wishlist
                     </Link>
                     <button
                       onClick={handleLogout}
