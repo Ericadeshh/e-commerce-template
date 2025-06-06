@@ -67,15 +67,28 @@
   gap: 0.2rem;
 }
 
-.itemCategory,
-.itemOption,
-.stockStatus {
+.itemOptions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(0.2rem, 0.5vw, 0.3rem);
   font-family: "Poppins", sans-serif;
   font-size: clamp(0.6rem, 1.2vw, 0.7rem);
   color: #4a4a4a;
+}
+
+.itemOption,
+.stockStatus {
   display: flex;
   align-items: center;
   gap: 0.2rem;
+  position: relative;
+}
+
+.itemOption:not(:last-child)::after,
+.stockStatus:not(:last-child)::after {
+  content: "|";
+  margin-left: clamp(0.2rem, 0.5vw, 0.3rem);
+  color: #4a4a4a;
 }
 
 .stockStatus {
@@ -91,7 +104,8 @@
 
 .itemPricing {
   display: flex;
-  gap: clamp(0.2rem, 0.5vw, 0.3rem);
+  flex-direction: column;
+  align-items: flex-end;
 }
 
 .itemPrice {
@@ -111,7 +125,8 @@
 .quantityControl {
   display: flex;
   align-items: center;
-  gap: clamp(0.2rem, 0.5vw, 0.3rem);
+  gap: clamp(0.1rem, 0.3vw, 0.2rem);
+  margin-top: clamp(0.1rem, 0.3vw, 0.2rem);
 }
 
 .quantityButtonMinus,
@@ -215,29 +230,60 @@
   }
 
   .leftSection {
-    flex-direction: column;
+    flex-direction: row;
     align-items: flex-start;
     width: 100%;
+    gap: clamp(0.4rem, 1vw, 0.5rem);
+  }
+
+  .itemImageContainer {
+    flex: 0 0 auto;
+    width: clamp(50px, 15vw, 60px);
+    height: clamp(50px, 15vw, 60px);
   }
 
   .itemDetails {
-    align-items: flex-start;
-    width: 100%;
+    flex: 1;
+    flex-direction: column;
+  }
+
+  .itemName {
+    font-size: clamp(0.7rem, 1.5vw, 0.8rem);
+  }
+
+  .itemOptions {
+    flex-wrap: wrap;
+    gap: clamp(0.2rem, 0.5vw, 0.3rem);
+    font-size: clamp(0.5rem, 1.2vw, 0.6rem);
   }
 
   .rightSection {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
     width: 100%;
+    align-items: flex-start;
     margin-top: clamp(0.2rem, 0.5vw, 0.3rem);
   }
 
   .itemPricing {
-    flex: 1;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .itemPrice {
+    font-size: clamp(0.7rem, 1.5vw, 0.8rem);
+  }
+
+  .originalPrice {
+    font-size: clamp(0.5rem, 1.2vw, 0.6rem);
+  }
+
+  .quantityControl {
+    margin-top: 0;
   }
 
   .itemActions {
     justify-content: flex-start;
+    width: 100%;
   }
 }

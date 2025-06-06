@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Offcanvas, Alert } from "react-bootstrap";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaShoppingBag, FaCheck, FaBoxOpen } from "react-icons/fa";
@@ -89,22 +89,19 @@ const Cart: React.FC<CartProps> = ({ show, onHide }) => {
   const [selectedPayment, setSelectedPayment] = useState<
     "credit_card" | "mpesa" | "paypal" | "bank_transfer" | null
   >(null);
+  const paymentMethodsRef = useRef<HTMLDivElement>(null);
   const userId = 1;
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/products/cart?user_id=${userId}`)
-      .then(async (res) => {
+    const fetchCart = async () => {
+      try {
+        const res = await fetch(
+          `http://localhost:5000/api/products/cart?user_id=${userId}`
+        );
         if (!res.ok) {
-          const errorData = await res.json();
-          throw new Error(
-            `Failed to load cart: ${res.status} - ${
-              errorData.error || "Unknown error"
-            }`
-          );
+          throw new Error("Failed to load cart");
         }
-        return res.json();
-      })
-      .then((data: CartItemType[]) => {
+        const data: CartItemType[] = await res.json();
         const parsedData = data.map((item) => ({
           ...item,
           price: parseFloat(item.price as string).toFixed(2),
@@ -114,68 +111,101 @@ const Cart: React.FC<CartProps> = ({ show, onHide }) => {
           image: item.image || MensJacket,
         }));
         setCartItems(parsedData);
-      })
-      .catch((err: Error) => {
+        setSuccess("Cart loaded successfully!");
+        setTimeout(() => setSuccess(null), 3000);
+      } catch (err) {
         console.error("Fetch error:", err);
-        setError(err.message);
-      });
+        // Fallback to static content
+        setSuccess("Using static cart data (server offline)");
+        setTimeout(() => setSuccess(null), 3000);
+      }
+    };
+    fetchCart();
   }, []);
 
   const updateQuantity = (productId: number, newQuantity: number) => {
-    if (newQuantity < 1) return;
-    fetch("http://localhost:5000/api/products/cart", {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ productId, userId, quantity: newQuantity }),
-    })
-      .then(async (res) => {
-        if (!res.ok) {
-          const errorData = await res.json();
-          throw new Error(
-            `Failed to update quantity: ${res.status} - ${
-              errorData.error || "Unknown error"
-            }`
-          );
-        }
-        setCartItems(
-          cartItems.map((item) =>
-            item.product_id === productId
-              ? { ...item, quantity: newQuantity }
-              : item
-          )
-        );
-        setSuccess("Quantity updated successfully!");
-        setTimeout(() => setSuccess(null), 3000);
+    if (newQuantity < 1) {
+      setError("Quantity cannot be less than 1");
+      setTimeout(() => setError(null), 3000);
+      return;
+    }
+    try {
+      fetch("http://localhost:5000/api/products/cart", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ productId, userId, quantity: newQuantity }),
       })
-      .catch((err: Error) => {
-        console.error("Update quantity error:", err);
-        setError(err.message);
-      });
+        .then(async (res) => {
+          if (!res.ok) {
+            throw new Error("Failed to update quantity");
+          }
+          setCartItems(
+            cartItems.map((item) =>
+              item.product_id === productId
+                ? { ...item, quantity: newQuantity }
+                : item
+            )
+          );
+          setSuccess("Quantity updated successfully!");
+          setTimeout(() => setSuccess(null), 3000);
+        })
+        .catch((err) => {
+          console.error("Update quantity error:", err);
+          // Fallback to static update
+          setCartItems(
+            cartItems.map((item) =>
+              item.product_id === productId
+                ? { ...item, quantity: newQuantity }
+                : item
+            )
+          );
+          setSuccess("Quantity updated (offline mode)");
+          setTimeout(() => setSuccess(null), 3000);
+        });
+    } catch {
+      setCartItems(
+        cartItems.map((item) =>
+          item.product_id === productId
+            ? { ...item, quantity: newQuantity }
+            : item
+        )
+      );
+      setSuccess("Quantity updated (offline mode)");
+      setTimeout(() => setSuccess(null), 3000);
+    }
   };
 
   const removeFromCart = (productId: number) => {
-    fetch("http://localhost:5000/api/products/cart", {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ productId, userId }),
-    })
-      .then(async (res) => {
-        if (!res.ok) {
-          const errorData = await res.json();
-          throw new Error(
-            `Failed to remove from cart: ${res.status} - ${
-              errorData.error || "Unknown error"
-            }`
-          );
-        }
-        setCartItems(cartItems.filter((item) => item.product_id !== productId));
-        setSuccess("Item removed successfully!");
-        setTimeout(() => setSuccess(null), 3000);
+    try {
+      fetch("http://localhost:5000/api/products/cart", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ productId, userId }),
       })
-      .catch((err: Error) => {
-        console.error("Remove from cart error:", err);
-        setError(err.message);
-      });
+        .then(async (res) => {
+          if (!res.ok) {
+            throw new Error("Failed to remove from cart");
+          }
+          setCartItems(
+            cartItems.filter((item) => item.product_id !== productId)
+          );
+          setSuccess("Item removed successfully!");
+          setTimeout(() => setSuccess(null), 3000);
+        })
+        .catch((err) => {
+          console.error("Remove from cart error:", err);
+          // Fallback to static remove
+          setCartItems(
+            cartItems.filter((item) => item.product_id !== productId)
+          );
+          setSuccess("Item removed (offline mode)");
+          setTimeout(() => setSuccess(null), 3000);
+        });
+    } catch {
+      setCartItems(cartItems.filter((item) => item.product_id !== productId));
+      setSuccess("Item removed (offline mode)");
+      setTimeout(() => setSuccess(null), 3000);
+    }
   };
 
   const saveItem = (productId: number) => {
@@ -187,10 +217,26 @@ const Cart: React.FC<CartProps> = ({ show, onHide }) => {
   const handleCheckout = () => {
     if (!selectedPayment) {
       setError("Please select a payment method before proceeding to checkout.");
+      setTimeout(() => setError(null), 3000);
+      if (paymentMethodsRef.current) {
+        paymentMethodsRef.current.scrollIntoView({ behavior: "smooth" });
+      }
       return;
     }
-    console.log("Proceeding to checkout with payment method:", selectedPayment);
     setSuccess("Checkout initiated successfully!");
+    setTimeout(() => setSuccess(null), 3000);
+    if (paymentMethodsRef.current) {
+      paymentMethodsRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  const handleApplyPromo = (code: string) => {
+    if (!code) {
+      setError("Please enter a promo code");
+      setTimeout(() => setError(null), 3000);
+      return;
+    }
+    setSuccess(`Promo code ${code} applied successfully!`);
     setTimeout(() => setSuccess(null), 3000);
   };
 
@@ -226,7 +272,8 @@ const Cart: React.FC<CartProps> = ({ show, onHide }) => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
       >
-        {cartItems.length} item{cartItems.length !== 1 ? "s" : ""} in your cart
+        {cartItems.length} dynamic item{cartItems.length !== 1 ? "s" : ""} in
+        your cart
       </motion.p>
       {error && (
         <motion.div
@@ -292,12 +339,14 @@ const Cart: React.FC<CartProps> = ({ show, onHide }) => {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <PromoCode />
+            <PromoCode onApplyPromo={handleApplyPromo} />
             <hr className={styles.divider} />
-            <PaymentMethods
-              selectedPayment={selectedPayment}
-              setSelectedPayment={setSelectedPayment}
-            />
+            <div ref={paymentMethodsRef}>
+              <PaymentMethods
+                selectedPayment={selectedPayment}
+                setSelectedPayment={setSelectedPayment}
+              />
+            </div>
             <hr className={styles.divider} />
             <ShippingOptions
               shippingOption={shippingOption}

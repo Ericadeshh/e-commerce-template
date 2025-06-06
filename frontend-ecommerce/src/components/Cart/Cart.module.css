@@ -47,9 +47,10 @@
 
 .alertContainer {
   position: fixed;
-  top: 1rem;
+  top: 0%;
   left: 50%;
-  transform: translateX(-50%);
+  right: 50%;
+  transform: translate(-50%, -50%);
   z-index: 1000;
   width: clamp(200px, 80%, 400px);
 }

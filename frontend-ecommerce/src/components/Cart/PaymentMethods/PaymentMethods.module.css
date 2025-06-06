@@ -58,3 +58,66 @@
   font-size: clamp(0.7rem, 1.5vw, 0.8rem);
   color: #9400d3;
 }
+
+.paymentModal {
+  font-family: "Poppins", sans-serif;
+}
+
+.modalHeader {
+  background: #f3e8ff;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.modalTitle {
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  color: #4a4a4a;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.modalBody {
+  padding: 1rem;
+  background: #fff;
+}
+
+.formLabel {
+  font-family: "Poppins", sans-serif;
+  font-size: clamp(0.7rem, 1.5vw, 0.8rem);
+  color: #4a4a4a;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.formInput {
+  font-family: "Poppins", sans-serif;
+  font-size: clamp(0.7rem, 1.5vw, 0.8rem);
+  border-radius: 0.25rem;
+  border: 1px solid #9400d3;
+}
+
+.formInput:focus {
+  border-color: #a1dc17;
+  box-shadow: 0 0 5px rgba(161, 220, 23, 0.5);
+}
+
+.submitButton {
+  font-family: "Poppins", sans-serif;
+  font-size: clamp(0.7rem, 1.5vw, 0.8rem);
+  padding: clamp(0.3rem, 0.8vw, 0.4rem) clamp(0.6rem, 1.5vw, 0.8rem);
+  background: linear-gradient(45deg, #9400d3, #ff1493);
+  border: none;
+  border-radius: 0.25rem;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  width: 100%;
+  justify-content: center;
+}
+
+.submitButton:hover {
+  background: #a1dc17;
+  box-shadow: 0 0 6px rgba(161, 220, 23, 0.5);
+}

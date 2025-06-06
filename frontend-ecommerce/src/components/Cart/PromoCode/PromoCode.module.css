@@ -33,18 +33,27 @@
   background: #fff;
 }
 
+.promoInput:focus {
+  border-color: #a1dc17;
+  box-shadow: 0 0 5px rgba(161, 220, 23, 0.5);
+}
+
 .promoButton {
   font-family: "Poppins", sans-serif;
   font-size: clamp(0.6rem, 1.2vw, 0.7rem);
   padding: clamp(0.2rem, 0.5vw, 0.3rem) clamp(0.5rem, 1.2vw, 0.6rem);
-  background: #ff1493;
+  background: linear-gradient(45deg, #9400d3, #ff1493);
   border: none;
   border-radius: 0.25rem;
   color: #fff;
-  opacity: 0.6;
   display: flex;
   align-items: center;
   gap: 0.2rem;
+}
+
+.promoButton:hover {
+  background: #a1dc17;
+  box-shadow: 0 0 6px rgba(161, 220, 23, 0.5);
 }
 
 .promoHint {

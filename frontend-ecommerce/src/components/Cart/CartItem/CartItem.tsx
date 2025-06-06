@@ -74,43 +74,27 @@ const CartItem: React.FC<CartItemProps> = ({
             )}
             {item.name}
           </span>
-          <span className={styles.itemCategory}>
-            <FaTag /> {item.category}
-          </span>
-          {item.size && (
-            <span className={styles.itemOption}>
-              <FaTag /> Size: {item.size}
-            </span>
-          )}
-          {item.color && (
-            <span className={styles.itemOption}>
-              <FaTag /> Color: {item.color}
-            </span>
-          )}
-          {item.stock_status === "out_of_stock" && (
-            <span className={styles.stockStatus}>
-              <FaTag /> Out of stock - will ship when available
-            </span>
-          )}
-          <div className={styles.itemActions}>
-            <motion.button
-              variants={buttonVariants}
-              whileHover="hover"
-              whileTap="tap"
-              onClick={() => removeFromCart(item.product_id)}
-              className={styles.removeButton}
-            >
-              <FaTrash className={styles.actionIcon} /> Remove
-            </motion.button>
-            <motion.button
-              variants={buttonVariants}
-              whileHover="hover"
-              whileTap="tap"
-              onClick={() => saveItem(item.product_id)}
-              className={styles.saveButton}
-            >
-              <FaBookmark className={styles.actionIcon} /> Save
-            </motion.button>
+          <div className={styles.itemOptions}>
+            {item.category && (
+              <span className={styles.itemOption}>
+                <FaTag /> {item.category}
+              </span>
+            )}
+            {item.size && (
+              <span className={styles.itemOption}>
+                <FaTag /> Size: {item.size}
+              </span>
+            )}
+            {item.color && (
+              <span className={styles.itemOption}>
+                <FaTag /> Color: {item.color}
+              </span>
+            )}
+            {item.stock_status === "out_of_stock" && (
+              <span className={styles.stockStatus}>
+                <FaTag /> Out of stock
+              </span>
+            )}
           </div>
         </div>
       </div>
@@ -124,27 +108,47 @@ const CartItem: React.FC<CartItemProps> = ({
               KSh {parseFloat(item.original_price as string).toFixed(0)}
             </span>
           )}
+          <div className={styles.quantityControl}>
+            <motion.button
+              variants={buttonVariants}
+              whileHover="hover"
+              whileTap="tap"
+              onClick={() => updateQuantity(item.product_id, item.quantity - 1)}
+              className={styles.quantityButtonMinus}
+              disabled={item.quantity <= 1}
+            >
+              <FaMinus className={styles.actionIcon} />
+            </motion.button>
+            <span className={styles.quantity}>{item.quantity}</span>
+            <motion.button
+              variants={buttonVariants}
+              whileHover="hover"
+              whileTap="tap"
+              onClick={() => updateQuantity(item.product_id, item.quantity + 1)}
+              className={styles.quantityButtonPlus}
+            >
+              <FaPlus className={styles.actionIcon} />
+            </motion.button>
+          </div>
         </div>
-        <div className={styles.quantityControl}>
+        <div className={styles.itemActions}>
           <motion.button
             variants={buttonVariants}
             whileHover="hover"
             whileTap="tap"
-            onClick={() => updateQuantity(item.product_id, item.quantity - 1)}
-            className={styles.quantityButtonMinus}
-            disabled={item.quantity <= 1}
+            onClick={() => removeFromCart(item.product_id)}
+            className={styles.removeButton}
           >
-            <FaMinus className={styles.actionIcon} />
+            <FaTrash className={styles.actionIcon} /> Remove
           </motion.button>
-          <span className={styles.quantity}>{item.quantity}</span>
           <motion.button
             variants={buttonVariants}
             whileHover="hover"
             whileTap="tap"
-            onClick={() => updateQuantity(item.product_id, item.quantity + 1)}
-            className={styles.quantityButtonPlus}
+            onClick={() => saveItem(item.product_id)}
+            className={styles.saveButton}
           >
-            <FaPlus className={styles.actionIcon} />
+            <FaBookmark className={styles.actionIcon} /> Save
           </motion.button>
         </div>
       </div>
