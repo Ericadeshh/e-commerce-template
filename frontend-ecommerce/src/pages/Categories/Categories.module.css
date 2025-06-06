@@ -2,10 +2,6 @@
   width: 100%;
   padding: 0 clamp(0.5rem, 2vw, 1rem);
   background-color: #fff;
-
-  @media (max-width: 768px) {
-    margin-top: 2.5rem;
-  }
 }
 
 .heroSection {
@@ -20,7 +16,7 @@
 .heroTitle {
   font-size: clamp(1.6rem, 3.5vw, 2rem);
   margin-bottom: 0.5rem;
-  margin-top: 1rem;
+  margin-top: 1.5rem;
   font-weight: 500;
 }
 

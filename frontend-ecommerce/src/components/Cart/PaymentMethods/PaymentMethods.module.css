@@ -1,0 +1,60 @@
+.paymentMethods {
+  background: #f9f9f9;
+  padding: 0.5rem;
+  border-radius: 0.3rem;
+}
+
+.sectionTitle {
+  font-family: "Poppins", sans-serif;
+  font-size: clamp(0.8rem, 1.5vw, 0.9rem);
+  font-weight: 600;
+  color: #4a4a4a;
+  margin-bottom: clamp(0.2rem, 0.5vw, 0.3rem);
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.sectionIcon {
+  font-size: clamp(0.7rem, 1.5vw, 0.8rem);
+  color: #9400d3;
+}
+
+.paymentOptions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.paymentOption {
+  font-family: "Poppins", sans-serif;
+  font-size: clamp(0.7rem, 1.5vw, 0.8rem);
+  padding: 0.5rem;
+  border-radius: 0.3rem;
+  background: #f9f9f9;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease-out;
+  border: 1px solid #e0e0e0;
+}
+
+.paymentOption:hover {
+  background: #f3e8ff;
+}
+
+.paymentOption.selected {
+  background: #a1dc17;
+  color: #fff;
+  border-color: #a1dc17;
+}
+
+.paymentOption.selected .optionIcon {
+  color: #fff;
+}
+
+.optionIcon {
+  font-size: clamp(0.7rem, 1.5vw, 0.8rem);
+  color: #9400d3;
+}

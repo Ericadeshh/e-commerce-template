@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
 
 .cartContainer {
-  padding: clamp(0.5rem, 1.2vw, 0.6rem);
+  padding: 2rem 1rem;
   background: linear-gradient(135deg, #f3e8ff, #ffffff);
   border-radius: 0.5rem;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
@@ -45,6 +45,15 @@
   margin-bottom: clamp(0.4rem, 1vw, 0.5rem);
 }
 
+.alertContainer {
+  position: fixed;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  width: clamp(200px, 80%, 400px);
+}
+
 .errorAlert {
   font-family: "Poppins", sans-serif;
   font-size: clamp(0.7rem, 1.5vw, 0.8rem);
@@ -52,7 +61,6 @@
   color: #fff;
   border: none;
   border-radius: 0.3rem;
-  margin-bottom: clamp(0.4rem, 1vw, 0.5rem);
   display: flex;
   align-items: center;
   gap: 0.3rem;
@@ -66,7 +74,6 @@
   color: #fff;
   border: none;
   border-radius: 0.3rem;
-  margin-bottom: clamp(0.4rem, 1vw, 0.5rem);
   display: flex;
   align-items: center;
   gap: 0.3rem;
@@ -75,7 +82,7 @@
 
 .alertIcon {
   font-size: clamp(0.7rem, 1.5vw, 0.8rem);
-  color: #9400d3;
+  color: #fff;
 }
 
 .emptyCart {
@@ -110,10 +117,11 @@
   border-radius: 0.3rem;
   color: #fff;
   font-weight: 600;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 0.3rem;
   transition: all 0.2s ease-out;
+  text-decoration: none;
 }
 
 .shopNowButton:hover {
@@ -137,6 +145,7 @@
 .cartItemsScroll {
   max-height: 400px;
   overflow-y: auto;
+  overflow-x: hidden;
   scrollbar-width: thin;
   scrollbar-color: #9400d3 #f3e8ff;
 }
@@ -159,464 +168,12 @@
   background: #a1dc17;
 }
 
-.cartItem {
-  background: #fff;
-  border-radius: 0.3rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-  display: flex;
-  align-items: center;
-  padding: 2rem 1rem;
-  margin-bottom: clamp(0.2rem, 0.5vw, 0.3rem);
-  position: relative;
-}
-
-.itemNumber {
-  position: absolute;
-  top: 0.5rem;
-  left: 0.5rem;
-  background: #9400d3;
-  color: #fff;
-  border-radius: 50%;
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.8rem;
-  font-weight: 600;
-}
-
-.numberColor0 {
-  background: #9400d3;
-}
-.numberColor1 {
-  background: #ff1493;
-}
-.numberColor2 {
-  background: #a1dc17;
-}
-.numberColor3 {
-  background: #6b7280;
-}
-
-.itemImageContainer {
-  flex: 0 0 auto;
-  width: clamp(50px, 10vw, 60px);
-  height: clamp(50px, 10vw, 60px);
-  border-radius: 0.3rem;
-  overflow: hidden;
-  border: 2px solid #9400d3;
-  margin-right: clamp(0.4rem, 1vw, 0.5rem);
-}
-
-.itemImage {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.itemDetails {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  gap: clamp(0.3rem, 0.8vw, 0.4rem);
-  flex-wrap: wrap;
-}
-
-.separator {
-  color: #9400d3;
-  font-size: clamp(0.8rem, 1.5vw, 0.9rem);
-}
-
-.itemName {
-  font-family: "Poppins", sans-serif;
-  font-size: clamp(0.8rem, 1.5vw, 0.9rem);
-  font-weight: 600;
-  color: #4a4a4a;
-  display: flex;
-  align-items: center;
-  gap: 0.2rem;
-}
-
-.saleTag {
-  font-size: clamp(0.5rem, 1vw, 0.6rem);
-  background: #ff1493;
-  color: #fff;
-  padding: 0.1rem 0.3rem;
-  border-radius: 0.2rem;
-  display: flex;
-  align-items: center;
-  gap: 0.2rem;
-}
-
-.itemCategory {
-  font-family: "Poppins", sans-serif;
-  font-size: clamp(0.6rem, 1.2vw, 0.7rem);
-  color: #4a4a4a;
-  display: flex;
-  align-items: center;
-  gap: 0.2rem;
-}
-
-.itemOption {
-  font-family: "Poppins", sans-serif;
-  font-size: clamp(0.6rem, 1.2vw, 0.7rem);
-  color: #4a4a4a;
-  display: flex;
-  align-items: center;
-  gap: 0.2rem;
-}
-
-.itemPricing {
-  display: flex;
-  gap: clamp(0.2rem, 0.5vw, 0.3rem);
-}
-
-.itemPrice {
-  font-family: "Poppins", sans-serif;
-  font-size: clamp(0.8rem, 1.5vw, 0.9rem);
-  font-weight: 600;
-  color: #4a4a4a;
-}
-
-.originalPrice {
-  font-family: "Poppins", sans-serif;
-  font-size: clamp(0.6rem, 1.2vw, 0.7rem);
-  color: #999;
-  text-decoration: line-through;
-}
-
-.quantityControl {
-  display: flex;
-  align-items: center;
-  gap: clamp(0.2rem, 0.5vw, 0.3rem);
-}
-
-.quantityButton {
-  background: #f3e8ff;
-  border: 1px solid #9400d3;
-  border-radius: 50%;
-  width: clamp(20px, 5vw, 24px);
-  height: clamp(20px, 5vw, 24px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #9400d3;
-  font-size: clamp(0.4rem, 1vw, 0.5rem);
-  cursor: pointer;
-  transition: all 0.2s ease-out;
-}
-
-.quantityButton:hover:not(:disabled) {
-  background: #9400d3;
-  color: #fff;
-}
-
-.quantityButton:disabled {
-  background: #ff1493;
-  border-color: #ff1493;
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.quantity {
-  font-family: "Poppins", sans-serif;
-  font-size: clamp(0.7rem, 1.2vw, 0.8rem);
-  font-weight: 500;
-  color: #4a4a4a;
-}
-
-.stockStatus {
-  font-family: "Poppins", sans-serif;
-  font-size: clamp(0.6rem, 1.2vw, 0.7rem);
-  color: #ff1493;
-  display: flex;
-  align-items: center;
-  gap: 0.2rem;
-}
-
-.itemActions {
-  display: flex;
-  gap: clamp(0.2rem, 0.5vw, 0.3rem);
-}
-
-.removeButton,
-.saveButton {
-  font-family: "Poppins", sans-serif;
-  font-size: clamp(0.6rem, 1.2vw, 0.7rem);
-  padding: clamp(0.1rem, 0.3vw, 0.2rem) clamp(0.4rem, 1vw, 0.5rem);
-  border: none;
-  color: #fff;
-  border-radius: 0.25rem;
-  display: flex;
-  align-items: center;
-  gap: 0.2rem;
-  transition: all 0.2s ease-out;
-}
-
-.removeButton {
-  background: #ff1493;
-}
-
-.removeButton:hover {
-  background: #a1dc17;
-}
-
-.saveButton {
-  background: #4a4a4a;
-}
-
-.saveButton:hover {
-  background: #a1dc17;
-}
-
-.actionIcon {
-  font-size: clamp(0.6rem, 1.2vw, 0.7rem);
-  color: #9400d3;
-}
-
 .checkoutOptionsSection,
 .orderDetailsSection {
   background: #fff;
   border-radius: 0.3rem;
   padding: clamp(0.4rem, 1vw, 0.5rem);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-.paymentMethods {
-  background: #f9f9f9;
-  padding: 0.5rem;
-  border-radius: 0.3rem;
-}
-
-.paymentOptions {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.paymentOption {
-  font-family: "Poppins", sans-serif;
-  font-size: clamp(0.7rem, 1.5vw, 0.8rem);
-  padding: 0.5rem;
-  border-radius: 0.3rem;
-  background: #f9f9f9;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  transition: all 0.2s ease-out;
-}
-
-.paymentOption:hover {
-  background: #f3e8ff;
-}
-
-.paymentOption.selected {
-  background: #a1dc17;
-  color: #fff;
-}
-
-.paymentOption.selected .optionIcon {
-  color: #fff;
-}
-
-.sectionTitle {
-  font-family: "Poppins", sans-serif;
-  font-size: clamp(0.8rem, 1.5vw, 0.9rem);
-  font-weight: 600;
-  color: #4a4a4a;
-  margin-bottom: clamp(0.2rem, 0.5vw, 0.3rem);
-  display: flex;
-  align-items: center;
-  gap: 0.2rem;
-}
-
-.sectionIcon {
-  font-size: clamp(0.7rem, 1.5vw, 0.8rem);
-  color: #9400d3;
-}
-
-.promoCode {
-  background: #f9f9f9;
-  padding: 0.5rem;
-  border-radius: 0.3rem;
-}
-
-.promoInputGroup {
-  display: flex;
-  gap: clamp(0.2rem, 0.5vw, 0.3rem);
-}
-
-.promoInput {
-  font-family: "Poppins", sans-serif;
-  font-size: clamp(0.6rem, 1.2vw, 0.7rem);
-  border-radius: 0.25rem;
-  border: 1px solid #9400d3;
-  background: #fff;
-}
-
-.promoButton {
-  font-family: "Poppins", sans-serif;
-  font-size: clamp(0.6rem, 1.2vw, 0.7rem);
-  padding: clamp(0.2rem, 0.5vw, 0.3rem) clamp(0.5rem, 1.2vw, 0.6rem);
-  background: #ff1493;
-  border: none;
-  border-radius: 0.25rem;
-  color: #fff;
-  opacity: 0.6;
-  display: flex;
-  align-items: center;
-  gap: 0.2rem;
-}
-
-.promoHint {
-  font-family: "Poppins", sans-serif;
-  font-size: clamp(0.6rem, 1.2vw, 0.7rem);
-  color: #4a4a4a;
-  margin-top: clamp(0.1rem, 0.3vw, 0.2rem);
-}
-
-.orderSummary {
-  background: #f9f9f9;
-  padding: 0.5rem;
-  border-radius: 0.3rem;
-}
-
-.summaryRow {
-  display: flex;
-  justify-content: space-between;
-  font-family: "Poppins", sans-serif;
-  font-size: clamp(0.7rem, 1.5vw, 0.8rem);
-  color: #4a4a4a;
-  margin-bottom: clamp(0.1rem, 0.3vw, 0.2rem);
-}
-
-.summaryTotal {
-  display: flex;
-  justify-content: space-between;
-  font-family: "Poppins", sans-serif;
-  font-size: clamp(0.9rem, 2vw, 1.1rem);
-  font-weight: 600;
-  color: #4a4a4a;
-  margin-top: clamp(0.2rem, 0.5vw, 0.3rem);
-}
-
-.checkoutButton {
-  font-family: "Poppins", sans-serif;
-  font-size: clamp(0.7rem, 1.5vw, 0.8rem);
-  padding: clamp(0.3rem, 0.8vw, 0.4rem) clamp(0.6rem, 1.5vw, 0.8rem);
-  background: linear-gradient(45deg, #9400d3, #ff1493);
-  border: none;
-  border-radius: 0.25rem;
-  color: #fff;
-  text-transform: uppercase;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: clamp(0.2rem, 0.5vw, 0.3rem);
-  width: 100%;
-  justify-content: center;
-  transition: all 0.2s ease-out;
-  margin-top: clamp(0.2rem, 0.5vw, 0.3rem);
-}
-
-.checkoutButton:hover:not(:disabled) {
-  background: #a1dc17;
-  box-shadow: 0 0 6px rgba(161, 220, 23, 0.5);
-}
-
-.checkoutButton:disabled {
-  background: #ff1493;
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.secureCheckout {
-  font-family: "Poppins", sans-serif;
-  font-size: clamp(0.6rem, 1.2vw, 0.7rem);
-  color: #4a4a4a;
-  display: flex;
-  align-items: center;
-  gap: clamp(0.2rem, 0.5vw, 0.3rem);
-  margin-top: clamp(0.2rem, 0.5vw, 0.3rem);
-  justify-content: center;
-}
-
-.shippingOptions {
-  background: #f9f9f9;
-  padding: 0.5rem;
-  border-radius: 0.3rem;
-}
-
-.shippingOption {
-  font-family: "Poppins", sans-serif;
-  font-size: clamp(0.7rem, 1.5vw, 0.8rem);
-  color: #4a4a4a;
-  display: flex;
-  align-items: center;
-  gap: clamp(0.2rem, 0.5vw, 0.3rem);
-  margin-bottom: clamp(0.2rem, 0.5vw, 0.3rem);
-}
-
-.shippingOption small {
-  font-size: clamp(0.6rem, 1.2vw, 0.7rem);
-  color: #4a4a4a;
-}
-
-.optionIcon {
-  font-size: clamp(0.7rem, 1.5vw, 0.8rem);
-  color: #9400d3;
-}
-
-.shippingCost {
-  font-family: "Poppins", sans-serif;
-  font-size: clamp(0.7rem, 1.5vw, 0.8rem);
-  color: #4a4a4a;
-  margin-left: clamp(1.5rem, 3vw, 2rem);
-  margin-bottom: clamp(0.2rem, 0.5vw, 0.3rem);
-}
-
-.additionalOptions {
-  background: #f9f9f9;
-  padding: 0.5rem;
-  border-radius: 0.3rem;
-}
-
-.giftWrapping {
-  font-family: "Poppins", sans-serif;
-  font-size: clamp(0.7rem, 1.5vw, 0.8rem);
-  color: #4a4a4a;
-  display: flex;
-  align-items: center;
-  gap: clamp(0.2rem, 0.5vw, 0.3rem);
-}
-
-.whyShop {
-  background: #f9f9f9;
-  padding: 0.5rem;
-  border-radius: 0.3rem;
-}
-
-.whyShopList {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  font-family: "Poppins", sans-serif;
-  font-size: clamp(0.7rem, 1.5vw, 0.8rem);
-  color: #4a4a4a;
-}
-
-.whyShopList li {
-  display: flex;
-  align-items: center;
-  gap: clamp(0.2rem, 0.5vw, 0.3rem);
-  margin-bottom: clamp(0.2rem, 0.5vw, 0.3rem);
-}
-
-.whyShopIcon {
-  font-size: clamp(0.7rem, 1.5vw, 0.8rem);
-  color: #9400d3;
 }
 
 .divider {
@@ -665,6 +222,10 @@
 }
 
 @media (min-width: 768px) {
+  .cartContainer {
+    padding: 2rem 1.5rem;
+  }
+
   .cartLayout {
     display: grid;
     grid-template-columns: 2fr 1fr 1fr;
@@ -711,50 +272,15 @@
   .orderDetailsSection::-webkit-scrollbar-thumb:hover {
     background: #a1dc17;
   }
-
-  .cartItem {
-    padding: clamp(0.4rem, 1vw, 0.5rem);
-  }
-
-  .itemImageContainer {
-    width: clamp(50px, 8vw, 60px);
-    height: clamp(50px, 8vw, 60px);
-  }
 }
 
 @media (max-width: 767px) {
   .cartContainer {
-    padding: clamp(0.2rem, 0.5vw, 0.3rem);
+    padding: 2rem 1rem;
   }
 
   .cartTitle {
     font-size: clamp(1rem, 2.5vw, 1.2rem);
-  }
-
-  .cartItem {
-    flex-direction: row;
-    align-items: center;
-    padding: 1.5rem 1rem;
-    flex-wrap: wrap;
-  }
-
-  .itemImageContainer {
-    width: clamp(40px, 8vw, 50px);
-    height: clamp(40px, 8vw, 50px);
-    margin-right: clamp(0.2rem, 0.5vw, 0.3rem);
-  }
-
-  .itemDetails {
-    flex-wrap: wrap;
-    gap: 0.3rem;
-  }
-
-  .itemActions {
-    justify-content: center;
-  }
-
-  .promoInputGroup {
-    flex-direction: column;
   }
 
   .checkoutOptionsSection,

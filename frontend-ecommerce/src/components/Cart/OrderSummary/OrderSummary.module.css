@@ -1,0 +1,110 @@
+.orderSummary {
+  background: #f9f9f9;
+  padding: 0.5rem;
+  border-radius: 0.3rem;
+}
+
+.sectionTitle {
+  font-family: "Poppins", sans-serif;
+  font-size: clamp(0.8rem, 1.5vw, 0.9rem);
+  font-weight: 600;
+  color: #4a4a4a;
+  margin-bottom: clamp(0.2rem, 0.5vw, 0.3rem);
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.sectionIcon {
+  font-size: clamp(0.7rem, 1.5vw, 0.8rem);
+  color: #9400d3;
+}
+
+.summaryRow {
+  display: flex;
+  justify-content: space-between;
+  font-family: "Poppins", sans-serif;
+  font-size: clamp(0.7rem, 1.5vw, 0.8rem);
+  color: #4a4a4a;
+  margin-bottom: clamp(0.1rem, 0.3vw, 0.2rem);
+}
+
+.summaryTotal {
+  display: flex;
+  justify-content: space-between;
+  font-family: "Poppins", sans-serif;
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
+  font-weight: 600;
+  color: #4a4a4a;
+  margin-top: clamp(0.2rem, 0.5vw, 0.3rem);
+}
+
+.checkoutButton {
+  font-family: "Poppins", sans-serif;
+  font-size: clamp(0.7rem, 1.5vw, 0.8rem);
+  padding: clamp(0.3rem, 0.8vw, 0.4rem) clamp(0.6rem, 1.5vw, 0.8rem);
+  background: linear-gradient(45deg, #9400d3, #ff1493);
+  border: none;
+  border-radius: 0.25rem;
+  color: #fff;
+  text-transform: uppercase;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: clamp(0.2rem, 0.5vw, 0.3rem);
+  width: 100%;
+  justify-content: center;
+  transition: all 0.2s ease-out;
+  margin-top: clamp(0.2rem, 0.5vw, 0.3rem);
+}
+
+.checkoutButton:hover:not(:disabled) {
+  background: #a1dc17;
+  box-shadow: 0 0 6px rgba(161, 220, 23, 0.5);
+}
+
+.checkoutButton:disabled {
+  background: #ff1493;
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.whatsappButton {
+  font-family: "Poppins", sans-serif;
+  font-size: clamp(0.7rem, 1.5vw, 0.8rem);
+  padding: clamp(0.3rem, 0.8vw, 0.4rem) clamp(0.6rem, 1.5vw, 0.8rem);
+  background: #25d366;
+  border: none;
+  border-radius: 0.25rem;
+  color: #fff;
+  text-transform: uppercase;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: clamp(0.2rem, 0.5vw, 0.3rem);
+  width: 100%;
+  justify-content: center;
+  transition: all 0.2s ease-out;
+  margin-top: clamp(0.2rem, 0.5vw, 0.3rem);
+  text-decoration: none;
+}
+
+.whatsappButton:hover {
+  background: #1ebe57;
+  box-shadow: 0 0 6px rgba(30, 190, 87, 0.5);
+}
+
+.secureCheckout {
+  font-family: "Poppins", sans-serif;
+  font-size: clamp(0.6rem, 1.2vw, 0.7rem);
+  color: #4a4a4a;
+  display: flex;
+  align-items: center;
+  gap: clamp(0.2rem, 0.5vw, 0.3rem);
+  margin-top: clamp(0.2rem, 0.5vw, 0.3rem);
+  justify-content: center;
+}
+
+.actionIcon {
+  font-size: clamp(0.6rem, 1.2vw, 0.7rem);
+}
