@@ -6,6 +6,10 @@
   bottom: clamp(3.5rem, 10vw, 4rem); /* Adjusted to sit above FloatingButtons */
   right: clamp(1rem, 3vw, 1.5rem);
   z-index: 1001; /* Above content but below FloatingButtons */
+
+  @media (max-width: 768px) {
+    margin-bottom: 1rem;
+  }
 }
 
 .customerCareButton {

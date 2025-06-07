@@ -6,10 +6,17 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  background-color: #fff;
-  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
-  padding: clamp(0.4rem, 1vw, 0.65rem) 0;
+  background: linear-gradient(
+    to top,
+    rgba(20, 20, 20, 0.9),
+    rgba(50, 50, 50, 0.5)
+  );
+  backdrop-filter: blur(4px);
+  box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.1);
+  border-top: none;
+  padding: 0.5rem;
   z-index: 1000;
+  animation: slideUp 0.3s ease-in-out;
 }
 
 .floatingButton {
@@ -18,26 +25,67 @@
   align-items: center;
   justify-content: center;
   text-decoration: none;
-  color: #333;
-  font-size: clamp(0.7rem, 2vw, 0.8rem);
-  padding: clamp(0.5rem, 2vw, 0.75rem);
-  transition: transform 0.3s ease, color 0.3s ease, background-color 0.3s ease;
+  color: #fff;
+  font-size: clamp(0.65rem, 1.8vw, 0.75rem);
+  padding: clamp(0.4rem, 1.5vw, 0.6rem);
+  transition: transform 0.3s ease, color 0.3s ease;
+  position: relative;
 }
 
 .floatingButton:hover {
   transform: translateY(-2px);
-  color: #9400d3;
-  background-color: #f8f9fa;
+  color: #ae01f8;
 }
 
 .floatingButton svg {
-  font-size: clamp(1.2rem, 3vw, 1.5rem);
-  margin-bottom: clamp(0.2rem, 1vw, 0.3rem);
+  font-size: clamp(1.1rem, 2.8vw, 1.4rem);
+  margin-bottom: clamp(0.15rem, 0.8vw, 0.25rem);
 }
 
 .floatingButton span {
-  font-size: clamp(0.7rem, 2vw, 0.8rem);
+  font-size: clamp(0.65rem, 1.8vw, 0.75rem);
   font-weight: 500;
+}
+
+.dropdown {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-6px);
+  background: linear-gradient(
+    to top,
+    rgba(30, 30, 30, 0.9) 50%,
+    rgba(60, 60, 60, 0.6) 100%
+  );
+  backdrop-filter: blur(2px);
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  min-width: 140px;
+  padding: 6px 0;
+  z-index: 1001;
+  animation: dropdownFadeIn 0.3s ease-in-out;
+}
+
+.dropdownItem {
+  display: block;
+  padding: 8px 16px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.85rem;
+  transition: color 0.2s ease;
+}
+
+.dropdownItem:hover {
+  color: #800080; /* Purple */
+}
+
+.logoutButton {
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
 }
 
 @media (min-width: 992px) {
@@ -57,6 +105,13 @@
   }
 }
 
-.floatingContainer {
-  animation: slideUp 0.3s ease-in-out;
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(0);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-4px);
+  }
 }
