@@ -1,0 +1,119 @@
+/* ReachUs.module.css */
+
+.reachContainer {
+  width: 100%;
+  max-width: 670px;
+  padding: 2rem;
+  background-color: #f3e8ff8f;
+  color: #333;
+  border-radius: 1rem;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.title {
+  font-size: 1.5rem;
+  color: #800080; /* Purple */
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #d63384; /* Fuchsia */
+  margin-bottom: 1rem;
+}
+
+.description {
+  font-size: 1rem;
+  color: #766;
+  margin-bottom: 1.5rem;
+}
+
+.contactInfo p {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.2rem;
+  font-size: 0.8rem;
+  color: #777;
+}
+
+.contactInfo svg {
+  margin-right: 0.5rem;
+  color: #8a2be2;
+}
+.flex {
+  display: flex !important;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+}
+.locations {
+  margin-top: 1.5rem;
+}
+
+.flexHeader {
+  font-size: 1rem;
+  margin-bottom: 0;
+  color: #800080; /* Purple */
+}
+
+.locations ul {
+  list-style: none;
+  padding: 0;
+}
+
+.locations li {
+  font-size: 0.8rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  color: #777;
+}
+
+.locations svg {
+  margin-right: 0.5rem;
+  color: #d63384;
+}
+
+.mapWrapper {
+  margin-top: 1rem;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.sticker {
+  font-family: "Cursive", fantasy;
+  font-size: 1.8rem;
+  background: linear-gradient(45deg, #d63384, #8a2be2);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+  .reachContainer {
+    max-width: 100%;
+    padding: 1rem;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
+
+  .description,
+  .contactInfo div,
+  .locations li {
+    font-size: 0.9rem;
+  }
+
+  .sticker {
+    font-size: 1.2rem;
+  }
+}

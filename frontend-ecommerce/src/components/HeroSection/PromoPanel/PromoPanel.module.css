@@ -15,8 +15,8 @@
 @media (max-width: 768px) {
   .promoPanel {
     width: 100%;
-    min-height: 700px;
-    max-height: 750px;
+    min-height: 800px;
+    max-height: 100px;
     padding: 3rem 1rem;
     margin: 0.8rem 0;
     background: linear-gradient(135deg, #eeeaf3, #ffffff);
@@ -435,4 +435,19 @@
   font-size: 0.7rem;
   color: #ff1493;
   transition: color 0.2s ease-in-out;
+}
+
+.descriptionIcon {
+  margin-right: 0.2rem;
+  font-size: 1rem;
+  color: #ff1493;
+  transition: color 0.2s ease-in-out;
+}
+.description {
+  text-align: center;
+  color: #777;
+  font-size: 1rem;
+  @media (max-width: 768px) {
+    font-size: 0.85rem;
+  }
 }

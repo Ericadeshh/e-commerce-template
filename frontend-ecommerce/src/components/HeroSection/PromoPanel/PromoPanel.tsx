@@ -1,6 +1,12 @@
 import { Col, Card, Button } from "react-bootstrap";
 import { motion } from "framer-motion";
 import { FaTag, FaShoppingCart, FaStar, FaClock } from "react-icons/fa";
+
+import { FaFire } from "react-icons/fa6";
+import { IoSparklesSharp } from "react-icons/io5";
+
+import { FaShippingFast } from "react-icons/fa";
+
 import styles from "./PromoPanel.module.css";
 
 interface Promotion {
@@ -151,6 +157,17 @@ const PromoPanel: React.FC<PromoPanelProps> = ({ promotions }) => {
         className={`${styles.promoPanel} d-md-none`}
       >
         <h3 className={styles.promoPanelTitle}>Offers & Deals</h3>
+        <p className={styles.description}>
+          Discover exclusive offers at Milliwin Boutique!{" "}
+          <IoSparklesSharp className={styles.descriptionIcon} /> <br />
+          Enjoy seasonal discounts <FaFire
+            className={styles.descriptionIcon}
+          />{" "}
+          <br />
+          and free shipping{" "}
+          <FaShippingFast className={styles.descriptionIcon} /> on your favorite
+          styles, making it easier than ever to refresh your wardrobe
+        </p>
         <div className={styles.promoContainer}>
           {promotions.slice(0, 2).map((promo, index) => (
             <motion.div

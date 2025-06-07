@@ -19,9 +19,9 @@ import styles from "./App.module.css";
 function App() {
   return (
     <Router>
-      <div className={styles.app}>
+      <div className={styles.appContainer}>
         <Header />
-        <main className={styles.main}>
+        <main className={styles.mainContent}>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<LoginForm />} />

@@ -39,50 +39,57 @@ const BannerCarousel: React.FC<BannerCarouselProps> = ({ banners }) => {
     <>
       <Col md={6} className={`${styles.bannerCarousel} d-none d-md-flex`}>
         <Slider {...bannerSliderSettings}>
-          {banners.map((banner, index) => (
-            <motion.div
-              key={banner.id}
-              className={styles.bannerSlide}
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: index * 0.2 }}
-            >
-              <img
-                src={banner.image_url}
-                alt={banner.title}
-                className={styles.bannerImage}
-                onError={(e) => {
-                  e.currentTarget.src = "https://placehold.co/1200x400";
-                }}
-              />
+          {banners.map((banner) => (
+            <div key={banner.id} className={styles.bannerSlide}>
+              <motion.div
+                className={styles.bannerImageWrapper}
+                initial={{ x: 100, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ duration: 0.8 }}
+              >
+                <div className={styles.bannerImageContainer}>
+                  <img
+                    src={banner.image_url}
+                    alt={banner.title}
+                    className={styles.bannerImage}
+                    onError={(e) => {
+                      e.currentTarget.src = "https://placehold.co/1200x400";
+                    }}
+                  />
+                  <div className={styles.bannerImageOverlay} />
+                </div>
+              </motion.div>
               <div className={styles.bannerContent}>
                 <motion.h2
                   className={styles.bannerTitle}
-                  initial={{ y: 30, opacity: 0 }}
+                  initial={{ y: 40, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
-                  transition={{ duration: 0.5, delay: 0.3, ease: "easeOut" }}
+                  transition={{ duration: 0.6, delay: 0.3 }}
+                  key={`title-${banner.id}`}
                 >
                   {banner.title}
                 </motion.h2>
                 <motion.p
                   className={styles.bannerDescription}
-                  initial={{ y: 30, opacity: 0 }}
+                  initial={{ y: 40, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
-                  transition={{ duration: 0.5, delay: 0.6, ease: "easeOut" }}
+                  transition={{ duration: 0.6, delay: 0.6 }}
+                  key={`desc-${banner.id}`}
                 >
                   {banner.description}
                 </motion.p>
                 <motion.div
-                  initial={{ y: 30, opacity: 0 }}
+                  initial={{ y: 40, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
-                  transition={{ duration: 0.5, delay: 0.9, ease: "easeOut" }}
+                  transition={{ duration: 0.6, delay: 0.9 }}
+                  key={`cta-${banner.id}`}
                 >
                   <Button href={banner.cta_url} className={styles.bannerCta}>
                     {banner.cta_text}
                   </Button>
                 </motion.div>
               </div>
-            </motion.div>
+            </div>
           ))}
         </Slider>
         <MidBanner />
@@ -96,35 +103,48 @@ const BannerCarousel: React.FC<BannerCarouselProps> = ({ banners }) => {
         <Slider {...bannerSliderSettings}>
           {banners.map((banner) => (
             <div key={banner.id} className={styles.bannerSlide}>
-              <img
-                src={banner.image_url}
-                alt={banner.title}
-                className={styles.bannerImage}
-                onError={(e) => {
-                  e.currentTarget.src = "https://placehold.co/1200x400";
-                }}
-              />
+              <motion.div
+                className={styles.bannerImageWrapper}
+                initial={{ x: 100, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ duration: 0.8 }}
+              >
+                <div className={styles.bannerImageContainer}>
+                  <img
+                    src={banner.image_url}
+                    alt={banner.title}
+                    className={styles.bannerImage}
+                    onError={(e) => {
+                      e.currentTarget.src = "https://placehold.co/1200x400";
+                    }}
+                  />
+                  <div className={styles.bannerImageOverlay} />
+                </div>
+              </motion.div>
               <div className={styles.bannerContent}>
                 <motion.h2
                   className={styles.bannerTitle}
-                  initial={{ y: 30, opacity: 0 }}
+                  initial={{ y: 40, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
-                  transition={{ duration: 0.5, delay: 0.3, ease: "easeOut" }}
+                  transition={{ duration: 0.6, delay: 0.3 }}
+                  key={`title-mobile-${banner.id}`}
                 >
                   {banner.title}
                 </motion.h2>
                 <motion.p
                   className={styles.bannerDescription}
-                  initial={{ y: 30, opacity: 0 }}
+                  initial={{ y: 40, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
-                  transition={{ duration: 0.5, delay: 0.6, ease: "easeOut" }}
+                  transition={{ duration: 0.6, delay: 0.6 }}
+                  key={`desc-mobile-${banner.id}`}
                 >
                   {banner.description}
                 </motion.p>
                 <motion.div
-                  initial={{ y: 30, opacity: 0 }}
+                  initial={{ y: 40, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
-                  transition={{ duration: 0.5, delay: 0.9, ease: "easeOut" }}
+                  transition={{ duration: 0.6, delay: 0.9 }}
+                  key={`cta-mobile-${banner.id}`}
                 >
                   <Button href={banner.cta_url} className={styles.bannerCta}>
                     {banner.cta_text}
