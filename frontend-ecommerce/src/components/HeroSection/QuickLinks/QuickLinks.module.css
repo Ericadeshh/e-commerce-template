@@ -5,7 +5,6 @@
   background-color: #fff;
   backdrop-filter: blur(12px);
   border-radius: 0.5rem;
-  box-shadow: 0 4px 12px rgba(99, 29, 29, 0.08);
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -22,6 +21,7 @@
     height: auto;
     min-height: unset;
     padding: 2rem 0.5rem;
+    margin-top: 1rem;
     margin-bottom: 0;
     padding-bottom: 0;
   }
@@ -59,7 +59,7 @@
 .quickLinksTitle {
   font-size: clamp(0.9rem, 1.2vw, 1rem);
   font-weight: 500;
-  color: #9400d3;
+  color: #800080; /* Purple */
   margin-bottom: 0.5rem;
   text-align: left;
   display: flex;

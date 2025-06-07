@@ -1,10 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
 
 .section {
-  font-family: "Poppins", sans-serif;
   padding: 0;
-  background-color: rgba(0, 0, 0, 0.01);
-  backdrop-filter: blur(12px);
   text-align: center;
   width: 100vw;
   max-width: 100%;
@@ -25,7 +22,7 @@
 .sectionTitle {
   font-size: clamp(1.4rem, 2.5vw, 1.5rem);
   font-weight: 500;
-  color: #9400d3;
+  color: #800080; /* Purple */
   margin: 0;
   text-align: left;
   position: relative;

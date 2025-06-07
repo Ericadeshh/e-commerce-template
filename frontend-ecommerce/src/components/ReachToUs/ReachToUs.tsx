@@ -32,10 +32,10 @@ const ReachUs = () => {
         <div className={styles.contactInfo}>
           <h3 className={styles.flexHeader}> Contact Us Via</h3>
           <p>
-            <FaPhoneAlt /> <span>+254 712 345678</span>
+            <FaPhoneAlt /> <span>+254 741091661</span>
           </p>
           <p>
-            <FaEnvelope /> <span>support@milliwin.co.ke</span>
+            <FaEnvelope /> <span>itjedi37@gmail.com</span>
           </p>
           <p>
             <FaInstagram /> <span>@milliwin_boutique</span>

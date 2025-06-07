@@ -1,12 +1,11 @@
 .home {
-  background-color: #f6f6f6;
+  background: linear-gradient(135deg, #f5f0ff, #ffffff);
   padding: 0rem 0.5rem;
 }
 
 .componentFlex {
   display: flex;
   justify-content: space-between;
-  gap: 1rem;
 }
 
 @media (max-width: 768px) {

@@ -1,10 +1,8 @@
 import { Col, Card, Button } from "react-bootstrap";
 import { motion } from "framer-motion";
 import { FaTag, FaShoppingCart, FaStar, FaClock } from "react-icons/fa";
-
 import { FaFire } from "react-icons/fa6";
 import { IoSparklesSharp } from "react-icons/io5";
-
 import { FaShippingFast } from "react-icons/fa";
 
 import styles from "./PromoPanel.module.css";

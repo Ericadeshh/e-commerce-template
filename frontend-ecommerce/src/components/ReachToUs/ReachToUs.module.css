@@ -4,7 +4,7 @@
   width: 100%;
   max-width: 670px;
   padding: 2rem;
-  background-color: #f3e8ff8f;
+  background: linear-gradient(135deg, #f6f2fd, #ffffff);
   color: #333;
   border-radius: 1rem;
   font-family: "Segoe UI", sans-serif;
@@ -25,7 +25,7 @@
 }
 
 .description {
-  font-size: 1rem;
+  font-size: 0.95rem;
   color: #766;
   margin-bottom: 1.5rem;
 }
@@ -83,7 +83,7 @@
 }
 
 .sticker {
-  font-family: "Cursive", fantasy;
+  font-family: "Dancing Script", cursive;
   font-size: 1.8rem;
   background: linear-gradient(45deg, #d63384, #8a2be2);
   -webkit-background-clip: text;
@@ -100,7 +100,7 @@
   }
 
   .title {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
   }
 
   .subtitle {

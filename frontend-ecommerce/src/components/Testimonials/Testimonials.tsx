@@ -6,6 +6,10 @@ import { FaStar } from "react-icons/fa";
 import { FaPeopleGroup } from "react-icons/fa6";
 import { GrLinkNext } from "react-icons/gr";
 
+import Winnie from "../../assets/Winnie.jpg";
+import Bethwel from "../../assets/Bethwel.jpg";
+import Daisy from "../../assets/Daisy.jpg";
+
 // Define the type for team member details
 interface TeamMember {
   name: string;
@@ -20,21 +24,21 @@ const teamMembers: TeamMember[] = [
     quote:
       "Shopping at Milliwin Boutique has been a game-changer! Their curated collection of high-end fashion is unmatched, and the personalized service made me feel like royalty. I found the perfect outfit for my event, and the quality is exceptional.",
     rating: 5,
-    image: "/Bethwel.jpg",
+    image: Bethwel,
   },
   {
     name: "Winnie N.K",
     quote:
       "Milliwin Boutique offers an exquisite shopping experience. The attention to detail in their designs and the seamless online ordering process blew me away. My order arrived quickly, beautifully packaged, and exceeded my expectations!",
     rating: 4.5,
-    image: "/Winnie.jpg",
+    image: Winnie,
   },
   {
     name: "Daisy Chebet",
     quote:
       "Eric Adesh's data-driven methodologies have revolutionized our financial strategies. By integrating their insights, we've achieved a 20% reduction in unnecessary expenditures and enhanced our budget forecasting with unprecedented accuracy. Their dedication to understanding our unique needs while applying data science has been transformative.",
     rating: 4.5,
-    image: "/Pam.png",
+    image: Daisy,
   },
 ];
 
