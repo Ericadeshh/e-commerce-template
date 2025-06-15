@@ -8,7 +8,7 @@ import { GrLinkNext } from "react-icons/gr";
 
 import Winnie from "../../assets/Winnie.jpg";
 import Bethwel from "../../assets/Bethwel.jpg";
-import Daisy from "../../assets/Daisy.jpg";
+import Daisy from "../../assets/Daisy.png";
 
 // Define the type for team member details
 interface TeamMember {

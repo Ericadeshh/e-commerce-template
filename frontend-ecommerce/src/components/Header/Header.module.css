@@ -149,8 +149,8 @@
   flex: 1;
   display: flex;
   align-items: center;
-  border: 1px solid #c9cbce;
-  box-shadow: 0 0 clamp(5px, 0.8vw, 10px) rgba(148, 0, 211, 0.2);
+  border: 1px solid #c9cbce99;
+  box-shadow: 0 0 clamp(5px, 0.8vw, 10px) rgba(148, 0, 211, 0.1);
   border-radius: 20px;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }

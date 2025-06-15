@@ -47,14 +47,14 @@
   height: 100%;
   background: linear-gradient(
     to bottom,
-    rgba(0, 0, 0, 0.5) 0%,
-    rgba(0, 0, 0, 0.4) 100%
+    rgba(0, 0, 0, 0.4) 0%,
+    rgba(0, 0, 0, 0.2) 100%
   );
 }
 
 @media (max-width: 768px) {
   .bannerImage {
-    height: 700px;
+    height: 450px;
     border-radius: 0;
   }
 }
@@ -65,7 +65,7 @@
   left: 1rem;
   transform: translateY(-50%);
   color: #ffffff;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
   padding: 1rem;
   border-radius: 0.5rem;
   width: 90%;
@@ -166,16 +166,12 @@
 }
 
 @media (max-width: 768px) {
-  .bannerImage {
-    max-height: 350px;
-  }
-
   .bannerTitle {
-    font-size: clamp(0.9rem, 2.5vw, 1rem);
+    font-size: 1.3rem;
   }
 
   .bannerDescription {
-    font-size: clamp(0.65rem, 2vw, 0.75rem);
+    font-size: 0.85rem;
   }
 
   .bannerCta {

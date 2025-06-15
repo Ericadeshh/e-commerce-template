@@ -1,5 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
-
 .testimonials {
   width: 50%;
   padding: 1rem;
@@ -30,7 +28,7 @@
 
 .description {
   padding: 0.45rem;
-  color: #777;
+  color: #888;
   font-size: 0.95rem;
 }
 
@@ -112,7 +110,7 @@
 .testimonialText {
   text-align: left;
   font-size: 0.85rem;
-  color: #777;
+  color: #888;
   margin: 0;
   transition: opacity 0.3s ease;
 }
