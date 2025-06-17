@@ -63,7 +63,7 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({
     const fetchRelatedProducts = async () => {
       setLoading(true);
       try {
-        const limit = isMobile ? 2 : 4; // 4 for PC, 2 for mobile
+        const limit = isMobile ? 2 : 4;
         const effectiveCategory =
           category.toLowerCase() === "new-arrivals"
             ? ""
@@ -163,16 +163,25 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({
             transition={{ duration: 0.5 }}
           >
             {relatedProducts.map((product) => (
-              <CategoryCard
-                key={product.id}
-                product={{
-                  ...product,
-                  image:
-                    typeof product.image === "string"
-                      ? product.image
-                      : product.image,
-                }}
-              />
+              <div key={product.id} className={styles.cardWrapper}>
+                {/* Ribbon appears on hover for mobile */}
+                {(product.is_new || product.discount_percentage) && (
+                  <div className={styles.ribbon}>
+                    {product.is_new
+                      ? "New"
+                      : `${product.discount_percentage}% Off`}
+                  </div>
+                )}
+                <CategoryCard
+                  product={{
+                    ...product,
+                    image:
+                      typeof product.image === "string"
+                        ? product.image
+                        : product.image,
+                  }}
+                />
+              </div>
             ))}
           </motion.div>
         )}

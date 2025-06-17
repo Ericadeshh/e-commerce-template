@@ -6,7 +6,7 @@
 
 .sectionTitle {
   font-size: 24px;
-  color: #9400d3; /* Purple */
+  color: #9400d3;
   text-align: center;
   margin-bottom: 20px;
   display: flex;
@@ -16,61 +16,82 @@
 }
 
 .starIcon {
-  color: #ff1493; /* Fuchsia Pink */
+  color: #ff1493;
 }
 
 .loading {
   text-align: center;
   font-size: 16px;
-  color: #9400d3; /* Purple */
+  color: #9400d3;
 }
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 4 cards per row for PC */
+  grid-template-columns: repeat(4, 1fr);
   gap: 20px;
   padding: 0px;
-  justify-items: center; /* Center items horizontally */
+  justify-items: center;
 }
 
 .section {
-  background-color: #e6e6fa; /* Lavender */
+  background-color: #e6e6fa;
   padding: 30px 10px;
   border-radius: 8px;
 }
 
-/* Tablets/iPads (e.g., 1024px and below) */
+.cardWrapper {
+  position: relative;
+  width: 100%;
+}
+
+.ribbon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #ff1493;
+  color: white;
+  padding: 5px 10px;
+  font-size: 12px;
+  border-radius: 4px;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+}
+
 @media (max-width: 1024px) {
   .grid {
-    grid-template-columns: repeat(3, 1fr); /* 3 cards per row */
+    grid-template-columns: repeat(3, 1fr);
     justify-items: center;
   }
 }
 
-/* Mobile and smaller tablets (e.g., 768px and below) */
 @media (max-width: 768px) {
   .sectionTitle {
-    font-size: 20px; /* Smaller title on mobile */
+    font-size: 20px;
   }
 
   .loading {
-    font-size: 14px; /* Smaller loading text */
+    font-size: 14px;
   }
 
   .grid {
-    width: 70%;
-    margin: 0 auto;
-    grid-template-columns: repeat(2, 1fr); /* 2 cards per row */
-    max-height: 350px; /* Limit to roughly 1 row height */
+    grid-template-columns: repeat(2, 1fr);
+    max-height: 350px;
     overflow: hidden;
     justify-items: center;
   }
+
+  .cardWrapper:hover .ribbon {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
 }
 
-/* Very small mobile screens (e.g., 380px and below) */
 @media (max-width: 380px) {
   .sectionTitle {
-    font-size: 18px; /* Even smaller title on very small mobile */
+    font-size: 18px;
   }
 
   .loading {
@@ -78,10 +99,8 @@
   }
 
   .grid {
-    width: 70%;
-    margin: 0 auto;
-    grid-template-columns: 1fr; /* 1 card per row */
-    max-height: 720px; /* Roughly 2 rows max */
+    grid-template-columns: 1fr;
+    max-height: 720px;
     overflow: hidden;
     justify-items: center;
   }
