@@ -1,7 +1,8 @@
 import { Card } from "react-bootstrap";
 import { motion } from "framer-motion";
-import { FaShoppingCart } from "react-icons/fa";
+import { FaShoppingCart, FaQuestionCircle, FaHeart } from "react-icons/fa";
 import styles from "./CategoryCard.module.css";
+import { useState } from "react";
 
 interface Product {
   id: number;
@@ -18,17 +19,32 @@ interface Product {
 
 interface CategoryCardProps {
   product: Product;
-  id?: string; // Added optional id prop
+  id?: string;
 }
 
 const CategoryCard: React.FC<CategoryCardProps> = ({ product, id }) => {
+  const [showRibbon, setShowRibbon] = useState(false);
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (product.stock > 0) alert("Add to cart functionality TBD");
+  };
+
+  const handleAddToWishlist = (e: React.MouseEvent) => {
+    e.preventDefault();
+    alert("Add to wishlist functionality TBD");
+  };
+
   return (
     <motion.div
-      id={id} // Apply id to root element for hash navigation
+      id={id}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
       className={styles.cardWrapper}
+      onMouseEnter={() => setShowRibbon(true)}
+      onMouseLeave={() => setShowRibbon(false)}
+      onClick={() => setShowRibbon(!showRibbon)}
     >
       <Card className={styles.productCard}>
         <div className={styles.imageWrapper}>
@@ -47,6 +63,30 @@ const CategoryCard: React.FC<CategoryCardProps> = ({ product, id }) => {
             </div>
           )}
           {product.is_new && <div className={styles.newBadge}>New</div>}
+          {showRibbon && (
+            <div className={styles.ribbon}>
+              <a
+                href={`/products/${product.category}/${product.id}`}
+                className={styles.ribbonIcon}
+              >
+                <FaQuestionCircle />
+              </a>
+              <a
+                href="/cart"
+                className={styles.ribbonIcon}
+                onClick={handleAddToCart}
+              >
+                <FaShoppingCart />
+              </a>
+              <a
+                href="/wishlist"
+                className={styles.ribbonIcon}
+                onClick={handleAddToWishlist}
+              >
+                <FaHeart />
+              </a>
+            </div>
+          )}
         </div>
         <Card.Body className={styles.cardBody}>
           <div className={styles.categoryTag}>{product.category}</div>
@@ -69,16 +109,16 @@ const CategoryCard: React.FC<CategoryCardProps> = ({ product, id }) => {
               : "In Stock"}
           </div>
           <div className={styles.linkGroup}>
-            <a href={`/products/${product.id}`} className={styles.detailLink}>
+            <a
+              href={`/products/${product.category}/${product.id}`}
+              className={styles.detailLink}
+            >
               Details
             </a>
             <a
-              href="#"
+              href="/cart"
               className={styles.shopLink}
-              onClick={(e) => {
-                e.preventDefault();
-                if (product.stock > 0) alert("Add to cart functionality TBD");
-              }}
+              onClick={handleAddToCart}
             >
               Shop <FaShoppingCart className={styles.cartIcon} />
             </a>
