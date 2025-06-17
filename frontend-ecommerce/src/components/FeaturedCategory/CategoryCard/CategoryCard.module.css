@@ -224,12 +224,13 @@
   }
 
   .productCard {
+    height: 250px;
     box-shadow: 0 clamp(0.5px, 0.3vw, 1px) clamp(2px, 0.8vw, 4px)
       rgba(0, 0, 0, 0.1);
   }
 
   .productImage {
-    height: clamp(120px, 35vw, 160px);
+    height: 100%;
   }
 
   .cardBody {

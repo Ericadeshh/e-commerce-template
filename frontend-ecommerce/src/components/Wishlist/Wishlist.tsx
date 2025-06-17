@@ -42,39 +42,42 @@ const offcanvasVariants = {
   },
 };
 
+const defaultWishlistItems: WishlistItemType[] = [
+  {
+    product_id: 1,
+    name: "Men's Jacket",
+    category: "Jackets",
+    price: "4500.00",
+    original_price: "6000.00",
+    size: "M",
+    color: "Blue",
+    image: MensJacket,
+    stock_status: "in_stock",
+  },
+  {
+    product_id: 2,
+    name: "Women's Summer Dress",
+    category: "Dresses",
+    price: "3200.00",
+    size: "L",
+    color: "Red",
+    image: WomensSummerDress,
+    stock_status: "in_stock",
+  },
+  {
+    product_id: 3,
+    name: "Kids T-Shirt",
+    category: "T-Shirts",
+    price: "800.00",
+    color: "Green",
+    image: kidsTshirt,
+    stock_status: "out_of_stock",
+  },
+];
+
 const Wishlist: React.FC<WishlistProps> = ({ show, onHide }) => {
-  const [wishlistItems, setWishlistItems] = useState<WishlistItemType[]>([
-    {
-      product_id: 1,
-      name: "Men's Jacket",
-      category: "Jackets",
-      price: "4500.00",
-      original_price: "6000.00",
-      size: "M",
-      color: "Blue",
-      image: MensJacket,
-      stock_status: "in_stock",
-    },
-    {
-      product_id: 2,
-      name: "Women's Summer Dress",
-      category: "Dresses",
-      price: "3200.00",
-      size: "L",
-      color: "Red",
-      image: WomensSummerDress,
-      stock_status: "in_stock",
-    },
-    {
-      product_id: 3,
-      name: "Kids T-Shirt",
-      category: "T-Shirts",
-      price: "800.00",
-      color: "Green",
-      image: kidsTshirt,
-      stock_status: "out_of_stock",
-    },
-  ]);
+  const [wishlistItems, setWishlistItems] = useState<WishlistItemType[]>([]);
+  const [userAddedItems, setUserAddedItems] = useState<WishlistItemType[]>([]);
   const [success, setSuccess] = useState<string | null>(null);
   const userId = 1;
 
@@ -101,13 +104,53 @@ const Wishlist: React.FC<WishlistProps> = ({ show, onHide }) => {
         setTimeout(() => setSuccess(null), 3000);
       } catch (err) {
         console.error("Fetch error:", err);
-        // Fallback to static content
-        setSuccess("Using static wishlist data (server offline)");
+        if (userAddedItems.length > 0) {
+          setWishlistItems(userAddedItems);
+          setSuccess("Showing user-added items (server offline)");
+        } else {
+          setWishlistItems(defaultWishlistItems);
+          setSuccess("Using default wishlist data (server offline)");
+        }
         setTimeout(() => setSuccess(null), 3000);
       }
     };
     fetchWishlist();
-  }, []);
+  }, [userAddedItems]);
+
+  const addToWishlist = async (item: WishlistItemType) => {
+    if (
+      userAddedItems.find(
+        (wishlistItem) => wishlistItem.product_id === item.product_id
+      )
+    ) {
+      setSuccess("Item already in wishlist!");
+      setTimeout(() => setSuccess(null), 3000);
+      return;
+    }
+
+    try {
+      const res = await fetch("http://localhost:5000/api/products/wishlist", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ productId: item.product_id, userId }),
+      });
+      if (!res.ok) {
+        throw new Error("Failed to add to wishlist");
+      }
+      const updatedItems = [...userAddedItems, item];
+      setUserAddedItems(updatedItems);
+      setWishlistItems(updatedItems);
+      setSuccess("Item added to wishlist!");
+      setTimeout(() => setSuccess(null), 3000);
+    } catch (err) {
+      console.error("Add to wishlist error:", err);
+      const updatedItems = [...userAddedItems, item];
+      setUserAddedItems(updatedItems);
+      setWishlistItems(updatedItems);
+      setSuccess("Item added to wishlist (offline mode)");
+      setTimeout(() => setSuccess(null), 3000);
+    }
+  };
 
   const removeFromWishlist = (productId: number) => {
     try {
@@ -120,26 +163,45 @@ const Wishlist: React.FC<WishlistProps> = ({ show, onHide }) => {
           if (!res.ok) {
             throw new Error("Failed to remove from wishlist");
           }
-          setWishlistItems(
-            wishlistItems.filter((item) => item.product_id !== productId)
+          const updatedItems = wishlistItems.filter(
+            (item) => item.product_id !== productId
+          );
+          setWishlistItems(updatedItems);
+          setUserAddedItems(
+            userAddedItems.filter((item) => item.product_id !== productId)
           );
           setSuccess("Item removed from wishlist!");
           setTimeout(() => setSuccess(null), 3000);
         })
         .catch((err) => {
-          console.error("Remove from wishlist error:", err);
-          // Fallback to static remove
-          setWishlistItems(
-            wishlistItems.filter((item) => item.product_id !== productId)
+          console.error("Error removing from wishlist:", err);
+          const updatedItems = wishlistItems.filter(
+            (item) => item.product_id !== productId
           );
-          setSuccess("Item removed (offline mode)");
+          setWishlistItems(updatedItems);
+          setUserAddedItems(
+            userAddedItems.filter((item) => item.product_id !== productId)
+          );
+          setSuccess(
+            updatedItems.length === 0 && userAddedItems.length === 0
+              ? "Using default wishlist data (server offline)"
+              : "Item removed (offline mode)"
+          );
           setTimeout(() => setSuccess(null), 3000);
         });
     } catch {
-      setWishlistItems(
-        wishlistItems.filter((item) => item.product_id !== productId)
+      const updatedItems = wishlistItems.filter(
+        (item) => item.product_id !== productId
       );
-      setSuccess("Item removed (offline mode)");
+      setWishlistItems(updatedItems);
+      setUserAddedItems(
+        userAddedItems.filter((item) => item.product_id !== productId)
+      );
+      setSuccess(
+        updatedItems.length === 0 && userAddedItems.length === 0
+          ? "Using default wishlist data (server offline)"
+          : "Item removed (offline mode)"
+      );
       setTimeout(() => setSuccess(null), 3000);
     }
   };
@@ -160,7 +222,6 @@ const Wishlist: React.FC<WishlistProps> = ({ show, onHide }) => {
         })
         .catch((err) => {
           console.error("Add to cart error:", err);
-          // Fallback to static action
           setSuccess("Item added to cart (offline mode)");
           setTimeout(() => setSuccess(null), 3000);
         });
@@ -173,7 +234,7 @@ const Wishlist: React.FC<WishlistProps> = ({ show, onHide }) => {
   const wishlistContent = (
     <div className={styles.wishlistContainer}>
       <motion.h2
-        className={styles.wishlistTitle}
+        className={styles.headerTitle}
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -181,7 +242,7 @@ const Wishlist: React.FC<WishlistProps> = ({ show, onHide }) => {
         <FaHeart /> Your Wishlist
       </motion.h2>
       <motion.p
-        className={styles.wishlistSubtitle}
+        className={styles.headerSubtitle}
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
@@ -210,9 +271,14 @@ const Wishlist: React.FC<WishlistProps> = ({ show, onHide }) => {
         >
           <FaBoxOpen className={styles.emptyIcon} />
           <p>Your wishlist is empty</p>
-          <motion.a href="/products" className={styles.shopNowButton}>
-            <FaShoppingCart className={styles.actionIcon} /> Shop Now
-          </motion.a>
+          <motion.button
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+            onClick={() => addToWishlist(defaultWishlistItems[0])}
+            className={styles.shopNowButton}
+          >
+            <FaHeart className={styles.actionIcon} /> Add Sample Item
+          </motion.button>
         </motion.div>
       ) : (
         <motion.div

@@ -39,7 +39,7 @@
 
 .wishlistSubtitle {
   font-style: italic;
-  font-weight: 500 !important;
+  font-weight: 500;
   font-size: clamp(0.8rem, 1.5vw, 0.9rem);
   color: #999;
   text-align: center;
@@ -393,7 +393,7 @@
 @media (max-width: 767px) {
   .wishlistContainer {
     margin-top: 4rem;
-    padding: 2rem 0rem;
+    padding: 1.5rem 0.5rem;
   }
 
   .wishlistTitle {
@@ -407,20 +407,20 @@
   .wishlistItem {
     flex-direction: column;
     align-items: flex-start;
-    padding: 1.5rem 1rem;
+    padding: 1rem;
   }
 
   .leftSection {
     flex-direction: row;
     align-items: flex-start;
     width: 100%;
-    gap: clamp(0.4rem, 1vw, 0.5rem);
+    gap: clamp(0.6rem, 1.5vw, 0.8rem);
   }
 
   .itemImageContainer {
     flex: 0 0 auto;
-    width: clamp(50px, 15vw, 60px);
-    height: clamp(50px, 15vw, 60px);
+    width: clamp(60px, 15vw, 70px);
+    height: clamp(60px, 15vw, 70px);
   }
 
   .itemDetails {
@@ -429,19 +429,19 @@
   }
 
   .itemName {
-    font-size: clamp(0.7rem, 1.5vw, 0.8rem);
+    font-size: clamp(0.8rem, 1.5vw, 0.9rem);
   }
 
   .itemOptions {
     flex-wrap: wrap;
-    gap: clamp(0.2rem, 0.5vw, 0.3rem);
-    font-size: clamp(0.5rem, 1.2vw, 0.6rem);
+    gap: clamp(0.3rem, 0.8vw, 0.4rem);
+    font-size: clamp(0.6rem, 1.2vw, 0.7rem);
   }
 
   .rightSection {
     width: 100%;
     align-items: flex-start;
-    margin-top: clamp(0.2rem, 0.5vw, 0.3rem);
+    margin-top: clamp(0.4rem, 1vw, 0.5rem);
   }
 
   .itemPricing {
@@ -452,15 +452,16 @@
   }
 
   .itemPrice {
-    font-size: clamp(0.7rem, 1.5vw, 0.8rem);
+    font-size: clamp(0.8rem, 1.5vw, 0.9rem);
   }
 
   .originalPrice {
-    font-size: clamp(0.5rem, 1.2vw, 0.6rem);
+    font-size: clamp(0.6rem, 1.2vw, 0.7rem);
   }
 
   .itemActions {
     justify-content: flex-start;
     width: 100%;
+    gap: clamp(0.4rem, 1vw, 0.5rem);
   }
 }

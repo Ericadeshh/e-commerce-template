@@ -44,42 +44,45 @@ const offcanvasVariants = {
   },
 };
 
+const defaultCartItems: CartItemType[] = [
+  {
+    product_id: 1,
+    name: "Men's Jacket",
+    category: "Jackets",
+    price: "4500.00",
+    original_price: "6000.00",
+    quantity: 1,
+    size: "M",
+    color: "Blue",
+    image: MensJacket,
+    stock_status: "in_stock",
+  },
+  {
+    product_id: 2,
+    name: "Women's Summer Dress",
+    category: "Dresses",
+    price: "3200.00",
+    quantity: 2,
+    size: "L",
+    color: "Red",
+    image: WomensSummerDress,
+    stock_status: "in_stock",
+  },
+  {
+    product_id: 3,
+    name: "Kids T-Shirt",
+    category: "T-Shirts",
+    price: "800.00",
+    quantity: 1,
+    color: "Green",
+    image: kidsTshirt,
+    stock_status: "out_of_stock",
+  },
+];
+
 const Cart: React.FC<CartProps> = ({ show, onHide }) => {
-  const [cartItems, setCartItems] = useState<CartItemType[]>([
-    {
-      product_id: 1,
-      name: "Men's Jacket",
-      category: "Jackets",
-      price: "4500.00",
-      original_price: "6000.00",
-      quantity: 1,
-      size: "M",
-      color: "Blue",
-      image: MensJacket,
-      stock_status: "in_stock",
-    },
-    {
-      product_id: 2,
-      name: "Women's Summer Dress",
-      category: "Dresses",
-      price: "3200.00",
-      quantity: 2,
-      size: "L",
-      color: "Red",
-      image: WomensSummerDress,
-      stock_status: "in_stock",
-    },
-    {
-      product_id: 3,
-      name: "Kids T-Shirt",
-      category: "T-Shirts",
-      price: "800.00",
-      quantity: 1,
-      color: "Green",
-      image: kidsTshirt,
-      stock_status: "out_of_stock",
-    },
-  ]);
+  const [cartItems, setCartItems] = useState<CartItemType[]>([]);
+  const [userAddedItems, setUserAddedItems] = useState<CartItemType[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [shippingOption, setShippingOption] = useState<
@@ -115,13 +118,55 @@ const Cart: React.FC<CartProps> = ({ show, onHide }) => {
         setTimeout(() => setSuccess(null), 3000);
       } catch (err) {
         console.error("Fetch error:", err);
-        // Fallback to static content
-        setSuccess("Using static cart data (server offline)");
+        if (userAddedItems.length > 0) {
+          setCartItems(userAddedItems);
+          setSuccess("Showing user-added items (server offline)");
+        } else {
+          setCartItems(defaultCartItems);
+          setSuccess("Using default cart data (server offline)");
+        }
         setTimeout(() => setSuccess(null), 3000);
       }
     };
     fetchCart();
-  }, []);
+  }, [userAddedItems]);
+
+  const addToCart = async (item: CartItemType) => {
+    if (
+      userAddedItems.find((cartItem) => cartItem.product_id === item.product_id)
+    ) {
+      setSuccess("Item already in cart!");
+      setTimeout(() => setSuccess(null), 3000);
+      return;
+    }
+
+    try {
+      const res = await fetch("http://localhost:5000/api/products/cart", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          productId: item.product_id,
+          userId,
+          quantity: 1,
+        }),
+      });
+      if (!res.ok) {
+        throw new Error("Failed to add to cart");
+      }
+      const updatedItems = [...userAddedItems, { ...item, quantity: 1 }];
+      setUserAddedItems(updatedItems);
+      setCartItems(updatedItems);
+      setSuccess("Item added to cart!");
+      setTimeout(() => setSuccess(null), 3000);
+    } catch (err) {
+      console.error("Add to cart error:", err);
+      const updatedItems = [...userAddedItems, { ...item, quantity: 1 }];
+      setUserAddedItems(updatedItems);
+      setCartItems(updatedItems);
+      setSuccess("Item added to cart (offline mode)");
+      setTimeout(() => setSuccess(null), 3000);
+    }
+  };
 
   const updateQuantity = (productId: number, newQuantity: number) => {
     if (newQuantity < 1) {
@@ -139,8 +184,14 @@ const Cart: React.FC<CartProps> = ({ show, onHide }) => {
           if (!res.ok) {
             throw new Error("Failed to update quantity");
           }
-          setCartItems(
-            cartItems.map((item) =>
+          const updatedItems = cartItems.map((item) =>
+            item.product_id === productId
+              ? { ...item, quantity: newQuantity }
+              : item
+          );
+          setCartItems(updatedItems);
+          setUserAddedItems(
+            userAddedItems.map((item) =>
               item.product_id === productId
                 ? { ...item, quantity: newQuantity }
                 : item
@@ -151,9 +202,14 @@ const Cart: React.FC<CartProps> = ({ show, onHide }) => {
         })
         .catch((err) => {
           console.error("Update quantity error:", err);
-          // Fallback to static update
-          setCartItems(
-            cartItems.map((item) =>
+          const updatedItems = cartItems.map((item) =>
+            item.product_id === productId
+              ? { ...item, quantity: newQuantity }
+              : item
+          );
+          setCartItems(updatedItems);
+          setUserAddedItems(
+            userAddedItems.map((item) =>
               item.product_id === productId
                 ? { ...item, quantity: newQuantity }
                 : item
@@ -163,8 +219,14 @@ const Cart: React.FC<CartProps> = ({ show, onHide }) => {
           setTimeout(() => setSuccess(null), 3000);
         });
     } catch {
-      setCartItems(
-        cartItems.map((item) =>
+      const updatedItems = cartItems.map((item) =>
+        item.product_id === productId
+          ? { ...item, quantity: newQuantity }
+          : item
+      );
+      setCartItems(updatedItems);
+      setUserAddedItems(
+        userAddedItems.map((item) =>
           item.product_id === productId
             ? { ...item, quantity: newQuantity }
             : item
@@ -186,24 +248,45 @@ const Cart: React.FC<CartProps> = ({ show, onHide }) => {
           if (!res.ok) {
             throw new Error("Failed to remove from cart");
           }
-          setCartItems(
-            cartItems.filter((item) => item.product_id !== productId)
+          const updatedItems = cartItems.filter(
+            (item) => item.product_id !== productId
+          );
+          setCartItems(updatedItems);
+          setUserAddedItems(
+            userAddedItems.filter((item) => item.product_id !== productId)
           );
           setSuccess("Item removed successfully!");
           setTimeout(() => setSuccess(null), 3000);
         })
         .catch((err) => {
           console.error("Remove from cart error:", err);
-          // Fallback to static remove
-          setCartItems(
-            cartItems.filter((item) => item.product_id !== productId)
+          const updatedItems = cartItems.filter(
+            (item) => item.product_id !== productId
           );
-          setSuccess("Item removed (offline mode)");
+          setCartItems(updatedItems);
+          setUserAddedItems(
+            userAddedItems.filter((item) => item.product_id !== productId)
+          );
+          setSuccess(
+            updatedItems.length === 0 && userAddedItems.length === 0
+              ? "Using default cart data (server offline)"
+              : "Item removed (offline mode)"
+          );
           setTimeout(() => setSuccess(null), 3000);
         });
     } catch {
-      setCartItems(cartItems.filter((item) => item.product_id !== productId));
-      setSuccess("Item removed (offline mode)");
+      const updatedItems = cartItems.filter(
+        (item) => item.product_id !== productId
+      );
+      setCartItems(updatedItems);
+      setUserAddedItems(
+        userAddedItems.filter((item) => item.product_id !== productId)
+      );
+      setSuccess(
+        updatedItems.length === 0 && userAddedItems.length === 0
+          ? "Using default cart data (server offline)"
+          : "Item removed (offline mode)"
+      );
       setTimeout(() => setSuccess(null), 3000);
     }
   };
@@ -272,8 +355,7 @@ const Cart: React.FC<CartProps> = ({ show, onHide }) => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
       >
-        {cartItems.length} dynamic item{cartItems.length !== 1 ? "s" : ""} in
-        your cart
+        {cartItems.length} item{cartItems.length !== 1 ? "s" : ""} in your cart
       </motion.p>
       {error && (
         <motion.div
@@ -295,7 +377,9 @@ const Cart: React.FC<CartProps> = ({ show, onHide }) => {
           className={styles.alertContainer}
         >
           <Alert variant="success" className={styles.successAlert}>
-            <FaCheck className={styles.alertIcon} /> {success}
+            <FaCheck className={styles.alertIcon} />
+
+            {success}
           </Alert>
         </motion.div>
       )}
@@ -308,9 +392,14 @@ const Cart: React.FC<CartProps> = ({ show, onHide }) => {
         >
           <FaBoxOpen className={styles.emptyIcon} />
           <p>Your cart is empty</p>
-          <motion.a href="/products" className={styles.shopNowButton}>
-            <FaShoppingBag className={styles.actionIcon} /> Shop Now
-          </motion.a>
+          <motion.button
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+            onClick={() => addToCart(defaultCartItems[0])}
+            className={styles.shopNowButton}
+          >
+            <FaShoppingBag className={styles.actionIcon} /> Add Sample Item
+          </motion.button>
         </motion.div>
       ) : (
         <div className={styles.cartLayout}>
@@ -368,7 +457,7 @@ const Cart: React.FC<CartProps> = ({ show, onHide }) => {
               subtotal={subtotal}
               shippingCost={shippingCost}
               giftWrappingCost={giftWrappingCost}
-              vat={vat}
+              vat={subtotal * 0.16}
               total={total}
               selectedPayment={selectedPayment}
               handleCheckout={handleCheckout}
