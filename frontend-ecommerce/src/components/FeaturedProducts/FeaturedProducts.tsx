@@ -214,6 +214,14 @@ export default function FeaturedProducts() {
     alert("Add to wishlist functionality TBD");
   };
 
+  const handleTouchStart = (productId: number) => {
+    setShowRibbon(productId);
+  };
+
+  const handleTouchEnd = () => {
+    setTimeout(() => setShowRibbon(null), 2000); // Hide ribbon after 2 seconds
+  };
+
   return (
     <motion.section
       className={styles.section}
@@ -287,6 +295,8 @@ export default function FeaturedProducts() {
             onClick={() =>
               setShowRibbon(showRibbon === product.id ? null : product.id)
             }
+            onTouchStart={() => handleTouchStart(product.id)}
+            onTouchEnd={handleTouchEnd}
           >
             <Card className={styles.productCard}>
               <div className={styles.imageWrapper}>

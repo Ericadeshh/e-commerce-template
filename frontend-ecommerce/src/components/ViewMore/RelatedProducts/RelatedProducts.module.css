@@ -58,6 +58,8 @@
   }
 
   .grid {
+    width: 70%;
+    margin: 0 auto;
     grid-template-columns: repeat(2, 1fr); /* 2 cards per row */
     max-height: 350px; /* Limit to roughly 1 row height */
     overflow: hidden;
@@ -76,6 +78,8 @@
   }
 
   .grid {
+    width: 70%;
+    margin: 0 auto;
     grid-template-columns: 1fr; /* 1 card per row */
     max-height: 720px; /* Roughly 2 rows max */
     overflow: hidden;

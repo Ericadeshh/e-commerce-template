@@ -14,5 +14,7 @@
 @media (max-width: 480px) {
   .grid {
     grid-template-columns: 1fr;
+    width: 70%;
+    margin: 0 auto;
   }
 }

@@ -67,6 +67,15 @@
   justify-content: space-around;
   align-items: center;
   padding: 0 clamp(0.2rem, 0.5vw, 0.3rem);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.cardWrapper:hover .ribbon,
+.cardWrapper.touched .ribbon {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .ribbonIcon {
@@ -94,7 +103,7 @@
 }
 
 .productName {
-  font-size: clamp(0.9rem, 1.8vw, 1.1rem);
+  font-size: clamp(0.9rem, 1.8vw, 0.1rem);
   font-weight: 500;
   color: #9400d3;
   text-transform: capitalize;
@@ -274,6 +283,11 @@
 
   .ribbonIcon {
     font-size: clamp(0.8rem, 2.2vw, 1rem);
+  }
+
+  .ribbon {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 

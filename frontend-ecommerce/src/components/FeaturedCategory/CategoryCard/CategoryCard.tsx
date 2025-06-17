@@ -35,6 +35,14 @@ const CategoryCard: React.FC<CategoryCardProps> = ({ product, id }) => {
     alert("Add to wishlist functionality TBD");
   };
 
+  const handleTouchStart = () => {
+    setShowRibbon(true);
+  };
+
+  const handleTouchEnd = () => {
+    setTimeout(() => setShowRibbon(false), 2000); // Hide ribbon after 2 seconds
+  };
+
   return (
     <motion.div
       id={id}
@@ -45,6 +53,8 @@ const CategoryCard: React.FC<CategoryCardProps> = ({ product, id }) => {
       onMouseEnter={() => setShowRibbon(true)}
       onMouseLeave={() => setShowRibbon(false)}
       onClick={() => setShowRibbon(!showRibbon)}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
     >
       <Card className={styles.productCard}>
         <div className={styles.imageWrapper}>
