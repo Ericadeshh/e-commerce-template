@@ -13,6 +13,7 @@ import {
   FaChevronRight,
   FaArrowCircleRight,
   FaShoppingCart,
+  FaQuestionCircle,
 } from "react-icons/fa";
 import MenSuitPic from "../../assets/Men's blue suitjpg.jpg";
 import WomenDressPic from "../../assets/lady red suit.jpg";
@@ -127,6 +128,7 @@ export default function FeaturedProducts() {
   const [featuredProducts, setFeaturedProducts] =
     useState<Product[]>(defaultProducts);
   const [error, setError] = useState<string | null>(null);
+  const [showRibbon, setShowRibbon] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -202,6 +204,16 @@ export default function FeaturedProducts() {
     console.log(`Analytics: ${action} clicked for product ID ${productId}`);
   };
 
+  const handleAddToCart = (productId: number) => {
+    handleButtonClick("Add to Cart", productId);
+    alert("Add to cart functionality TBD");
+  };
+
+  const handleAddToWishlist = (productId: number) => {
+    handleButtonClick("Add to Wishlist", productId);
+    alert("Add to wishlist functionality TBD");
+  };
+
   return (
     <motion.section
       className={styles.section}
@@ -270,6 +282,11 @@ export default function FeaturedProducts() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.3 }}
+            onMouseEnter={() => setShowRibbon(product.id)}
+            onMouseLeave={() => setShowRibbon(null)}
+            onClick={() =>
+              setShowRibbon(showRibbon === product.id ? null : product.id)
+            }
           >
             <Card className={styles.productCard}>
               <div className={styles.imageWrapper}>
@@ -289,6 +306,31 @@ export default function FeaturedProducts() {
                   </div>
                 )}
                 {product.is_new && <div className={styles.newBadge}>New</div>}
+                {showRibbon === product.id && (
+                  <div className={styles.ribbon}>
+                    <a
+                      href={`/products/${product.category}/${product.id}`}
+                      className={styles.ribbonIcon}
+                      onClick={() => handleButtonClick("Details", product.id)}
+                    >
+                      <FaQuestionCircle />
+                    </a>
+                    <a
+                      href="/cart"
+                      className={styles.ribbonIcon}
+                      onClick={() => handleAddToCart(product.id)}
+                    >
+                      <FaShoppingCart />
+                    </a>
+                    <a
+                      href="/wishlist"
+                      className={styles.ribbonIcon}
+                      onClick={() => handleAddToWishlist(product.id)}
+                    >
+                      <FaHeart />
+                    </a>
+                  </div>
+                )}
               </div>
               <Card.Body className={styles.cardBody}>
                 <div className={styles.categoryTag}>
@@ -316,7 +358,7 @@ export default function FeaturedProducts() {
                 <div className={styles.buttonGroup}>
                   <Button
                     className={styles.productCta}
-                    href={`/products/${product.id}`}
+                    href={`/products/${product.category}/${product.id}`}
                     style={{
                       backgroundColor: "#9400D3",
                       borderColor: "#9400D3",
@@ -332,10 +374,7 @@ export default function FeaturedProducts() {
                   <Button
                     className={styles.cartCta}
                     disabled={product.stock <= 0}
-                    onClick={() => {
-                      handleButtonClick("Add to Cart", product.id);
-                      alert("Add to cart functionality TBD");
-                    }}
+                    onClick={() => handleAddToCart(product.id)}
                     style={{
                       backgroundColor: "#FF1493",
                       borderColor: "#FF1493",
